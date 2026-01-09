@@ -1,0 +1,25 @@
+{
+  "mappings": [
+    {
+      "id": "pid-006",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0006-001-C02.pdf",
+      "json": "pid1-006.json",
+      "name": "P&ID 006",
+      "description": "Piping & Instrumentation Diagram 006"
+    },
+    {
+      "id": "pid-007",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0007-001-C02.pdf",
+      "json": "pid2-007.json",
+      "name": "P&ID 007",
+      "description": "Piping & Instrumentation Diagram 007"
+    },
+    {
+      "id": "pid-008",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf",
+      "json": "pid3-008.json",
+      "name": "P&ID 008",
+      "description": "Piping & Instrumentation Diagram 008"
+    }
+  ]
+}

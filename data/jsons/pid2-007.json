@@ -1,0 +1,1264 @@
+{
+  "schema_version": "pid.graph.v0.1.1",
+  "metadata": {
+    "doc_id": "100478CP-N-PG-PP01-PR-PID-0007-001",
+    "rev": "C02",
+    "sheet_no": "01/01",
+    "unit": "PP01",
+    "title": "P&ID - Scraper Receiver (DS-3)"
+  },
+  "nodes": [
+    {
+      "id": "eq:PP01-361-V01",
+      "type": "equipment",
+      "subtype": "vessel.scraper_receiver",
+      "tag": "PP01361 P1",
+      "service": "Scraper Receiver (DS-3)",
+      "layer": "process",
+      "props": {
+        "tag_aliases": [
+          "361 V01"
+        ],
+        "dimensions": {
+          "major_barrel_id_mm": 610,
+          "minor_barrel_id_mm": 508
+        },
+        "material": "Carbon Steel",
+        "corrosion_lining_mm": 3,
+        "design_conditions": {
+          "pressure_bar_g": 45,
+          "temperature_C": "-29 to 100"
+        },
+        "operating_conditions": {
+          "pressure_bar_g": "10 to 11",
+          "temperature_C": "20 to 80"
+        },
+        "insulation": "none",
+        "trim_number": "PB01 361 B0 TX B 03 E7"
+      }
+    },
+    {
+      "id": "noz:N1",
+      "type": "nozzle",
+      "tag": "N1",
+      "service": "Kicker line inlet",
+      "layer": "process",
+      "props": {
+        "size_in": 8
+      }
+    },
+    {
+      "id": "noz:N2",
+      "type": "nozzle",
+      "tag": "N2",
+      "service": "Balance/pressurization (top)",
+      "layer": "process",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "noz:N3",
+      "type": "nozzle",
+      "tag": "N3",
+      "service": "Vessel pressure gauge / isolation",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "noz:N4",
+      "type": "nozzle",
+      "tag": "N4",
+      "service": "Relief connection to PSV",
+      "layer": "process",
+      "props": {
+        "size_in": 3,
+        "note": "blind flange on 3in line GF0008"
+      }
+    },
+    {
+      "id": "noz:N5",
+      "type": "nozzle",
+      "tag": "N5",
+      "service": "Vessel pressure gauge / isolation",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "noz:N7",
+      "type": "nozzle",
+      "tag": "N7",
+      "service": "Balance line tie-in",
+      "layer": "process",
+      "props": {
+        "size_in": 2,
+        "line_tag_hint": "GF0010"
+      }
+    },
+    {
+      "id": "noz:N9",
+      "type": "nozzle",
+      "tag": "N9",
+      "service": "Main outlet / pig retrieval",
+      "layer": "process",
+      "props": {
+        "size_in": 20
+      }
+    },
+    {
+      "id": "noz:N10",
+      "type": "nozzle",
+      "tag": "N10",
+      "service": "Bottom drain A",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "drain_line": "DK01"
+      }
+    },
+    {
+      "id": "noz:N11",
+      "type": "nozzle",
+      "tag": "N11",
+      "service": "Alternate kicker branch connection",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "line_tag_hint": "GF05 B03E7"
+      }
+    },
+    {
+      "id": "noz:N12",
+      "type": "nozzle",
+      "tag": "N12",
+      "service": "Bottom drain B",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "drain_line": "DK02"
+      }
+    },
+    {
+      "id": "term:from_new_pcb_station",
+      "type": "terminator",
+      "subtype": "offpage",
+      "tag": "From New PCB Station",
+      "layer": "process",
+      "off_page_ref": "PP01 361 GF01 P 03 F9"
+    },
+    {
+      "id": "term:to_next_scraper_section",
+      "type": "terminator",
+      "subtype": "offpage",
+      "tag": "To next scraper section",
+      "layer": "process",
+      "off_page_ref": "GF07 AP15L"
+    },
+    {
+      "id": "term:corrosion_inhibitor_pkg",
+      "type": "terminator",
+      "subtype": "offpage",
+      "tag": "Corrosion Inhibitor Injection Package",
+      "layer": "process",
+      "off_page_ref": "PB01 520 Z101"
+    },
+    {
+      "id": "term:safe_location_SPN01",
+      "type": "terminator",
+      "subtype": "offpage",
+      "tag": "Safe Location",
+      "layer": "process",
+      "off_page_ref": "SPN01"
+    },
+    {
+      "id": "term:closed_drain_2DDC1",
+      "type": "terminator",
+      "subtype": "offpage",
+      "tag": "Closed Drain System",
+      "layer": "utility",
+      "off_page_ref": "2D DC1"
+    },
+    {
+      "id": "j:mainline_tap_kicker",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "kicker take-off from 20in main line"
+      }
+    },
+    {
+      "id": "j:kicker_db_b",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "double block & bleed cavity (HV-03)"
+      }
+    },
+    {
+      "id": "j:kicker_bypass_split",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "kicker bypass split"
+      }
+    },
+    {
+      "id": "j:kicker_bypass_merge",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "kicker bypass merge"
+      }
+    },
+    {
+      "id": "j:balance_merge",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "merge N2 and N7 balance lines"
+      }
+    },
+    {
+      "id": "j:balance_branch_to_F401",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "branch to F401 vent control"
+      }
+    },
+    {
+      "id": "j:psv_reducer_3to1",
+      "type": "junction",
+      "subtype": "reducer",
+      "layer": "process",
+      "props": {
+        "from_in": 3,
+        "to_in": 1
+      }
+    },
+    {
+      "id": "j:psv_discharge_expand_2to4",
+      "type": "junction",
+      "subtype": "reducer",
+      "layer": "process",
+      "props": {
+        "from_in": 2,
+        "to_in": 4
+      }
+    },
+    {
+      "id": "j:drain_merge",
+      "type": "junction",
+      "subtype": "tee",
+      "layer": "process",
+      "props": {
+        "role": "merge DK01 and DK02"
+      }
+    },
+    {
+      "id": "j:drain_expand_4to8",
+      "type": "junction",
+      "subtype": "reducer",
+      "layer": "utility",
+      "props": {
+        "from_in": 4,
+        "to_in": 8
+      }
+    },
+    {
+      "id": "j:barred_tee",
+      "type": "junction",
+      "subtype": "barred_tee",
+      "layer": "process",
+      "props": {
+        "role": "pig-safe tee tying N9 outlet back to main line"
+      }
+    },
+    {
+      "id": "ins:FI-01",
+      "type": "instrument",
+      "subtype": "indicator.flow",
+      "tag": "FI-01",
+      "layer": "instrument"
+    },
+    {
+      "id": "ins:FY-01",
+      "type": "instrument",
+      "subtype": "relay.flow",
+      "tag": "FY-01",
+      "layer": "instrument"
+    },
+    {
+      "id": "val:CP01",
+      "type": "valve",
+      "subtype": "injection",
+      "tag": "CP01",
+      "layer": "process",
+      "props": {
+        "service": "corrosion inhibitor injection leg"
+      }
+    },
+    {
+      "id": "val:CC01",
+      "type": "valve",
+      "subtype": "injection",
+      "tag": "CC01",
+      "layer": "process",
+      "props": {
+        "service": "corrosion inhibitor injection leg"
+      }
+    },
+    {
+      "id": "val:CI01",
+      "type": "valve",
+      "subtype": "injection",
+      "tag": "CI01",
+      "layer": "process",
+      "props": {
+        "service": "corrosion inhibitor injection leg"
+      }
+    },
+    {
+      "id": "val:HV-02",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-02",
+      "layer": "process",
+      "props": {
+        "size_in": 8
+      }
+    },
+    {
+      "id": "val:HV-01",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-01",
+      "layer": "process",
+      "props": {
+        "size_in": 8
+      }
+    },
+    {
+      "id": "val:HV-03",
+      "type": "valve",
+      "subtype": "drain",
+      "tag": "HV-03",
+      "layer": "process",
+      "props": {
+        "size_in": 1,
+        "service": "DBB bleed"
+      }
+    },
+    {
+      "id": "val:HV-04",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-04",
+      "layer": "process",
+      "props": {
+        "size_in": 2,
+        "service": "kicker bypass"
+      }
+    },
+    {
+      "id": "val:HV-05",
+      "type": "valve",
+      "subtype": "globe",
+      "tag": "HV-05",
+      "layer": "process",
+      "props": {
+        "size_in": 2,
+        "service": "kicker bypass fine control",
+        "spec_change": "B03E7 -> B03F9 (after HV-05)"
+      }
+    },
+    {
+      "id": "val:HV-10",
+      "type": "valve",
+      "subtype": "valve",
+      "tag": "HV-10",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "service": "N11 branch valve"
+      }
+    },
+    {
+      "id": "val:HV-36",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-36",
+      "layer": "process",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "val:HV-11",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-11",
+      "layer": "process",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "val:HV-06",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-06",
+      "layer": "process",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "val:HV-07",
+      "type": "valve",
+      "subtype": "globe",
+      "tag": "HV-07",
+      "layer": "process",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "val:F401",
+      "type": "valve",
+      "subtype": "control",
+      "tag": "F401",
+      "layer": "process",
+      "props": {
+        "service": "vent / depressurization",
+        "spec_change": "B03E7 -> B01B8"
+      }
+    },
+    {
+      "id": "val:PSV-01",
+      "type": "valve",
+      "subtype": "safety_relief",
+      "tag": "PSV-01",
+      "layer": "process",
+      "props": {
+        "set_pressure_bar_g": 45,
+        "size": "1E2",
+        "fireproof_case": true
+      }
+    },
+    {
+      "id": "val:HV-1",
+      "type": "valve",
+      "subtype": "drain",
+      "tag": "HV-1",
+      "layer": "process",
+      "props": {
+        "size_in": 0.5,
+        "service": "PSV discharge drain"
+      }
+    },
+    {
+      "id": "val:HV-08",
+      "type": "valve",
+      "subtype": "solenoid",
+      "tag": "HV-08",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "ins:PG-02",
+      "type": "instrument",
+      "subtype": "gauge.pressure",
+      "tag": "PG-02",
+      "layer": "instrument"
+    },
+    {
+      "id": "val:HV-09",
+      "type": "valve",
+      "subtype": "solenoid",
+      "tag": "HV-09",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2
+      }
+    },
+    {
+      "id": "ins:PG-01",
+      "type": "instrument",
+      "subtype": "gauge.pressure",
+      "tag": "PG-01",
+      "layer": "instrument"
+    },
+    {
+      "id": "ins:Z-02",
+      "type": "instrument",
+      "subtype": "pig_signaler",
+      "tag": "Z-02",
+      "layer": "instrument",
+      "props": {
+        "alias": "HZI-2",
+        "mount": "on_vessel"
+      }
+    },
+    {
+      "id": "val:GV-N10",
+      "type": "valve",
+      "subtype": "gate",
+      "tag": "GV-N10",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "spec_change": "B03E7 -> B03E8"
+      }
+    },
+    {
+      "id": "val:GV-N12",
+      "type": "valve",
+      "subtype": "gate",
+      "tag": "GV-N12",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "spec_change": "B03E7 -> B03E8"
+      }
+    },
+    {
+      "id": "val:HV-13",
+      "type": "valve",
+      "subtype": "gate",
+      "tag": "HV-13",
+      "layer": "process",
+      "props": {
+        "size_in": 4,
+        "spec_change_after": "B01M8 (DK03)"
+      }
+    },
+    {
+      "id": "val:HV-09_DK_bleed",
+      "type": "valve",
+      "subtype": "drain",
+      "tag": "HV-09",
+      "layer": "process",
+      "props": {
+        "size_in": 0.5,
+        "service": "drain point near main drain valves",
+        "tag_collision": true
+      }
+    },
+    {
+      "id": "val:HV-16",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-16",
+      "layer": "process",
+      "props": {
+        "size_in": 20
+      }
+    },
+    {
+      "id": "val:HV-18",
+      "type": "valve",
+      "subtype": "ball",
+      "tag": "HV-18",
+      "layer": "process",
+      "props": {
+        "size_in": 20
+      }
+    },
+    {
+      "id": "val:HV-17",
+      "type": "valve",
+      "subtype": "drain",
+      "tag": "HV-17",
+      "layer": "process",
+      "props": {
+        "size_in": 2,
+        "service": "bleed between HV-16 and HV-18"
+      }
+    },
+    {
+      "id": "val:EZV-01",
+      "type": "valve",
+      "subtype": "control",
+      "tag": "EZV-01",
+      "layer": "process",
+      "props": {
+        "size_in": 20,
+        "service": "MOV / main line control downstream of barred tee"
+      }
+    },
+    {
+      "id": "ins:Z-01",
+      "type": "instrument",
+      "subtype": "pig_signaler",
+      "tag": "Z-01",
+      "layer": "instrument",
+      "props": {
+        "alias": "ZI-01",
+        "location": "between barred tee and EZV-01"
+      }
+    },
+    {
+      "id": "val:HV-19",
+      "type": "valve",
+      "subtype": "solenoid",
+      "tag": "HV-19",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2,
+        "spec": "B03F9"
+      }
+    },
+    {
+      "id": "ins:PI-02",
+      "type": "instrument",
+      "subtype": "indicator.pressure",
+      "tag": "PI-02",
+      "layer": "instrument",
+      "props": {
+        "system": "DCS"
+      }
+    },
+    {
+      "id": "ins:PIT-02",
+      "type": "instrument",
+      "subtype": "transmitter.pressure",
+      "tag": "PIT-02",
+      "layer": "instrument",
+      "props": {
+        "system": "Field"
+      }
+    },
+    {
+      "id": "val:HV-20",
+      "type": "valve",
+      "subtype": "solenoid",
+      "tag": "HV-20",
+      "layer": "instrument",
+      "props": {
+        "size_in": 2,
+        "spec": "B03F9"
+      }
+    },
+    {
+      "id": "ins:PZT-04",
+      "type": "instrument",
+      "subtype": "transmitter.pressure",
+      "tag": "PZT-04",
+      "layer": "instrument"
+    },
+    {
+      "id": "ins:PI-11",
+      "type": "instrument",
+      "subtype": "indicator.pressure",
+      "tag": "PI-11",
+      "layer": "instrument"
+    },
+    {
+      "id": "ann:tag_notes",
+      "type": "annotation",
+      "layer": "annotation",
+      "props": {
+        "notes": [
+          "Narrative uses tag 'HV-09' for both a 2in solenoid at N5 and a 0.5in drain point near drain valves; modeled as two nodes with same tag, second marked tag_collision=true.",
+          "Where narrative omits explicit valve tags (e.g., drain gate valves on N10/N12), placeholder tags GV-N10/GV-N12 are used; replace with exact tags from PDF if required."
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "c_eq_N1",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N1",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N2",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N2",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N3",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N3",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N4",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N4",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N5",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N5",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N7",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N7",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N9",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N9",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N10",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N10",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N11",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N11",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "c_eq_N12",
+      "from": "eq:PP01-361-V01",
+      "to": "noz:N12",
+      "kind": "containment",
+      "layer": "mechanical"
+    },
+    {
+      "id": "main_20in_in",
+      "from": "term:from_new_pcb_station",
+      "to": "ins:FI-01",
+      "kind": "process",
+      "line_tag": "PP01 361 GF01 P 03 F9",
+      "diameter": "20in",
+      "pipe_class": "P03F9",
+      "layer": "process"
+    },
+    {
+      "id": "main_FI_to_FY",
+      "from": "ins:FI-01",
+      "to": "ins:FY-01",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "inj_takeoff",
+      "from": "ins:FI-01",
+      "to": "term:corrosion_inhibitor_pkg",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process",
+      "props": {
+        "valve_train": [
+          "CP01",
+          "CC01",
+          "CI01"
+        ],
+        "pump_ref": "NPG PP01"
+      }
+    },
+    {
+      "id": "inj_valves_1",
+      "from": "val:CP01",
+      "to": "val:CC01",
+      "kind": "association",
+      "layer": "process"
+    },
+    {
+      "id": "inj_valves_2",
+      "from": "val:CC01",
+      "to": "val:CI01",
+      "kind": "association",
+      "layer": "process"
+    },
+    {
+      "id": "tap_kicker",
+      "from": "ins:FI-01",
+      "to": "j:mainline_tap_kicker",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_8in_1",
+      "from": "j:mainline_tap_kicker",
+      "to": "val:HV-02",
+      "kind": "process",
+      "line_tag": "PP01 361 GF03 B 03 E7",
+      "diameter": "8in",
+      "pipe_class": "B03E7",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_8in_dbb_mid",
+      "from": "val:HV-02",
+      "to": "j:kicker_db_b",
+      "kind": "process",
+      "diameter": "8in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_bleed",
+      "from": "j:kicker_db_b",
+      "to": "val:HV-03",
+      "kind": "process",
+      "diameter": "1in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_8in_2",
+      "from": "j:kicker_db_b",
+      "to": "val:HV-01",
+      "kind": "process",
+      "diameter": "8in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_8in_to_N1",
+      "from": "val:HV-01",
+      "to": "noz:N1",
+      "kind": "process",
+      "diameter": "8in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_bypass_split",
+      "from": "j:kicker_db_b",
+      "to": "j:kicker_bypass_split",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_bypass_path",
+      "from": "j:kicker_bypass_split",
+      "to": "val:HV-05",
+      "kind": "process",
+      "diameter": "2in",
+      "pipe_class": "B03E7",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_bypass_HV05_to_HV04",
+      "from": "val:HV-05",
+      "to": "val:HV-04",
+      "kind": "process",
+      "diameter": "2in",
+      "pipe_class": "B03F9",
+      "layer": "process",
+      "props": {
+        "spec_change_at": "HV-05"
+      }
+    },
+    {
+      "id": "kicker_bypass_merge",
+      "from": "val:HV-04",
+      "to": "j:kicker_bypass_merge",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_bypass_return",
+      "from": "j:kicker_bypass_merge",
+      "to": "noz:N1",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "kicker_alt_N11",
+      "from": "j:mainline_tap_kicker",
+      "to": "val:HV-10",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E7",
+      "layer": "process",
+      "line_tag": "GF05 B 03 E7"
+    },
+    {
+      "id": "kicker_alt_to_N11",
+      "from": "val:HV-10",
+      "to": "noz:N11",
+      "kind": "process",
+      "diameter": "4in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_N2",
+      "from": "noz:N2",
+      "to": "val:HV-36",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_N2_to_merge",
+      "from": "val:HV-36",
+      "to": "j:balance_merge",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_N7",
+      "from": "noz:N7",
+      "to": "val:HV-11",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process",
+      "line_tag": "GF0010"
+    },
+    {
+      "id": "balance_N7_to_merge",
+      "from": "val:HV-11",
+      "to": "j:balance_merge",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_merge_to_HV06",
+      "from": "j:balance_merge",
+      "to": "val:HV-06",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_HV06_to_HV07",
+      "from": "val:HV-06",
+      "to": "val:HV-07",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_branch",
+      "from": "val:HV-07",
+      "to": "j:balance_branch_to_F401",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "balance_vent_F401",
+      "from": "j:balance_branch_to_F401",
+      "to": "val:F401",
+      "kind": "process",
+      "diameter": "2in",
+      "pipe_class": "B03E7",
+      "layer": "process"
+    },
+    {
+      "id": "balance_vent_to_safe",
+      "from": "val:F401",
+      "to": "term:safe_location_SPN01",
+      "kind": "process",
+      "diameter": "2in",
+      "pipe_class": "B01B8",
+      "layer": "process",
+      "line_tag": "PP01 502 ... (spec B01B8)"
+    },
+    {
+      "id": "psv_in",
+      "from": "noz:N4",
+      "to": "j:psv_reducer_3to1",
+      "kind": "process",
+      "diameter": "3in",
+      "layer": "process",
+      "line_tag": "GF0008"
+    },
+    {
+      "id": "psv_to_PSV01",
+      "from": "j:psv_reducer_3to1",
+      "to": "val:PSV-01",
+      "kind": "process",
+      "diameter": "1in",
+      "layer": "process"
+    },
+    {
+      "id": "psv_discharge_expand",
+      "from": "val:PSV-01",
+      "to": "j:psv_discharge_expand_2to4",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "psv_discharge_drain",
+      "from": "j:psv_discharge_expand_2to4",
+      "to": "val:HV-1",
+      "kind": "process",
+      "diameter": "0.5in",
+      "layer": "process"
+    },
+    {
+      "id": "psv_discharge_to_safe",
+      "from": "j:psv_discharge_expand_2to4",
+      "to": "term:safe_location_SPN01",
+      "kind": "process",
+      "diameter": "4in",
+      "layer": "process"
+    },
+    {
+      "id": "pg02_leg",
+      "from": "noz:N3",
+      "to": "val:HV-08",
+      "kind": "impulse",
+      "diameter": "2in",
+      "layer": "instrument"
+    },
+    {
+      "id": "pg02_conn",
+      "from": "val:HV-08",
+      "to": "ins:PG-02",
+      "kind": "impulse",
+      "layer": "instrument"
+    },
+    {
+      "id": "pg01_leg",
+      "from": "noz:N5",
+      "to": "val:HV-09",
+      "kind": "impulse",
+      "diameter": "2in",
+      "layer": "instrument"
+    },
+    {
+      "id": "pg01_conn",
+      "from": "val:HV-09",
+      "to": "ins:PG-01",
+      "kind": "impulse",
+      "layer": "instrument"
+    },
+    {
+      "id": "pig_arrival",
+      "from": "ins:Z-02",
+      "to": "eq:PP01-361-V01",
+      "kind": "association",
+      "layer": "instrument",
+      "props": {
+        "meaning": "pig arrived in barrel"
+      }
+    },
+    {
+      "id": "drain_N10",
+      "from": "noz:N10",
+      "to": "val:GV-N10",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E7",
+      "layer": "process"
+    },
+    {
+      "id": "drain_N12",
+      "from": "noz:N12",
+      "to": "val:GV-N12",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E7",
+      "layer": "process"
+    },
+    {
+      "id": "drain_N10_to_merge",
+      "from": "val:GV-N10",
+      "to": "j:drain_merge",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E8",
+      "layer": "process"
+    },
+    {
+      "id": "drain_N12_to_merge",
+      "from": "val:GV-N12",
+      "to": "j:drain_merge",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E8",
+      "layer": "process"
+    },
+    {
+      "id": "drain_merge_to_HV13",
+      "from": "j:drain_merge",
+      "to": "val:HV-13",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B03E8",
+      "layer": "process"
+    },
+    {
+      "id": "drain_bleed_point",
+      "from": "j:drain_merge",
+      "to": "val:HV-09_DK_bleed",
+      "kind": "process",
+      "diameter": "0.5in",
+      "layer": "process"
+    },
+    {
+      "id": "drain_after_spec_change",
+      "from": "val:HV-13",
+      "to": "j:drain_expand_4to8",
+      "kind": "process",
+      "diameter": "4in",
+      "pipe_class": "B01M8",
+      "layer": "process",
+      "line_tag": "DK03"
+    },
+    {
+      "id": "drain_to_closed_drain",
+      "from": "j:drain_expand_4to8",
+      "to": "term:closed_drain_2DDC1",
+      "kind": "process",
+      "diameter": "8in",
+      "layer": "utility"
+    },
+    {
+      "id": "out_N9_to_HV16",
+      "from": "noz:N9",
+      "to": "val:HV-16",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process"
+    },
+    {
+      "id": "out_HV16_to_bleed",
+      "from": "val:HV-16",
+      "to": "j:barred_tee",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process",
+      "props": {
+        "segment": "upstream of HV-18; bleed is between HV-16 and HV-18"
+      }
+    },
+    {
+      "id": "out_bleed_HV17",
+      "from": "j:barred_tee",
+      "to": "val:HV-17",
+      "kind": "process",
+      "diameter": "2in",
+      "layer": "process"
+    },
+    {
+      "id": "out_to_HV18",
+      "from": "j:barred_tee",
+      "to": "val:HV-18",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process"
+    },
+    {
+      "id": "mainline_from_in_to_barredtee",
+      "from": "term:from_new_pcb_station",
+      "to": "j:barred_tee",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process",
+      "props": {
+        "mainline_continues_past_receiver": true
+      }
+    },
+    {
+      "id": "barredtee_to_Z01",
+      "from": "j:barred_tee",
+      "to": "ins:Z-01",
+      "kind": "association",
+      "layer": "instrument"
+    },
+    {
+      "id": "barredtee_to_EZV01",
+      "from": "j:barred_tee",
+      "to": "val:EZV-01",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process"
+    },
+    {
+      "id": "EZV01_to_out",
+      "from": "val:EZV-01",
+      "to": "term:to_next_scraper_section",
+      "kind": "process",
+      "diameter": "20in",
+      "layer": "process",
+      "props": {
+        "spec_change": "AP15L -> GF07 AP15L (after EZV-01)"
+      }
+    },
+    {
+      "id": "tap_HV19",
+      "from": "val:EZV-01",
+      "to": "val:HV-19",
+      "kind": "impulse",
+      "diameter": "2in",
+      "layer": "instrument"
+    },
+    {
+      "id": "tap_HV19_PI02",
+      "from": "val:HV-19",
+      "to": "ins:PI-02",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "tap_HV19_PIT02",
+      "from": "val:HV-19",
+      "to": "ins:PIT-02",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "tap_HV20",
+      "from": "val:EZV-01",
+      "to": "val:HV-20",
+      "kind": "impulse",
+      "diameter": "2in",
+      "layer": "instrument"
+    },
+    {
+      "id": "tap_HV20_PZT04",
+      "from": "val:HV-20",
+      "to": "ins:PZT-04",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "tap_HV20_PI11",
+      "from": "val:HV-20",
+      "to": "ins:PI-11",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "assoc_notes",
+      "from": "ann:tag_notes",
+      "to": "eq:PP01-361-V01",
+      "kind": "association",
+      "layer": "annotation"
+    }
+  ]
+}
