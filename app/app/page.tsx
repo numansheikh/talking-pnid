@@ -13,11 +13,13 @@ interface Message {
 interface FileMapping {
   id: string
   pdf: string
-  json: string
+  json?: string
+  md: string
   name: string
   description: string
   pdfExists: boolean
-  jsonExists: boolean
+  jsonExists?: boolean
+  mdExists: boolean
 }
 
 export default function AppPage() {
@@ -34,6 +36,76 @@ export default function AppPage() {
   useEffect(() => {
     loadFiles()
   }, [])
+
+  // Global click handler to intercept PID links before navigation
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      
+      // Check if clicked element or its parent has data-pid-link attribute (for HTML spans)
+      const pidLink = target.closest('[data-pid-link]') as HTMLElement
+      if (pidLink) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        
+        const mappingId = pidLink.getAttribute('data-pid-link')
+        if (mappingId) {
+          // Debug: Uncomment to see PID link clicks
+          // console.log('Global handler: PID link clicked', { mappingId, element: pidLink, mappingsCount: mappings.length })
+          const mapping = mappings.find(m => m.id === mappingId)
+          if (mapping) {
+            // Use a function to ensure state update happens
+            setSelectedMapping((prev) => {
+              return mapping
+            })
+            requestAnimationFrame(() => {
+              const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
+              if (sidebarItem) {
+                sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+              }
+            })
+          } else {
+            console.error('Global handler: Mapping not found for ID:', mappingId, 'Available IDs:', mappings.map(m => m.id))
+          }
+        }
+        return false
+      }
+      
+      // Also check for any link with href starting with pid: or #pid- (for markdown links)
+      const link = target.closest('a[href^="pid:"], a[href^="#pid-"]') as HTMLAnchorElement
+      if (link) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+        
+        const href = link.getAttribute('href')
+        if (href) {
+          const mappingId = href.replace(/^(pid:?\/?\/?|#pid-)/, '')
+          // Debug: Uncomment to see PID anchor clicks
+          // console.log('Global handler: PID anchor clicked', { href, mappingId })
+          const mapping = mappings.find(m => m.id === mappingId)
+          if (mapping) {
+            setSelectedMapping(mapping)
+            requestAnimationFrame(() => {
+              const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
+              if (sidebarItem) {
+                sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+              }
+            })
+          }
+        }
+        return false
+      }
+    }
+
+    // Use capture phase to catch events early
+    document.addEventListener('click', handleGlobalClick, true)
+    
+    return () => {
+      document.removeEventListener('click', handleGlobalClick, true)
+    }
+  }, [mappings])
 
   const loadFiles = async () => {
     try {
@@ -96,7 +168,7 @@ export default function AppPage() {
       if (mapping && !processedIds.has(docId)) {
         const pid = extractPidFromDocId(docId.trim()) || docId.trim()
         processedIds.add(docId)
-        return `[${pid}](pid:${mapping.id})`
+        return `[${pid}](#pid-${mapping.id})`
       }
       return match
     })
@@ -115,7 +187,7 @@ export default function AppPage() {
       
       if (mapping && !processedIds.has(paddedPidNum)) {
         processedIds.add(paddedPidNum)
-        return `[${pid}](pid:${mapping.id})`
+        return `[${pid}](#pid-${mapping.id})`
       }
       return match
     })
@@ -140,7 +212,7 @@ export default function AppPage() {
       if (mapping) {
         const pid = extractPidFromDocId(docId.trim()) || docId.trim()
         processedIds.add(docId)
-        return `[${pid}](pid:${mapping.id})`
+        return `[${pid}](#pid-${mapping.id})`
       }
       return match
     })
@@ -152,7 +224,33 @@ export default function AppPage() {
       if (mapping) {
         const pid = extractPidFromDocId(docId.trim()) || docId.trim()
         processedIds.add(docId)
-        return `[${pid}](pid:${mapping.id})`
+        return `[${pid}](#pid-${mapping.id})`
+      }
+      return match
+    })
+    
+    // Pattern 6: Plain PID-XXXX text (without brackets) - must be at word boundaries
+    // Use markdown link format but with code formatting to prevent autolinking
+    processed = processed.replace(/\bPID-(\d{3,4})\b/gi, (match, pidNum) => {
+      // Skip if already processed or if it's part of a markdown link
+      if (processedIds.has(`plain-${pidNum}`)) return match
+      if (match.includes('](') || match.includes('[') || match.includes('`')) return match
+      
+      // Pad with leading zeros if needed
+      const paddedPidNum = pidNum.padStart(4, '0')
+      const pid = `PID-${paddedPidNum}`
+      
+      // Find mapping by PID number
+      const mapping = mappings.find(m => {
+        const pdfPidNumber = extractPidNumber(m.pdf)
+        return pdfPidNumber === paddedPidNum
+      })
+      
+      if (mapping) {
+        processedIds.add(`plain-${pidNum}`)
+        // Use hash-based format that ReactMarkdown will parse as a link
+        // Our handler will intercept it
+        return `[${pid}](#pid-${mapping.id})`
       }
       return match
     })
@@ -160,64 +258,50 @@ export default function AppPage() {
     return processed
   }
 
-  // Handle click on PID links
-  const handlePidLinkClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>, href: string) => {
-    // Prevent all default behaviors
-    e.preventDefault()
-    e.stopPropagation()
-    
-    // Prevent any form submission or navigation
-    if (e.nativeEvent) {
-      e.nativeEvent.preventDefault()
-      e.nativeEvent.stopPropagation()
-      e.nativeEvent.stopImmediatePropagation()
-    }
-    
-    console.log('=== PID LINK CLICKED ===')
-    console.log('Href:', href)
-    console.log('Session started:', sessionStarted)
-    console.log('Mappings count:', mappings.length)
-    console.log('Mappings:', mappings.map(m => ({ id: m.id, name: m.name })))
-    
-    if (!href || !href.startsWith('pid:')) {
-      console.error('Invalid href format:', href)
-      return false
-    }
-    
-    const mappingId = href.replace('pid:', '')
-    console.log('Looking for mapping with ID:', mappingId)
-    
-    if (mappings.length === 0) {
-      console.error('No mappings loaded!')
-      return false
-    }
-    
-    const mapping = mappings.find(m => m.id === mappingId)
-    
-    if (!mapping) {
-      console.error('Mapping not found!', {
-        requestedId: mappingId,
-        availableIds: mappings.map(m => m.id)
-      })
-      return false
-    }
-    
-    console.log('Found mapping:', mapping)
-    console.log('Current selectedMapping:', selectedMapping?.id)
-    
-    // Directly set the mapping without setTimeout to avoid state issues
-    setSelectedMapping(mapping)
-    
-    // Scroll the mapping into view
-    requestAnimationFrame(() => {
-      const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
-      if (sidebarItem) {
-        sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  // Handle click on PID links - wrapped in useCallback for stability
+  const handlePidLinkClick = useCallback((mappingId: string) => {
+    return (e: React.MouseEvent) => {
+      // Prevent ALL default behaviors and propagation
+      e.preventDefault()
+      e.stopPropagation()
+      if (e.nativeEvent) {
+        e.nativeEvent.preventDefault()
+        e.nativeEvent.stopPropagation()
+        if (e.nativeEvent.stopImmediatePropagation) {
+          e.nativeEvent.stopImmediatePropagation()
+        }
       }
-    })
-    
-    return false
-  }
+      
+      // Debug: Uncomment to see React PID link clicks
+      // console.log('=== React PID LINK CLICKED ===', { mappingId, mappingsCount: mappings.length })
+      
+      if (mappings.length === 0) {
+        console.error('No mappings loaded!')
+        return
+      }
+      
+      const mapping = mappings.find(m => m.id === mappingId)
+      
+      if (!mapping) {
+        console.error('Mapping not found!', {
+          requestedId: mappingId,
+          availableIds: mappings.map(m => m.id)
+        })
+        return
+      }
+      
+      // Set the selected mapping
+      setSelectedMapping(mapping)
+      
+      // Scroll the mapping into view in the sidebar
+      requestAnimationFrame(() => {
+        const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
+        if (sidebarItem) {
+          sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }
+      })
+    }
+  }, [mappings, setSelectedMapping])
 
   const handleStartSession = async () => {
     setStartingSession(true)
@@ -285,7 +369,7 @@ export default function AppPage() {
           selectedMapping: selectedMapping ? {
             id: selectedMapping.id,
             pdf: selectedMapping.pdf,
-            json: selectedMapping.json
+            md: selectedMapping.md
           } : null
         }),
       })
@@ -350,8 +434,8 @@ export default function AppPage() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
                     <span>{mapping.name}</span>
                     <span style={{ fontSize: '11px', opacity: 0.6 }}>
-                      {!mapping.pdfExists || !mapping.jsonExists ? '⚠ ' : ''}
-                      PDF + JSON
+                      {!mapping.pdfExists || !mapping.mdExists ? '⚠ ' : ''}
+                      PDF + MD
                     </span>
                   </div>
                 </div>
@@ -411,8 +495,8 @@ export default function AppPage() {
                       
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span>📋</span>
-                        <span style={{ color: '#374151' }}>{selectedMapping.json}</span>
-                        {!selectedMapping.jsonExists && (
+                        <span style={{ color: '#374151' }}>{selectedMapping.md}</span>
+                        {!selectedMapping.mdExists && (
                           <span style={{ fontSize: '11px', color: '#dc2626' }}>(Missing)</span>
                         )}
                       </div>
@@ -434,7 +518,17 @@ export default function AppPage() {
             <div className="main-title">Chat</div>
           </div>
           <div className="main-content">
-            <div className="chat-messages">
+            <div 
+              className="chat-messages"
+              onClick={(e) => {
+                // Prevent any link navigation in chat messages
+                const target = e.target as HTMLElement
+                if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('pid:')) {
+                  e.preventDefault()
+                  e.stopPropagation()
+                }
+              }}
+            >
               {messages.length === 0 ? (
                 <div className="empty-state">
                   <p>{sessionStarted ? 'Start a conversation about plant operations and P&IDs...' : 'Click "Start Session" to begin analyzing plant data and P&IDs'}</p>
@@ -446,84 +540,86 @@ export default function AppPage() {
                       {message.role === 'assistant' ? (
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
+                          rehypePlugins={[]}
                           components={{
+                            // Handle HTML spans with data-pid-link
+                            span: ({ node, className, ...props }: any) => {
+                              if (className === 'pid-link' && props['data-pid-link']) {
+                                const mappingId = props['data-pid-link']
+                                const clickHandler = handlePidLinkClick(mappingId)
+                                return (
+                                  <span
+                                    {...props}
+                                    className="pid-link"
+                                    onClick={clickHandler}
+                                    onMouseDown={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                    }}
+                                    style={{
+                                      cursor: 'pointer',
+                                      userSelect: 'none',
+                                      display: 'inline-flex',
+                                    }}
+                                  />
+                                )
+                              }
+                              return <span {...props} />
+                            },
                             a: ({ node, href, children, ...props }) => {
-                              console.log('ReactMarkdown <a> component rendered:', { href, children: children?.toString() })
-                              
-                              if (href && href.startsWith('pid:')) {
-                                const mappingId = href.replace('pid:', '')
-                                console.log('Creating PID link span for mapping:', mappingId)
+                              // Handle PID links - check for both pid: and #pid- formats
+                              if (href && (href.startsWith('pid:') || href.startsWith('pid://') || href.startsWith('#pid-'))) {
+                                const mappingId = href.replace(/^(pid:?\/?\/?|#pid-)/, '')
+                                // Debug: Uncomment to see PID link rendering
+                                // console.log('ReactMarkdown rendering PID link:', { href, mappingId, children })
+                                const clickHandler = handlePidLinkClick(mappingId)
                                 
-                                const handleClick = (e: React.MouseEvent) => {
-                                  console.log('=== PID LINK CLICKED ===', { mappingId, href })
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  
-                                  console.log('Current mappings:', mappings.length)
-                                  console.log('Current sessionStarted:', sessionStarted)
-                                  
-                                  const mapping = mappings.find(m => m.id === mappingId)
-                                  console.log('Found mapping:', mapping)
-                                  
-                                  if (mapping) {
-                                    console.log('Setting selected mapping to:', mapping.id)
-                                    setSelectedMapping(mapping)
-                                    
-                                    requestAnimationFrame(() => {
-                                      const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
-                                      if (sidebarItem) {
-                                        sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-                                      }
-                                    })
-                                  } else {
-                                    console.error('Mapping not found!', { mappingId, availableIds: mappings.map(m => m.id) })
-                                  }
-                                }
-                                
+                                // Return span instead of anchor to prevent any URL resolution
                                 return (
                                   <span
                                     role="button"
                                     tabIndex={0}
-                                    onClick={handleClick}
+                                    onClick={clickHandler}
                                     onMouseDown={(e) => {
-                                      console.log('MouseDown on PID link')
                                       e.preventDefault()
+                                      e.stopPropagation()
                                     }}
                                     onKeyDown={(e) => {
                                       if (e.key === 'Enter' || e.key === ' ') {
                                         e.preventDefault()
                                         e.stopPropagation()
-                                        const mapping = mappings.find(m => m.id === mappingId)
-                                        if (mapping) {
-                                          setSelectedMapping(mapping)
-                                        }
+                                        clickHandler(e as any)
                                       }
                                     }}
                                     className="pid-link"
                                     style={{
                                       cursor: 'pointer',
                                       userSelect: 'none',
+                                      display: 'inline-flex',
+                                      textDecoration: 'none',
                                     }}
+                                    data-pid-link={mappingId}
+                                    data-href={href}
                                   >
                                     {children}
                                   </span>
                                 )
                               }
+                              // For regular links, ensure they open in new tab
                               return (
-                                <a href={href} {...props}>
+                                <a href={href} {...props} target="_blank" rel="noopener noreferrer" onClick={(e) => {
+                                  // Only prevent default if it's a relative link that might cause navigation
+                                  if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('#')) {
+                                    e.preventDefault()
+                                  }
+                                }}>
                                   {children}
                                 </a>
                               )
                             },
                           }}
                         >
-                          {(() => {
-                            const processed = processMessageContent(message.content)
-                            console.log('Processed message content:', processed)
-                            console.log('Original message content:', message.content)
-                            console.log('Contains pid: links?', processed.includes('pid:'))
-                            return processed
-                          })()}
+                          {processMessageContent(message.content)}
                         </ReactMarkdown>
                       ) : (
                         message.content

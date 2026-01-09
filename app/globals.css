@@ -548,6 +548,24 @@ body {
   border-bottom-color: #4f46e5;
 }
 
+/* Prevent any anchor tags with pid: or #pid- href from navigating */
+.chat-messages a[href^="pid:"],
+.chat-messages a[href^="pid://"],
+.chat-messages a[href^="#pid-"] {
+  pointer-events: none !important;
+  cursor: default !important;
+  text-decoration: none !important;
+}
+
+/* Ensure PID links (spans) don't show URL on hover */
+.chat-messages .pid-link {
+  text-decoration: none !important;
+}
+
+.chat-messages .pid-link:hover {
+  text-decoration: underline !important;
+}
+
 .message.assistant .message-content a.pid-link,
 .message.assistant .message-content button.pid-link,
 .message.assistant .message-content span.pid-link {

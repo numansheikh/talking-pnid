@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import fs from 'fs/promises'
 import path from 'path'
-import { getAllSchemas, getSchemaSummaries, getSchemaByFilename } from '../utils/schemaCache'
+import { getAllMarkdowns, getMarkdownSummaries, getMarkdownByFilename } from '../utils/markdownCache'
 
 async function loadConfig() {
   const configPath = path.join(process.cwd(), 'config', 'config.json')
   let config: any = {
     openai: {
+      apiKey: process.env.OPENAI_API_KEY || '',
       model: process.env.OPENAI_MODEL || 'gpt-4',
     },
     directories: {
@@ -26,6 +27,7 @@ async function loadConfig() {
     // Merge file config with defaults (file config takes precedence, but env vars override)
     config = {
       openai: {
+        apiKey: process.env.OPENAI_API_KEY || fileConfig.openai?.apiKey || config.openai.apiKey,
         model: process.env.OPENAI_MODEL || fileConfig.openai?.model || config.openai.model,
       },
       directories: {
@@ -86,33 +88,33 @@ export async function POST(req: NextRequest) {
     // Get system prompt from prompts file
     const systemPrompt = prompts?.systemPrompt?.content || 
       prompts?.defaultSystemPrompt?.content || 
-      'You are an expert assistant for Piping & Instrumentation Diagrams (P&IDs). Answer questions based on the provided JSON schema data and your knowledge of P&IDs.'
+      'You are an expert assistant for Piping & Instrumentation Diagrams (P&IDs). Answer questions based on the provided markdown documentation and your knowledge of P&IDs.'
     
     let context = ''
     
-    // If a specific mapping is selected, send that full schema (single schema should be fine, cached)
-    if (selectedMapping && selectedMapping.json) {
-      const schema = await getSchemaByFilename(selectedMapping.json)
-      if (schema) {
-        context = `P&ID JSON Schema for ${selectedMapping.id} (${selectedMapping.pdf}):\n${JSON.stringify(schema, null, 2)}\n\n`
+    // If a specific mapping is selected, send that full markdown (single file should be fine, cached)
+    if (selectedMapping && selectedMapping.md) {
+      const markdown = await getMarkdownByFilename(selectedMapping.md)
+      if (markdown) {
+        context = `P&ID Markdown Documentation for ${selectedMapping.id} (${selectedMapping.pdf}):\n\n${markdown}\n\n`
       } else {
-        context = `No schema found for ${selectedMapping.json}.\n\n`
+        context = `No markdown found for ${selectedMapping.md}.\n\n`
       }
     } else if (sessionStarted) {
       // Session started but no specific mapping: send summaries to avoid token limits (cached)
-      const summaries = await getSchemaSummaries()
+      const summaries = await getMarkdownSummaries()
       if (summaries.length > 0) {
-        context = `P&ID Schema Summaries (${summaries.length} systems available):\n${JSON.stringify(summaries, null, 2)}\n\nNote: Schema summaries are provided to reduce token usage. If you need details about a specific equipment, instrument, or process from a particular schema, indicate which one (by doc_id or tag) and the full schema details can be retrieved.\n\n`
+        context = `P&ID Documentation Summaries (${summaries.length} systems available):\n\n${summaries.map((summary, idx) => `File ${idx + 1}: ${summary.filename}\nPreview: ${summary.preview}...\nSize: ${summary.size} characters\n`).join('\n')}\n\nNote: Summaries are provided to reduce token usage. If you need details about a specific equipment, instrument, or process from a particular file, indicate which one and the full markdown documentation can be retrieved.\n\n`
       } else {
-        context = 'No P&ID schemas available yet.\n\n'
+        context = 'No P&ID markdown documentation available yet.\n\n'
       }
     } else {
       // Fallback: send summaries (cached)
-      const summaries = await getSchemaSummaries()
+      const summaries = await getMarkdownSummaries()
       if (summaries.length > 0) {
-        context = `P&ID Schema Summaries:\n${JSON.stringify(summaries, null, 2)}\n\nNote: Summaries are provided. Select a specific file to get full schema details.\n\n`
+        context = `P&ID Documentation Summaries:\n\n${summaries.map((summary, idx) => `File ${idx + 1}: ${summary.filename}\nPreview: ${summary.preview}...\n`).join('\n')}\n\nNote: Summaries are provided. Select a specific file to get full markdown documentation.\n\n`
       } else {
-        context = 'No P&ID schemas available yet.\n\n'
+        context = 'No P&ID markdown documentation available yet.\n\n'
       }
     }
     

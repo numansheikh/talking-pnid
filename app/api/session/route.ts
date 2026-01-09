@@ -2,12 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import fs from 'fs/promises'
 import path from 'path'
-import { getAllSchemas, getSchemaSummaries } from '../utils/schemaCache'
+import { getAllMarkdowns, getMarkdownSummaries } from '../utils/markdownCache'
 
 async function loadConfig() {
   const configPath = path.join(process.cwd(), 'config', 'config.json')
   let config: any = {
     openai: {
+      apiKey: process.env.OPENAI_API_KEY || '',
       model: process.env.OPENAI_MODEL || 'gpt-4',
     },
     directories: {
@@ -26,6 +27,7 @@ async function loadConfig() {
     // Merge file config with defaults (file config takes precedence, but env vars override)
     config = {
       openai: {
+        apiKey: process.env.OPENAI_API_KEY || fileConfig.openai?.apiKey || config.openai.apiKey,
         model: process.env.OPENAI_MODEL || fileConfig.openai?.model || config.openai.model,
       },
       directories: {
@@ -87,14 +89,14 @@ export async function POST(req: NextRequest) {
     const prompts = await loadPrompts()
     console.log('Prompts loaded:', prompts ? 'yes' : 'no')
     
-    // Load schema summaries (cached)
-    const schemaSummaries = await getSchemaSummaries()
-    console.log('Schema summaries loaded (cached):', schemaSummaries.length)
+    // Load markdown summaries (cached)
+    const markdownSummaries = await getMarkdownSummaries()
+    console.log('Markdown summaries loaded (cached):', markdownSummaries.length)
     
-    if (schemaSummaries.length === 0) {
-      console.error('No JSON schemas found')
+    if (markdownSummaries.length === 0) {
+      console.error('No markdown files found')
       return NextResponse.json(
-        { error: 'No JSON schemas found. Please add JSON files to the data/jsons folder.' },
+        { error: 'No markdown files found. Please add markdown files to the data/mds folder.' },
         { status: 404 }
       )
     }
@@ -106,12 +108,12 @@ export async function POST(req: NextRequest) {
     // Get session init prompt and replace placeholder
     const sessionInitPrompt = (prompts?.sessionInitPrompt?.content || 
       'I\'m starting a new session to discuss plant operations. Please acknowledge that you\'ve received the plant data.')
-      .replace('{count}', schemaSummaries.length.toString())
+      .replace('{count}', markdownSummaries.length.toString())
     
-    // Prepare context with schema summaries (much smaller than full schemas)
-    const schemasContext = `P&ID Schema Summaries (${schemaSummaries.length} systems available):\n${JSON.stringify(schemaSummaries, null, 2)}\n\nNote: Full schema details will be provided when answering specific questions about the plant.`
+    // Prepare context with markdown summaries
+    const markdownsContext = `P&ID Documentation Summaries (${markdownSummaries.length} systems available):\n\n${markdownSummaries.map((summary, idx) => `File ${idx + 1}: ${summary.filename}\nPreview: ${summary.preview}...\nSize: ${summary.size} characters\n`).join('\n')}\n\nNote: Full markdown documentation will be provided when answering specific questions about the plant.`
     
-    console.log('Initializing OpenAI session with schema summaries...')
+    console.log('Initializing OpenAI session with markdown summaries...')
     // Initialize session with OpenAI
     const completion = await openai.chat.completions.create({
       model: config.openai.model || 'gpt-4',
@@ -122,7 +124,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: 'user',
-          content: `${schemasContext}${sessionInitPrompt}`,
+          content: `${markdownsContext}${sessionInitPrompt}`,
         },
       ],
       max_tokens: config.settings?.maxTokens || 2000,
@@ -135,7 +137,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: assistantResponse,
-      schemasLoaded: schemaSummaries.length,
+      markdownsLoaded: markdownSummaries.length,
       sessionId: Date.now().toString(), // Simple session ID, can be enhanced later
     })
   } catch (error: any) {

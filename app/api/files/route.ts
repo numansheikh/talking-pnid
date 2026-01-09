@@ -19,6 +19,7 @@ async function verifyFiles() {
     directories: {
       pdfs: process.env.PDFS_DIR || './data/pdfs',
       jsons: process.env.JSONS_DIR || './data/jsons',
+      mds: process.env.MDS_DIR || './data/mds',
     },
   }
 
@@ -29,6 +30,7 @@ async function verifyFiles() {
       directories: {
         pdfs: process.env.PDFS_DIR || fileConfig.directories?.pdfs || config.directories.pdfs,
         jsons: process.env.JSONS_DIR || fileConfig.directories?.jsons || config.directories.jsons,
+        mds: process.env.MDS_DIR || fileConfig.directories?.mds || config.directories.mds,
       },
     }
   } catch (error: any) {
@@ -38,7 +40,7 @@ async function verifyFiles() {
     }
   }
   
-  // Handle both './data/jsons' and 'data/jsons' formats
+  // Handle both './data/...' and 'data/...' formats
   let pdfsPath = config.directories.pdfs
   if (pdfsPath.startsWith('./')) {
     pdfsPath = pdfsPath.substring(2)
@@ -47,29 +49,39 @@ async function verifyFiles() {
   if (jsonsPath.startsWith('./')) {
     jsonsPath = jsonsPath.substring(2)
   }
+  let mdsPath = config.directories.mds
+  if (mdsPath.startsWith('./')) {
+    mdsPath = mdsPath.substring(2)
+  }
   
   const fullPdfsPath = path.join(process.cwd(), pdfsPath)
   const fullJsonsPath = path.join(process.cwd(), jsonsPath)
+  const fullMdsPath = path.join(process.cwd(), mdsPath)
   
   console.log('Checking PDFs in:', fullPdfsPath)
   console.log('Checking JSONs in:', fullJsonsPath)
+  console.log('Checking MDs in:', fullMdsPath)
   
   try {
     const pdfFiles = await fs.readdir(fullPdfsPath)
     const jsonFiles = await fs.readdir(fullJsonsPath)
+    const mdFiles = await fs.readdir(fullMdsPath)
     
     console.log('PDF files found:', pdfFiles)
     console.log('JSON files found:', jsonFiles)
+    console.log('MD files found:', mdFiles)
     
     return {
       pdfs: pdfFiles.filter(f => f.endsWith('.pdf')),
-      jsons: jsonFiles.filter(f => f.endsWith('.json'))
+      jsons: jsonFiles.filter(f => f.endsWith('.json')),
+      mds: mdFiles.filter(f => f.endsWith('.md'))
     }
   } catch (error: any) {
     console.error('Error verifying files:', error)
     console.error('PDFs path:', fullPdfsPath)
     console.error('JSONs path:', fullJsonsPath)
-    return { pdfs: [], jsons: [] }
+    console.error('MDs path:', fullMdsPath)
+    return { pdfs: [], jsons: [], mds: [] }
   }
 }
 
@@ -82,13 +94,15 @@ export async function GET() {
     const enrichedMappings = mappings.mappings.map((mapping: any) => ({
       ...mapping,
       pdfExists: files.pdfs.includes(mapping.pdf),
-      jsonExists: files.jsons.includes(mapping.json)
+      jsonExists: files.jsons.includes(mapping.json),
+      mdExists: mapping.md ? files.mds.includes(mapping.md) : false
     }))
     
     return NextResponse.json({
       mappings: enrichedMappings,
       availablePdfs: files.pdfs,
-      availableJsons: files.jsons
+      availableJsons: files.jsons,
+      availableMds: files.mds
     })
   } catch (error: any) {
     return NextResponse.json(
