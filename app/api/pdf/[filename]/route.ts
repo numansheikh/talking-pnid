@@ -4,8 +4,30 @@ import path from 'path'
 
 async function loadConfig() {
   const configPath = path.join(process.cwd(), 'config', 'config.json')
-  const configData = await fs.readFile(configPath, 'utf-8')
-  return JSON.parse(configData)
+  let config: any = {
+    directories: {
+      pdfs: process.env.PDFS_DIR || './data/pdfs',
+      jsons: process.env.JSONS_DIR || './data/jsons',
+    },
+  }
+
+  try {
+    const configData = await fs.readFile(configPath, 'utf-8')
+    const fileConfig = JSON.parse(configData)
+    config = {
+      directories: {
+        pdfs: process.env.PDFS_DIR || fileConfig.directories?.pdfs || config.directories.pdfs,
+        jsons: process.env.JSONS_DIR || fileConfig.directories?.jsons || config.directories.jsons,
+      },
+    }
+  } catch (error: any) {
+    // File doesn't exist or can't be read - use defaults from env vars
+    if (error.code !== 'ENOENT') {
+      console.warn('Error reading config file:', error.message)
+    }
+  }
+
+  return config
 }
 
 export async function GET(

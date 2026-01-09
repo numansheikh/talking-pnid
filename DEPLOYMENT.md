@@ -30,8 +30,14 @@ Vercel is the best option for Next.js apps as it's made by the creators of Next.
 
 4. **Configure Environment Variables**
    - In the Vercel project settings, go to "Environment Variables"
-   - Add: `OPENAI_API_KEY` = your OpenAI API key
-   - Make sure to add it for all environments (Production, Preview, Development)
+   - **Required:** `OPENAI_API_KEY` = your OpenAI API key
+   - **Optional:** You can also set these (defaults will be used if not set):
+     - `OPENAI_MODEL` = model name (default: `gpt-4`)
+     - `PDFS_DIR` = PDF directory path (default: `./data/pdfs`)
+     - `JSONS_DIR` = JSON directory path (default: `./data/jsons`)
+     - `MAX_TOKENS` = max tokens (default: `2000`)
+     - `TEMPERATURE` = temperature (default: `0.7`)
+   - Make sure to add `OPENAI_API_KEY` for all environments (Production, Preview, Development)
 
 5. **Deploy**
    - Click "Deploy"
@@ -72,6 +78,7 @@ Then add your OpenAI API key to `config/config.json`.
 ## Important Notes
 
 - **API Keys**: Never commit API keys to GitHub. Always use environment variables.
+- **Config File**: The `config/config.json` file is optional in production. The app will use environment variables if the config file doesn't exist (which is the case on Vercel).
 - **File Size**: Vercel has limits on file sizes. Your PDFs and JSON files should be fine.
 - **Free Tier Limits**: 
   - Vercel: 100GB bandwidth/month, unlimited projects

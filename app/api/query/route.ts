@@ -6,8 +6,45 @@ import { getAllSchemas, getSchemaSummaries, getSchemaByFilename } from '../utils
 
 async function loadConfig() {
   const configPath = path.join(process.cwd(), 'config', 'config.json')
-  const configData = await fs.readFile(configPath, 'utf-8')
-  return JSON.parse(configData)
+  let config: any = {
+    openai: {
+      model: process.env.OPENAI_MODEL || 'gpt-4',
+    },
+    directories: {
+      pdfs: process.env.PDFS_DIR || './data/pdfs',
+      jsons: process.env.JSONS_DIR || './data/jsons',
+    },
+    settings: {
+      maxTokens: parseInt(process.env.MAX_TOKENS || '2000', 10),
+      temperature: parseFloat(process.env.TEMPERATURE || '0.7'),
+    },
+  }
+
+  try {
+    const configData = await fs.readFile(configPath, 'utf-8')
+    const fileConfig = JSON.parse(configData)
+    // Merge file config with defaults (file config takes precedence, but env vars override)
+    config = {
+      openai: {
+        model: process.env.OPENAI_MODEL || fileConfig.openai?.model || config.openai.model,
+      },
+      directories: {
+        pdfs: process.env.PDFS_DIR || fileConfig.directories?.pdfs || config.directories.pdfs,
+        jsons: process.env.JSONS_DIR || fileConfig.directories?.jsons || config.directories.jsons,
+      },
+      settings: {
+        maxTokens: parseInt(process.env.MAX_TOKENS || fileConfig.settings?.maxTokens?.toString() || '2000', 10),
+        temperature: parseFloat(process.env.TEMPERATURE || fileConfig.settings?.temperature?.toString() || '0.7'),
+      },
+    }
+  } catch (error: any) {
+    // File doesn't exist or can't be read - use defaults from env vars
+    if (error.code !== 'ENOENT') {
+      console.warn('Error reading config file:', error.message)
+    }
+  }
+
+  return config
 }
 
 function getOpenAIClient(apiKey?: string) {
