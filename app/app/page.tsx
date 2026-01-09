@@ -165,7 +165,6 @@ export default function AppPage() {
     // Prevent all default behaviors
     e.preventDefault()
     e.stopPropagation()
-    e.stopImmediatePropagation?.()
     
     // Prevent any form submission or navigation
     if (e.nativeEvent) {
