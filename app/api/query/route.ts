@@ -132,12 +132,34 @@ export async function POST(req: NextRequest) {
       temperature: config.settings?.temperature || 0.7,
     })
 
+    const answer = completion.choices[0]?.message?.content
+    
+    if (!answer) {
+      console.error('OpenAI returned empty response:', {
+        choices: completion.choices,
+        model: config.openai.model,
+      })
+      return NextResponse.json(
+        { error: 'OpenAI API returned an empty response. Please try again.' },
+        { status: 500 }
+      )
+    }
+
     return NextResponse.json({
-      answer: completion.choices[0]?.message?.content || 'No answer generated',
+      answer,
     })
   } catch (error: any) {
+    console.error('Query API error:', {
+      message: error.message,
+      name: error.name,
+      status: error.status,
+      response: error.response?.data,
+    })
     return NextResponse.json(
-      { error: error.message || 'Failed to process query' },
+      { 
+        error: error.message || 'Failed to process query',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }

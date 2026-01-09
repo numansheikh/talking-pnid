@@ -291,17 +291,23 @@ export default function AppPage() {
       })
 
       const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to process query')
+      }
+      
       const assistantMessage: Message = {
         role: 'assistant',
-        content: data.answer || 'Error: No answer received',
+        content: data.answer || data.error || 'Error: No answer received',
       }
       setMessages((prev) => [...prev, assistantMessage])
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage: Message = {
         role: 'assistant',
-        content: 'Error: Failed to process query',
+        content: `Error: ${error.message || 'Failed to process query'}`,
       }
       setMessages((prev) => [...prev, errorMessage])
+      console.error('Query error:', error)
     } finally {
       setLoading(false)
     }
