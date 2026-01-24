@@ -1,6 +1,5 @@
 """
 Vercel serverless function entry point for FastAPI
-Uses asgiref to convert ASGI to WSGI for Vercel compatibility
 """
 import sys
 import os
@@ -22,22 +21,7 @@ os.environ["PROJECT_ROOT"] = str(project_root)
 # Import FastAPI app
 from main import app
 
-# Convert ASGI to WSGI for Vercel compatibility
-try:
-    from asgiref.wsgi import WsgiToAsgi
-    
-    # Wrap FastAPI (ASGI) app with WSGI adapter
-    wsgi_app = WsgiToAsgi(app)
-    
-    # Vercel expects a WSGI application
-    handler = wsgi_app
-except ImportError:
-    # Fallback: try Mangum if asgiref not available
-    try:
-        from mangum import Mangum
-        mangum_adapter = Mangum(app, lifespan="off")
-        def handler(event, context):
-            return mangum_adapter(event, context)
-    except ImportError:
-        # Last resort: export app directly (may not work)
-        handler = app
+# Vercel's @vercel/python builder expects the app to be exported directly
+# FastAPI is ASGI, and Vercel should handle it natively
+# If this doesn't work, we may need to use individual serverless functions
+handler = app
