@@ -97,14 +97,13 @@ async def handle_request(request_data):
 
 def handler(request):
     """Vercel serverless function handler"""
+    cors_headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+    }
+    
     try:
-        # Handle CORS
-        cors_headers = {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type",
-        }
-        
         # Parse Vercel's request format
         # Vercel sends: {"method": "GET", "path": "/api/files", "headers": {...}, "body": ""}
         method = request.get("method") or request.get("httpMethod", "GET")
@@ -112,6 +111,17 @@ def handler(request):
         headers = request.get("headers") or {}
         body = request.get("body") or ""
         query_params = request.get("queryStringParameters") or {}
+        
+        # Simple health check endpoint
+        if path == "/api/health" or path == "/health":
+            return {
+                "statusCode": 200,
+                "headers": {
+                    "Content-Type": "application/json",
+                    **cors_headers
+                },
+                "body": json.dumps({"status": "ok", "message": "Backend is working", "path": path, "method": method})
+            }
         
         # Handle OPTIONS preflight
         if method == "OPTIONS":
@@ -145,5 +155,10 @@ def handler(request):
                 "Content-Type": "application/json",
                 **cors_headers
             },
-            "body": json.dumps({"error": str(e), "traceback": error_trace})
+            "body": json.dumps({
+                "error": str(e),
+                "message": "Backend error - check Vercel function logs",
+                "request_path": request.get("path", "unknown"),
+                "request_method": request.get("method", "unknown")
+            })
         }
