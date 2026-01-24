@@ -1,0 +1,873 @@
+[
+  {
+    "timestamp": "00:00 - 01:13",
+    "data": {
+      "id": "eq-PP01-361-V-0002",
+      "type": "Equipment",
+      "tag": "PP01-361-V-0002",
+      "description": "Scrapper Receiver",
+      "specifications": {
+        "dimensions": [
+          {
+            "type": "Major Barrel Diameter",
+            "value": 610,
+            "unit": "mm"
+          },
+          {
+            "type": "Minor Barrel Diameter",
+            "value": 508,
+            "unit": "mm"
+          }
+        ],
+        "designConditions": {
+          "pressure": {
+            "value": 45,
+            "unit": "barg"
+          },
+          "temperature": {
+            "min": -29,
+            "max": 100,
+            "unit": "°C"
+          }
+        },
+        "operatingConditions": {
+          "pressure": {
+            "min": 10,
+            "max": 11,
+            "unit": "barg"
+          },
+          "temperature": {
+            "min": 20,
+            "max": 80,
+            "unit": "°C"
+          }
+        },
+        "materialOfConstruction": {
+          "material": "Carbon Steel",
+          "standard": "NACE"
+        },
+        "corrosionAllowance": {
+          "value": 3,
+          "unit": "mm"
+        },
+        "insulation": {
+          "required": false,
+          "code": "NO"
+        },
+        "trim": "PP01-361-V-0002-TX-0001-B03-E7"
+      },
+      "notes": [
+        "SP item",
+        "Contains tie-in points and instrument tag numbers"
+      ]
+    }
+  },
+  {
+    "timestamp": "01:36 - 05:03",
+    "data": {
+      "id": "conn-N1",
+      "type": "ConnectionPoint",
+      "description": "Node N1 on Scrapper Receiver",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-GF-0015",
+        "tag": "2\"-PP-01-361-GF-0015-B03E7-PP",
+        "size": {
+          "value": 2,
+          "unit": "inch"
+        },
+        "pipingSpec": "B03E7",
+        "components": [
+          {
+            "id": "valve-HV-0038",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0038",
+            "size": {
+              "value": 2,
+              "unit": "inch"
+            },
+            "sequence": 1
+          },
+          {
+            "id": "tee-GF-0018",
+            "type": "Fitting",
+            "subType": "Tee",
+            "sequence": 2,
+            "branch": {
+              "description": "Connection from Node N9",
+              "connectedLineTag": "2\"-PP-01-361-GF-0018-B03E7-P"
+            }
+          },
+          {
+            "id": "valve-HV-0043",
+            "type": "Valve",
+            "subType": "Globe Valve",
+            "tag": "HV-0043",
+            "size": {
+              "value": 2,
+              "unit": "inch"
+            },
+            "sequence": 3
+          },
+          {
+            "id": "instrument-FO-0002",
+            "type": "Instrument",
+            "subType": "Field Instrument (Flow Orifice)",
+            "tag": "FO-0002",
+            "sequence": 4
+          },
+          {
+            "id": "valve-HV-0096",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0096",
+            "size": {
+              "value": 2,
+              "unit": "inch"
+            },
+            "sequence": 5
+          }
+        ],
+        "continuation": {
+          "description": "Line continues and changes tag",
+          "newLineTag": "2\"-PP-01-500-VK-0002-B01-B8",
+          "connectsTo": {
+            "type": "LineTieIn",
+            "lineTag": "3\"-PP-01-500-VK-0001-B01-B8",
+            "destinationSystem": {
+              "name": "Flare System",
+              "pidReference": "NPG-PP01-PR-PID-0021-001"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "05:05 - 06:19",
+    "data": {
+      "id": "conn-N12",
+      "type": "ConnectionPoint",
+      "description": "Node N12 on Scrapper Receiver",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-N12-start",
+        "size": {
+          "value": 4,
+          "unit": "inch"
+        },
+        "pipingSpec": "B03E7",
+        "components": [
+          {
+            "id": "valve-HV-0014",
+            "type": "Valve",
+            "subType": "Gate Valve",
+            "tag": "HV-0014",
+            "size": {
+              "value": 4,
+              "unit": "inch"
+            },
+            "sequence": 1
+          },
+          {
+            "id": "tee-N5",
+            "type": "Fitting",
+            "subType": "Tee",
+            "sequence": 2,
+            "branch": {
+              "description": "Connection from Node N5",
+              "connectedLineTag": "4\"-PP-01-512-PK-0061-B03E8-PP"
+            }
+          }
+        ],
+        "continuation": {
+          "description": "Line continues with a new tag number",
+          "newLineTag": "4\"-PP-01-512-PK-0061-B03E8-PP",
+          "components": [
+            {
+              "id": "tee-HV-0015",
+              "type": "Fitting",
+              "subType": "Tee",
+              "sequence": 1,
+              "branch": {
+                "description": "Drain line",
+                "size": {
+                  "value": 1,
+                  "unit": "inch"
+                },
+                "components": [
+                  {
+                    "id": "valve-HV-0015",
+                    "type": "Valve",
+                    "tag": "HV-0015",
+                    "size": {
+                      "value": 1,
+                      "unit": "inch"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "valve-HV-0016",
+              "type": "Valve",
+              "subType": "Ball Valve",
+              "tag": "HV-0016",
+              "size": {
+                "value": 4,
+                "unit": "inch"
+              },
+              "state": "Normally Closed (NC)",
+              "sequence": 2
+            },
+            {
+              "id": "valve-HV-0097",
+              "type": "Valve",
+              "subType": "Gate Valve",
+              "tag": "HV-0097",
+              "size": {
+                "value": 4,
+                "unit": "inch"
+              },
+              "controlType": "Level Controlled (LC)",
+              "sequence": 3
+            }
+          ],
+          "destinationSystem": {
+            "name": "Condensate Storage Vessel",
+            "pidReference": "NPG-PP01-PR-PID-0024-001",
+            "lineTagAtDestination": "4\"-PP-01-512-PK-0002-B01M8"
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "08:07 - 08:47",
+    "data": {
+      "id": "conn-N5",
+      "type": "ConnectionPoint",
+      "description": "Node N5, a separate line connecting to the N12 line",
+      "connectedLine": {
+        "id": "line-PK-0061-from-N5",
+        "tag": "4\"-PP-01-512-PK-0061-B03E8-PP",
+        "size": {
+          "value": 4,
+          "unit": "inch"
+        },
+        "pipingSpec": "B03E7 transitioning to B03E8",
+        "components": [
+          {
+            "id": "valve-HV-0092",
+            "type": "Valve",
+            "subType": "Gate Valve",
+            "tag": "HV-0092",
+            "size": {
+              "value": 4,
+              "unit": "inch"
+            },
+            "sequence": 1
+          }
+        ],
+        "destination": {
+          "type": "LineTieIn",
+          "description": "Connects to the line from N12 between valve HV-0014 and drain valve HV-0015",
+          "mainLineID": "line-N12-start"
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "09:03 - 09:26",
+    "data": {
+      "id": "conn-N4",
+      "type": "ConnectionPoint",
+      "description": "Node N4, instrument connection",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "size": {
+          "value": 2,
+          "unit": "inch"
+        },
+        "components": [
+          {
+            "id": "instrument-PG-0004",
+            "type": "Instrument",
+            "subType": "Pressure Gauge",
+            "tag": "PG-0004",
+            "sequence": 1
+          },
+          {
+            "id": "valve-HV-0034",
+            "type": "Valve",
+            "subType": "Solenoid Valve",
+            "tag": "HV-0034",
+            "sequence": 2
+          }
+        ],
+        "destination": "Terminates"
+      }
+    }
+  },
+  {
+    "timestamp": "09:32 - 09:41",
+    "data": {
+      "id": "conn-N7",
+      "type": "ConnectionPoint",
+      "description": "Node N7, instrument connection",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "size": {
+          "value": 2,
+          "unit": "inch"
+        },
+        "components": [
+          {
+            "id": "valve-HV-0028",
+            "type": "Valve",
+            "tag": "HV-0028",
+            "sequence": 1
+          },
+          {
+            "id": "instrument-PG-0003",
+            "type": "Instrument",
+            "subType": "Pressure Gauge",
+            "tag": "PG-0003",
+            "sequence": 2
+          }
+        ],
+        "destination": "Terminates"
+      }
+    }
+  },
+  {
+    "timestamp": "10:02 - 10:13",
+    "data": {
+      "id": "conn-between-N7-N9",
+      "type": "InstrumentConnection",
+      "description": "Instrument loop between Node N7 and Node N9 areas",
+      "components": [
+        {
+          "id": "instrument-ZS-0004",
+          "type": "Instrument",
+          "tag": "ZS-0004"
+        },
+        {
+          "id": "instrument-Z1-0004",
+          "type": "Instrument",
+          "tag": "Z1-0004"
+        }
+      ]
+    }
+  },
+  {
+    "timestamp": "10:25 - 10:53",
+    "data": {
+      "id": "conn-N9",
+      "type": "ConnectionPoint",
+      "description": "Node N9, forms a tee connection with Node N1 line",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-GF-0018",
+        "tag": "2\"-PP-01-361-GF-0018-B03E7-P",
+        "size": {
+          "value": 2,
+          "unit": "inch"
+        },
+        "pipingSpec": "B03E7",
+        "components": [
+          {
+            "id": "valve-HV-0042",
+            "type": "Valve",
+            "tag": "HV-0042",
+            "size": {
+              "value": 2,
+              "unit": "inch"
+            },
+            "sequence": 1
+          }
+        ],
+        "destination": {
+          "type": "LineTieIn",
+          "description": "Connects to the line from N1 between valves HV-0038 and HV-0043",
+          "mainLineID": "line-GF-0015",
+          "tieInPointID": "tee-GF-0018"
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "11:28 - 12:34",
+    "data": {
+      "id": "conn-N3",
+      "type": "ConnectionPoint",
+      "description": "Node N3, drain line",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-N3-start",
+        "size": {
+          "value": 2,
+          "unit": "inch"
+        },
+        "pipingSpec": "B03E7",
+        "components": [
+          {
+            "id": "valve-HV-0035",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0035",
+            "size": {
+              "value": 2,
+              "unit": "inch"
+            },
+            "sequence": 1
+          }
+        ],
+        "continuation": {
+          "description": "Piping spec and line tag change after valve",
+          "newLineTag": "2\"-PP-01-567-GN-0079-B01H9",
+          "newPipingSpec": "B01H9",
+          "components": [
+            {
+              "id": "tee-HV-0036",
+              "type": "Fitting",
+              "subType": "Tee",
+              "sequence": 1,
+              "branch": {
+                "description": "Drain branch",
+                "size": {
+                  "value": 1.5,
+                  "unit": "inch"
+                },
+                "components": [
+                  {
+                    "id": "valve-HV-0036",
+                    "type": "Valve",
+                    "tag": "HV-0036",
+                    "state": "Normally Closed (NC)",
+                    "size": {
+                      "value": 1.5,
+                      "unit": "inch"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "valve-HV-0037",
+              "type": "Valve",
+              "subType": "Check Valve",
+              "tag": "HV-0037",
+              "size": {
+                "value": 2,
+                "unit": "inch"
+              },
+              "sequence": 2
+            },
+            {
+              "id": "reducer-2-to-3/4",
+              "type": "Fitting",
+              "subType": "Reducer",
+              "fromSize": {
+                "value": 2,
+                "unit": "inch"
+              },
+              "toSize": {
+                "value": 0.75,
+                "unit": "inch"
+              },
+              "sequence": 3
+            }
+          ],
+          "destinationSystem": {
+            "name": "Sump",
+            "tag": "SP-HN-0028"
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "13:26 - 14:51",
+    "data": {
+      "id": "conn-N6",
+      "type": "ConnectionPoint",
+      "description": "Node N6, PSV line to flare",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-N6-start",
+        "size": {
+          "value": 3,
+          "unit": "inch"
+        },
+        "startComponent": "Flange",
+        "tag": "3\"-PP-01-361-GF-0018-B03E7-PP",
+        "pipingSpec": "B03E7",
+        "components": [
+          {
+            "id": "reducer-3-to-1",
+            "type": "Fitting",
+            "subType": "Reducer",
+            "fromSize": {
+              "value": 3,
+              "unit": "inch"
+            },
+            "toSize": {
+              "value": 1,
+              "unit": "inch"
+            },
+            "sequence": 1
+          },
+          {
+            "id": "valve-PSV-0002",
+            "type": "Valve",
+            "subType": "Pressure Safety Valve",
+            "tag": "PSV-0002",
+            "sequence": 2
+          },
+          {
+            "id": "spec-break-150-300",
+            "type": "SpecificationBreak",
+            "description": "Piping rating changes from 150# to 300# after PSV.",
+            "sequence": 3
+          },
+          {
+            "id": "reducer-psv-to-4",
+            "type": "Fitting",
+            "subType": "Reducer",
+            "description": "Reduces from PSV outlet to 4 inch",
+            "fromSize": {
+              "description": "PSV Outlet"
+            },
+            "toSize": {
+              "value": 4,
+              "unit": "inch"
+            },
+            "sequence": 4
+          },
+          {
+            "id": "tee-HV-0027",
+            "type": "Fitting",
+            "subType": "Tee",
+            "sequence": 5,
+            "branch": {
+              "description": "Drain branch",
+              "size": {
+                "value": 0.5,
+                "unit": "inch"
+              },
+              "components": [
+                {
+                  "id": "valve-HV-0027",
+                  "type": "Valve",
+                  "subType": "Ball Valve",
+                  "tag": "HV-0027"
+                }
+              ]
+            }
+          },
+          {
+            "id": "valve-HV-0026",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0026",
+            "size": {
+              "value": 4,
+              "unit": "inch"
+            },
+            "sequence": 6
+          }
+        ],
+        "continuation": {
+          "description": "Line continues to flare system",
+          "newLineTag": "4\"-PP-01-000-VK-0003-B01B8",
+          "destinationSystem": {
+            "name": "Flare System",
+            "pidReference": "NPG-PP01-PR-PID-0021-001"
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "15:14 - 17:13",
+    "data": {
+      "id": "conn-N2",
+      "type": "ConnectionPoint",
+      "description": "Node N2, main process line with parallel valve setup",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-N2",
+        "size": {
+          "value": 8,
+          "unit": "inch"
+        },
+        "parallelPaths": {
+          "description": "A separator or parallel valve arrangement for flow control/bypass.",
+          "inletValve": {
+            "id": "valve-HV-0029",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0029",
+            "size": {
+              "value": 8,
+              "unit": "inch"
+            }
+          },
+          "paths": [
+            {
+              "id": "path-N2-main",
+              "description": "Main flow path",
+              "size": {
+                "value": 8,
+                "unit": "inch"
+              },
+              "components": []
+            },
+            {
+              "id": "path-N2-bypass",
+              "description": "Bypass flow path",
+              "size": {
+                "value": 2,
+                "unit": "inch"
+              },
+              "components": [
+                {
+                  "id": "valve-HV-0032",
+                  "type": "Valve",
+                  "subType": "Ball Valve",
+                  "tag": "HV-0032",
+                  "size": {
+                    "value": 2,
+                    "unit": "inch"
+                  },
+                  "sequence": 1
+                },
+                {
+                  "id": "valve-HV-0033",
+                  "type": "Valve",
+                  "subType": "Globe Valve",
+                  "tag": "HV-0033",
+                  "size": {
+                    "value": 2,
+                    "unit": "inch"
+                  },
+                  "sequence": 2
+                }
+              ]
+            }
+          ],
+          "outletValve": {
+            "id": "valve-HV-0031",
+            "type": "Valve",
+            "subType": "Globe Valve",
+            "tag": "HV-0031",
+            "size": {
+              "value": 8,
+              "unit": "inch"
+            }
+          }
+        },
+        "continuation": {
+          "description": "Line continues after the parallel paths merge",
+          "newLineTag": "8\"-PP-01-361-GF-0017-B03F9-PP",
+          "pipingSpec": "B03F9",
+          "destinationSystem": {
+            "name": "Fuel Gas Knockout Drum",
+            "pidReference": "NPG-PP01-PR-PID-0008-001"
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "18:53 - 27:52",
+    "data": {
+      "id": "conn-N10",
+      "type": "ConnectionPoint",
+      "description": "Node N10, main 20-inch line connecting to a Bar Tee",
+      "equipmentTag": "PP01-361-V-0002",
+      "connectedLine": {
+        "id": "line-GF-0011",
+        "tag": "20\"-PP-01-361-GF-0011-AP15L-PP",
+        "size": {
+          "value": 20,
+          "unit": "inch"
+        },
+        "pipingSpec": "AP15L",
+        "components": [
+          {
+            "id": "valve-HV-0025",
+            "type": "Valve",
+            "subType": "Ball Valve",
+            "tag": "HV-0025",
+            "size": {
+              "value": 20,
+              "unit": "inch"
+            },
+            "sequence": 1
+          },
+          {
+            "id": "tee-HV-0024",
+            "type": "Fitting",
+            "subType": "Tee",
+            "sequence": 2,
+            "branch": {
+              "description": "Drain branch",
+              "size": {
+                "value": 2,
+                "unit": "inch"
+              },
+              "components": [
+                {
+                  "id": "valve-HV-0024",
+                  "type": "Valve",
+                  "tag": "HV-0024"
+                }
+              ]
+            }
+          },
+          {
+            "id": "valve-HV-0023",
+            "type": "Valve",
+            "tag": "HV-0023",
+            "size": {
+              "value": 20,
+              "unit": "inch"
+            },
+            "sequence": 3
+          }
+        ],
+        "destination": {
+          "type": "Fitting",
+          "id": "fitting-bar-tee-01",
+          "subType": "Bar Tee",
+          "description": "A major junction point connecting multiple lines.",
+          "connections": [
+            {
+              "type": "Inlet",
+              "from": "Node N10",
+              "lineId": "line-GF-0011"
+            },
+            {
+              "type": "Inlet",
+              "from": {
+                "name": "Scrapper Launcher",
+                "tag": "DS1-V-0001",
+                "pidReference": "NPG-PP01-PR-PID-0004-001"
+              },
+              "line": {
+                "tag": "20\"-PP-01-361-GF-0007-API5L-PP",
+                "size": {
+                  "value": 20,
+                  "unit": "inch"
+                },
+                "pipingSpec": "API5L"
+              }
+            },
+            {
+              "type": "Outlet",
+              "to": {
+                "name": "Fuel Gas Knockout Drum Line",
+                "lineId": "line-N2"
+              },
+              "line": {
+                "tag": "16\"-PP-01-361-GF-0014-B03F9-PP",
+                "size": {
+                  "value": 16,
+                  "unit": "inch"
+                },
+                "pipingSpec": "B03F9",
+                "components": [
+                  {
+                    "id": "valve-MOV-0002",
+                    "type": "Valve",
+                    "subType": "Motor Operated Valve (MOV)",
+                    "tag": "MOV-0002",
+                    "size": {
+                      "value": 16,
+                      "unit": "inch"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Outlet/Branch",
+              "description": "Various instrument and process branches",
+              "branches": [
+                {
+                  "description": "3-inch connection to flare system (via N1 line)",
+                  "line": {
+                    "tag": "3\"-PP-01-361-GF-0061-B03E9-PP",
+                    "components": [
+                      {
+                        "id": "valve-HV-0044",
+                        "type": "Valve",
+                        "subType": "Globe Valve"
+                      },
+                      {
+                        "id": "valve-HV-0074",
+                        "type": "Valve",
+                        "subType": "Ball Valve"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "description": "2-inch instrument connection (PZT/PI/PIT-0005)",
+                  "components": [
+                    {
+                      "id": "valve-HV-0021",
+                      "type": "Valve",
+                      "subType": "Solenoid Valve"
+                    }
+                  ]
+                },
+                {
+                  "description": "2-inch instrument connection (PIT/PI-0003)",
+                  "components": [
+                    {
+                      "id": "valve-HV-0022",
+                      "type": "Valve",
+                      "subType": "Solenoid Valve"
+                    }
+                  ]
+                },
+                {
+                  "description": "Main 20-inch control valve",
+                  "components": [
+                    {
+                      "id": "valve-EZV-0002",
+                      "type": "Valve",
+                      "subType": "Control Valve",
+                      "tag": "EZV-0002",
+                      "size": {
+                        "value": 20,
+                        "unit": "inch"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "description": "Instrument connection (ZDI/ZDS-0003)",
+                  "components": [
+                    {
+                      "id": "instrument-ZDI-0003",
+                      "tag": "ZDI-0003"
+                    },
+                    {
+                      "id": "instrument-ZDS-0003",
+                      "tag": "ZDS-0003"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+]

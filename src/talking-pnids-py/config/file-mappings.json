@@ -1,0 +1,40 @@
+{
+  "mappings": [
+    {
+      "id": "pid-006",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0006-001-C02.pdf",
+      "json": "pid1-006.json",
+      "md": "006.md",
+      "name": "P&ID 006",
+      "description": "Piping & Instrumentation Diagram 006",
+      "summary": {
+        "preview": "**1\\. Equipment Data & Specifications**  **Center your visualization on the vessel.**  * **Equipment Tag:** PP01361 B2 (also referred to as 361 V002).   * **Type:** Scraper Receiver (Major/Minor Barrel design).   * **Dimensions:**     * **Major Barrel:** 610 mm Internal Diameter (ID).     * **Minor Barrel:** 508 mm ID (Note: Transcript said 58mm, but 508mm is physically required for the 20\" connections described).   * **Design Conditions:**     * Pressure: 45 barg.     * Temperature: \\-29°C to 1",
+        "size": 7110
+      }
+    },
+    {
+      "id": "pid-007",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0007-001-C02.pdf",
+      "json": "pid2-007.json",
+      "md": "007.md",
+      "name": "P&ID 007",
+      "description": "Piping & Instrumentation Diagram 007",
+      "summary": {
+        "preview": "**System Overview and Visualization**  Imagine standing in front of a large industrial piping assembly. The centerpiece is the **Scraper Receiver**, a heavy pressure vessel designed to receive pipeline cleaning tools (pigs). The system consists of a massive 20-inch main pipeline, the receiver vessel itself, and a complex network of smaller bypass, drain, and vent lines managing pressure and fluid flow.  **1\\. Equipment Specifications: The Scraper Receiver**  * **Tag:** PP01361 P1 (also referred",
+        "size": 6671
+      }
+    },
+    {
+      "id": "pid-008",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf",
+      "json": "pid3-008.json",
+      "md": "008.md",
+      "name": "P&ID 008",
+      "description": "Piping & Instrumentation Diagram 008",
+      "summary": {
+        "preview": "# Fuel Gas Knockout Drum – PP01-362-V-01 ## Integrated Technical & Line Designation Specification  This document is a **fully consolidated, non-redundant master specification** combining: - *P&ID 3 – Detailed Document Specification* - *P&ID 3 – Technical Specification & Line Designation Report*  No technical information has been omitted. Where discrepancies exist, they are explicitly noted.  ---  ## 1. Equipment Overview  **Equipment Tag:** PP01-362-V-01   **Service:** Fuel Gas Knockout Drum",
+        "size": 4206
+      }
+    }
+  ]
+}

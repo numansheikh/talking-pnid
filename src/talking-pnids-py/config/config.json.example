@@ -1,0 +1,15 @@
+{
+  "openai": {
+    "apiKey": "your-openai-api-key-here",
+    "model": "gpt-4"
+  },
+  "directories": {
+    "pdfs": "./data/pdfs",
+    "jsons": "./data/jsons",
+    "mds": "./data/mds"
+  },
+  "settings": {
+    "maxTokens": 2000,
+    "temperature": 0.7
+  }
+}

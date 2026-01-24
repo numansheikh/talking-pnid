@@ -1,0 +1,16 @@
+{
+  "openai": {
+    "apiKey": "",
+    "model": "gpt-5.2"
+  },
+  "directories": {
+    "pdfs": "./data/pdfs",
+    "jsons": "./data/jsons",
+    "mds": "./data/mds"
+  },
+  "settings": {
+    "maxTokens": 2000,
+    "temperature": 0.7,
+    "reasoningEffort": "medium"
+  }
+}

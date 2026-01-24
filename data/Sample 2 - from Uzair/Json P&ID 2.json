@@ -1,0 +1,607 @@
+{
+  "equipment": {
+    "tag": "PP-01-361-V-001",
+    "type": "Scraper Receiver",
+    "description": "Pig Receiver Vessel for Pipeline Scraper Operations",
+    "source": "DS1 New PCB Station"
+  },
+  "nozzles": {
+    "N1": {
+      "nozzle_tag": "N1",
+      "size": "8-inch",
+      "function": "Kicker / Bypass Line",
+      "description": "Main kicker line system with double block and bleed arrangement",
+      "primary_line": {
+        "line_id": "8\"-PP-01-361-GF003-B03E7",
+        "size": "8-inch",
+        "spec": "B03E7",
+        "valves": [
+          {
+            "tag": "HV-0002",
+            "type": "Ball Valve",
+            "size": "8-inch",
+            "function": "Primary isolation valve",
+            "position": "Upstream"
+          },
+          {
+            "tag": "HV-0001",
+            "type": "Ball Valve",
+            "size": "8-inch",
+            "function": "Secondary isolation valve",
+            "position": "Downstream"
+          }
+        ],
+        "bleed_valve": {
+          "tag": "HV-0003",
+          "type": "Drain Ball Valve",
+          "size": "1-inch",
+          "function": "Double block and bleed drain valve",
+          "location": "Between HV-0002 and HV-0001"
+        }
+      },
+      "branch_line": {
+        "line_id": "4\"-PP-01-361-GF005-B03E7",
+        "size": "4-inch",
+        "spec_initial": "B03E7",
+        "spec_final": "B03F9",
+        "branch_point": "Before HV-0002",
+        "valve": {
+          "tag": "HV-0010",
+          "type": "Globe Valve",
+          "size": "4-inch",
+          "function": "Flow control valve for bypass line"
+        },
+        "connection": {
+          "target_nozzle": "N11",
+          "description": "Connects back to receiver at N11",
+          "spec_change_note": "Spec changes from B03E7 to B03F9 at connection interface"
+        }
+      }
+    },
+    "N2": {
+      "nozzle_tag": "N2",
+      "size": "2-inch",
+      "function": "Equalization / Balance Line",
+      "description": "Primary equalization line with control valve arrangement",
+      "configuration": {
+        "valve": {
+          "tag": "HV-0036",
+          "type": "Ball Valve",
+          "size": "2-inch",
+          "function": "Isolation valve for equalization line"
+        },
+        "line_id": "2\"-PP-01-361-GF0039-B03E7",
+        "spec": "B03E7"
+      }
+    },
+    "N3": {
+      "nozzle_tag": "N3",
+      "size": "2-inch",
+      "function": "Pressure Indication with Solenoid Control",
+      "valve": {
+        "tag": "HV-0008",
+        "type": "Solenoid Valve",
+        "size": "2-inch",
+        "function": "Remote operated isolation for pressure gauge"
+      },
+      "instrumentation": {
+        "tag": "PG-002",
+        "type": "Pressure Gauge",
+        "function": "Local pressure indication"
+      }
+    },
+    "N4": {
+      "nozzle_tag": "N4",
+      "size": "3-inch",
+      "function": "Safety & Relief System",
+      "description": "Pressure relief system with manual bleed and PSV",
+      "arrangement": [
+        {
+          "component": "Blind Flange",
+          "size": "3-inch",
+          "function": "Normal operating closure"
+        },
+        {
+          "component": "Manual Bleed Valve",
+          "tag": "HV-001",
+          "type": "Ball Valve",
+          "size": "0.5-inch",
+          "location": "Upstream of PSV",
+          "function": "Manual pressure bleed before PSV"
+        },
+        {
+          "component": "Pressure Safety Valve",
+          "tag": "PSV-001",
+          "inlet_size": "3-inch",
+          "inlet_reducer": "3-inch to 1-inch",
+          "outlet_reducer": "2-inch to 4-inch",
+          "set_pressure": "45 Barg",
+          "orifice_size": "1E2",
+          "special_features": "Fire Proof case",
+          "discharge_line": {
+            "line_id": "4-inch discharge line to Safe Location",
+            "spec": "B01B8",
+            "destination": "Safe Location"
+          }
+        }
+      ]
+    },
+    "N5": {
+      "nozzle_tag": "N5",
+      "size": "2-inch",
+      "function": "Pressure Indication with Solenoid Control",
+      "valve": {
+        "tag": "HV-0009",
+        "type": "Solenoid Valve",
+        "size": "2-inch",
+        "function": "Remote operated isolation for pressure gauge",
+        "note": "Tag HV-0009 appears duplicated in source (also used for N12)"
+      },
+      "instrumentation": {
+        "tag": "PG-001",
+        "type": "Pressure Gauge",
+        "function": "Local pressure indication"
+      }
+    },
+    "N7": {
+      "nozzle_tag": "N7",
+      "size": "2-inch",
+      "function": "Equalization / Balance Line",
+      "description": "Secondary equalization line connecting to N2",
+      "configuration": {
+        "valve": {
+          "tag": "HV-0011",
+          "type": "Ball Valve",
+          "size": "2-inch",
+          "function": "Isolation valve for equalization line"
+        },
+        "line_id": "2\"-PP-01-361-GF0010-B03E7",
+        "spec": "B03E7",
+        "connection": "Connects directly into N2 line"
+      }
+    },
+    "N9": {
+      "nozzle_tag": "N9",
+      "size": "20-inch",
+      "function": "Main Pipeline Connection",
+      "description": "Main gas pipeline connection with double block and bleed isolation",
+      "connection_type": "Flanged",
+      "line_id": "20-inch Line",
+      "spec": "B03F9",
+      "isolation_pattern": {
+        "type": "Double Block and Bleed",
+        "valves": [
+          {
+            "tag": "HV-0016",
+            "type": "Ball Valve",
+            "size": "20-inch",
+            "function": "First isolation valve"
+          },
+          {
+            "tag": "HV-0017",
+            "type": "Drain Ball Valve",
+            "size": "2-inch",
+            "function": "Bleed valve between main isolation valves"
+          },
+          {
+            "tag": "HV-0018",
+            "type": "Ball Valve",
+            "size": "20-inch",
+            "function": "Second isolation valve (main pipeline side)"
+          }
+        ]
+      },
+      "corrosion_allowance": {
+        "receiver_side": "3mm",
+        "pipeline_side": "6mm",
+        "change_location": "After HV-0018"
+      },
+      "instrumentation": [
+        {
+          "valve": {
+            "tag": "HV-0019",
+            "type": "Solenoid Valve",
+            "size": "2-inch"
+          },
+          "instrument": {
+            "tag": "PIT-002",
+            "type": "Pressure Transmitter",
+            "function": "Remote pressure monitoring"
+          }
+        },
+        {
+          "valve": {
+            "tag": "HV-0020",
+            "type": "Solenoid Valve",
+            "size": "2-inch"
+          },
+          "instruments": [
+            {
+              "tag": "PZT-0011",
+              "type": "Pressure Switch Transmitter"
+            },
+            {
+              "tag": "PI-0011",
+              "type": "Pressure Indicator"
+            }
+          ],
+          "spec_change": {
+            "from": "AP15L",
+            "to": "B03F9",
+            "note": "Spec changes at instrument connection"
+          }
+        }
+      ]
+    },
+    "N10": {
+      "nozzle_tag": "N10",
+      "size": "4-inch",
+      "function": "Drain System",
+      "description": "Primary drain line to closed drain header",
+      "valve": {
+        "tag": "DK-001",
+        "type": "Gate Valve",
+        "size": "4-inch",
+        "function": "Drain isolation valve"
+      },
+      "line_spec": "B03E8"
+    },
+    "N11": {
+      "nozzle_tag": "N11",
+      "size": "4-inch",
+      "function": "Bypass Connection",
+      "description": "Connection point for 4-inch bypass line from N1",
+      "connected_from": "N1 branch line via HV-0010"
+    },
+    "N12": {
+      "nozzle_tag": "N12",
+      "size": "4-inch",
+      "function": "Drain System",
+      "description": "Secondary drain line to closed drain header",
+      "valve": {
+        "tag": "HV-0009",
+        "type": "Gate Valve",
+        "size": "4-inch",
+        "function": "Drain isolation valve",
+        "note": "Tag HV-0009 appears duplicated in source (also used for N5)"
+      },
+      "line_id": "DK-002",
+      "line_spec": "B03E8"
+    },
+    "N13": {
+      "nozzle_tag": "N13",
+      "size": "2-inch",
+      "function": "Pressure Measurement",
+      "description": "Pressure transmitter connection",
+      "valve": {
+        "tag": "HV-0015",
+        "type": "Solenoid Valve",
+        "size": "2-inch",
+        "function": "Remote isolation for pressure transmitter"
+      },
+      "instrumentation": {
+        "tag": "PIT-001",
+        "type": "Pressure Indicator Transmitter",
+        "function": "Remote pressure monitoring and indication"
+      }
+    },
+    "N14": {
+      "nozzle_tag": "N14",
+      "size": "2-inch",
+      "function": "Instrumentation Connection",
+      "description": "Additional instrumentation tap",
+      "note": "Associated with HV-0008 and PG-002 system"
+    }
+  },
+  "equalization_system": {
+    "description": "Combined N2 and N7 equalization lines with control valve assembly",
+    "flow_path": [
+      {
+        "step": 1,
+        "description": "N2 and N7 lines join together",
+        "lines": ["N2: 2\"-PP-01-361-GF0039-B03E7", "N7: 2\"-PP-01-361-GF0010-B03E7"]
+      },
+      {
+        "step": 2,
+        "description": "Combined line routes through control valves",
+        "valves": [
+          {
+            "tag": "HV-0006",
+            "type": "Globe Valve",
+            "size": "2-inch",
+            "function": "Manual isolation"
+          },
+          {
+            "tag": "HV-0007",
+            "type": "Globe Valve",
+            "size": "2-inch",
+            "function": "Manual isolation"
+          }
+        ]
+      },
+      {
+        "step": 3,
+        "description": "Flow through control valve assembly",
+        "valve": {
+          "tag": "FV-001",
+          "alternate_tag": "F4-001",
+          "type": "Control Valve",
+          "size": "2-inch",
+          "function": "Automated flow control"
+        }
+      },
+      {
+        "step": 4,
+        "description": "Spec change and routing to safe location",
+        "spec_change": {
+          "from": "B03E7",
+          "to": "B01B8"
+        },
+        "line_id": "2\"-PP-01-502-V0001-B01B8",
+        "destination": {
+          "tag": "SPBN-001",
+          "description": "Safe Location"
+        }
+      }
+    ]
+  },
+  "drain_system": {
+    "description": "Converging drain system from N10 and N12 to closed drain header",
+    "pattern": "Two nozzles converging into single closed drain header",
+    "drain_lines": [
+      {
+        "source": "N10",
+        "line_id": "DK-001",
+        "valve": "Gate Valve (unnamed)",
+        "size": "4-inch",
+        "spec": "B03E8"
+      },
+      {
+        "source": "N12",
+        "line_id": "DK-002",
+        "valve": "HV-0009",
+        "size": "4-inch",
+        "spec": "B03E8"
+      }
+    ],
+    "convergence_point": {
+      "valve": {
+        "tag": "HV-0013",
+        "type": "Gate Valve",
+        "size": "4-inch",
+        "function": "Main drain isolation valve"
+      },
+      "reducer": {
+        "from": "4-inch",
+        "to": "8-inch",
+        "purpose": "Size increase for main drain header"
+      }
+    },
+    "discharge": {
+      "line_id": "8\"-PP-01-502-DG-01-PR-PID-007-002",
+      "size": "8-inch",
+      "destination": "DC1 Closed Drain System"
+    }
+  },
+  "main_inlet_line": {
+    "description": "Main 20-inch inlet line from DS1 station",
+    "source": "DS1 New PCB Station",
+    "line_id": "20\"-PP-01-361-GF001-B03F9",
+    "size": "20-inch",
+    "spec_initial": "B03F9",
+    "primary_isolation": {
+      "tag": "MOV-001",
+      "type": "Motor Operated Valve",
+      "size": "20-inch",
+      "function": "Remote operated main isolation valve"
+    },
+    "control_bypass": {
+      "control_valve": {
+        "tag": "EZV-001",
+        "type": "Control Valve",
+        "size": "20-inch",
+        "function": "Emergency isolation and flow control"
+      },
+      "spec_change": {
+        "location": "After EZV-001",
+        "from": "B03F9",
+        "to": "AP15L",
+        "note": "High pressure pipeline specification"
+      }
+    },
+    "barred_tee": {
+      "location": "Pig trap connection point",
+      "function": "Prevents pig from entering bypass line",
+      "description": "Mechanical barrier in tee connection"
+    }
+  },
+  "chemical_injection_system": {
+    "description": "Corrosion inhibitor injection system on main inlet line",
+    "injection_point": "Main 20-inch inlet line",
+    "connection_size": "2-inch",
+    "equipment": {
+      "injection_pump": {
+        "tag": "PP-01-520-Z-101",
+        "type": "Chemical Injection Pump",
+        "function": "Corrosion inhibitor injection"
+      },
+      "injection_package": {
+        "tag": "Node-14",
+        "type": "Chemical Injection Package",
+        "function": "Complete injection system package"
+      }
+    },
+    "instrumentation_train": [
+      {
+        "tag": "FIT-001",
+        "type": "Flow Indicator Transmitter",
+        "function": "Monitor injection flow rate"
+      },
+      {
+        "tag": "CP-001",
+        "type": "Corrosion Probe",
+        "function": "Real-time corrosion monitoring"
+      },
+      {
+        "tag": "CC-001",
+        "type": "Corrosion Coupon",
+        "function": "Long-term corrosion rate assessment"
+      },
+      {
+        "tag": "CIT-001",
+        "type": "Corrosion Inhibitor Transmitter",
+        "function": "Monitor inhibitor concentration or effectiveness"
+      }
+    ]
+  },
+  "pig_detection_system": {
+    "description": "Scraper passage detection and indication system",
+    "detectors": [
+      {
+        "tag": "ZS-002",
+        "type": "Pig Signal Switch",
+        "interface": "DCS (Distributed Control System)",
+        "function": "Send pig passage signal to control system"
+      },
+      {
+        "tag": "ZI-002",
+        "type": "Pig Signal Indicator",
+        "interface": "Field (Local indication)",
+        "function": "Local pig passage indication"
+      }
+    ],
+    "mounting": {
+      "location": "Direct mount on barrel",
+      "connection": "Z1-002",
+      "type": "Instrumentation Connection"
+    }
+  },
+  "valve_summary": {
+    "ball_valves": [
+      {"tag": "HV-0001", "size": "8-inch", "location": "N1 main line"},
+      {"tag": "HV-0002", "size": "8-inch", "location": "N1 main line"},
+      {"tag": "HV-0003", "size": "1-inch", "location": "N1 bleed"},
+      {"tag": "HV-0036", "size": "2-inch", "location": "N2"},
+      {"tag": "HV-0011", "size": "2-inch", "location": "N7"},
+      {"tag": "HV-001", "size": "0.5-inch", "location": "N4 PSV bleed"},
+      {"tag": "HV-0016", "size": "20-inch", "location": "N9"},
+      {"tag": "HV-0017", "size": "2-inch", "location": "N9 bleed"},
+      {"tag": "HV-0018", "size": "20-inch", "location": "N9"}
+    ],
+    "globe_valves": [
+      {"tag": "HV-0010", "size": "4-inch", "location": "N1 branch"},
+      {"tag": "HV-0006", "size": "2-inch", "location": "Equalization line"},
+      {"tag": "HV-0007", "size": "2-inch", "location": "Equalization line"}
+    ],
+    "gate_valves": [
+      {"tag": "DK-001", "size": "4-inch", "location": "N10 drain"},
+      {"tag": "HV-0009", "size": "4-inch", "location": "N12 drain"},
+      {"tag": "HV-0013", "size": "4-inch", "location": "Drain convergence"}
+    ],
+    "solenoid_valves": [
+      {"tag": "HV-0008", "size": "2-inch", "location": "N3"},
+      {"tag": "HV-0009", "size": "2-inch", "location": "N5", "note": "Duplicate tag"},
+      {"tag": "HV-0019", "size": "2-inch", "location": "N9 area"},
+      {"tag": "HV-0020", "size": "2-inch", "location": "N9 area"},
+      {"tag": "HV-0015", "size": "2-inch", "location": "N13"}
+    ],
+    "control_valves": [
+      {"tag": "FV-001", "size": "2-inch", "location": "Equalization discharge"},
+      {"tag": "EZV-001", "size": "20-inch", "location": "Main inlet line"}
+    ],
+    "motor_operated_valves": [
+      {"tag": "MOV-001", "size": "20-inch", "location": "Main inlet line"}
+    ]
+  },
+  "instrumentation_summary": {
+    "pressure_instruments": [
+      {"tag": "PG-001", "type": "Pressure Gauge", "location": "N5"},
+      {"tag": "PG-002", "type": "Pressure Gauge", "location": "N3"},
+      {"tag": "PIT-001", "type": "Pressure Indicator Transmitter", "location": "N13"},
+      {"tag": "PIT-002", "type": "Pressure Transmitter", "location": "N9 area"},
+      {"tag": "PZT-0011", "type": "Pressure Switch Transmitter", "location": "N9 area"},
+      {"tag": "PI-0011", "type": "Pressure Indicator", "location": "N9 area"}
+    ],
+    "flow_instruments": [
+      {"tag": "FIT-001", "type": "Flow Indicator Transmitter", "location": "Chemical injection"}
+    ],
+    "corrosion_monitoring": [
+      {"tag": "CP-001", "type": "Corrosion Probe", "location": "Main inlet"},
+      {"tag": "CC-001", "type": "Corrosion Coupon", "location": "Main inlet"},
+      {"tag": "CIT-001", "type": "Corrosion Inhibitor Transmitter", "location": "Main inlet"}
+    ],
+    "pig_detection": [
+      {"tag": "ZS-002", "type": "Pig Signal Switch", "location": "Barrel"},
+      {"tag": "ZI-002", "type": "Pig Signal Indicator", "location": "Barrel"}
+    ],
+    "safety_devices": [
+      {"tag": "PSV-001", "type": "Pressure Safety Valve", "location": "N4", "set_pressure": "45 Barg"}
+    ]
+  },
+  "piping_specifications": {
+    "B03E7": {
+      "usage": "Standard process piping",
+      "locations": ["N1 main line", "N1 branch initial", "N2 line", "N7 line", "Equalization initial"]
+    },
+    "B03F9": {
+      "usage": "Higher pressure process piping",
+      "locations": ["N1 branch final", "N9 main line", "Main inlet initial", "Instrument connections"],
+      "corrosion_allowance": "3mm"
+    },
+    "AP15L": {
+      "usage": "High pressure pipeline specification",
+      "locations": ["Main inlet after EZV-001"],
+      "corrosion_allowance": "6mm (after HV-0018)"
+    },
+    "B01B8": {
+      "usage": "Discharge to safe location",
+      "locations": ["PSV discharge", "Equalization discharge"]
+    },
+    "B03E8": {
+      "usage": "Drain system piping",
+      "locations": ["N10 drain", "N12 drain"]
+    }
+  },
+  "notes_and_observations": {
+    "duplicate_tags": [
+      {
+        "tag": "HV-0009",
+        "instances": ["N5 solenoid valve", "N12 gate valve"],
+        "note": "Tag appears to be duplicated in source documentation"
+      }
+    ],
+    "critical_safety_features": [
+      "Double block and bleed on N1 (HV-0002, HV-0003, HV-0001)",
+      "Double block and bleed on N9 (HV-0016, HV-0017, HV-0018)",
+      "Pressure relief system on N4 with PSV-001",
+      "Barred tee prevents pig bypass",
+      "Fire proof PSV for emergency scenarios"
+    ],
+    "spec_changes": [
+      {
+        "location": "N1 branch at N11 connection",
+        "from": "B03E7",
+        "to": "B03F9"
+      },
+      {
+        "location": "Equalization discharge",
+        "from": "B03E7",
+        "to": "B01B8"
+      },
+      {
+        "location": "Main inlet after EZV-001",
+        "from": "B03F9",
+        "to": "AP15L"
+      },
+      {
+        "location": "N9 after HV-0018",
+        "corrosion_allowance_increase": "3mm to 6mm"
+      },
+      {
+        "location": "HV-0020 instrument connection",
+        "from": "AP15L",
+        "to": "B03F9"
+      }
+    ]
+  }
+}
