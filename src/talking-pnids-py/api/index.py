@@ -26,40 +26,64 @@ import asyncio
 
 async def handle_request(request_data):
     """Handle a request using FastAPI"""
+    from starlette.requests import Request as StarletteRequest
+    from starlette.responses import Response
+    
     # Parse the request
     method = request_data.get("method", "GET")
     path = request_data.get("path", "/")
     headers = request_data.get("headers", {})
     body = request_data.get("body", "")
+    query_string = request_data.get("queryStringParameters", {})
     
-    # Create a FastAPI Request object
+    # Build query string
+    if query_string:
+        qs = "&".join([f"{k}={v}" for k, v in query_string.items()])
+    else:
+        qs = ""
+    
+    # Create ASGI scope
     scope = {
         "type": "http",
         "method": method,
         "path": path,
-        "headers": [[k.encode(), v.encode()] for k, v in headers.items()],
-        "query_string": b"",
+        "raw_path": path.encode(),
+        "query_string": qs.encode(),
+        "headers": [[k.lower().encode(), str(v).encode()] for k, v in headers.items()],
+        "client": None,
+        "server": None,
+        "scheme": "https",
+        "root_path": "",
+        "path_params": {},
     }
     
-    # Create a mock request
-    request = Request(scope)
-    if body:
-        request._body = body.encode() if isinstance(body, str) else body
+    # Create request and response
+    async def receive():
+        return {
+            "type": "http.request",
+            "body": body.encode() if isinstance(body, str) else body,
+            "more_body": False
+        }
     
-    # Call the FastAPI app
-    response = await app(request.scope, request.receive, lambda x: None)
+    response_parts = {"status": None, "headers": [], "body": b""}
     
-    # Extract response
-    status_code = response.status_code
-    response_headers = dict(response.headers)
-    response_body = b""
-    async for chunk in response.body_iterator:
-        response_body += chunk
+    async def send(message):
+        if message["type"] == "http.response.start":
+            response_parts["status"] = message["status"]
+            response_parts["headers"] = message["headers"]
+        elif message["type"] == "http.response.body":
+            response_parts["body"] += message.get("body", b"")
+    
+    # Call FastAPI app
+    await app(scope, receive, send)
+    
+    # Format response
+    headers_dict = {k.decode(): v.decode() for k, v in response_parts["headers"]}
     
     return {
-        "statusCode": status_code,
-        "headers": response_headers,
-        "body": response_body.decode() if isinstance(response_body, bytes) else str(response_body)
+        "statusCode": response_parts["status"] or 200,
+        "headers": headers_dict,
+        "body": response_parts["body"].decode("utf-8") if response_parts["body"] else ""
     }
 
 def handler(request):
