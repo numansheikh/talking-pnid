@@ -42,6 +42,15 @@ async def handle_request(request_data):
     else:
         qs = ""
     
+    # Normalize headers - Vercel might send them in different formats
+    normalized_headers = []
+    for k, v in headers.items():
+        if isinstance(v, list):
+            for item in v:
+                normalized_headers.append([k.lower().encode(), str(item).encode()])
+        else:
+            normalized_headers.append([k.lower().encode(), str(v).encode()])
+    
     # Create ASGI scope
     scope = {
         "type": "http",
@@ -49,7 +58,7 @@ async def handle_request(request_data):
         "path": path,
         "raw_path": path.encode(),
         "query_string": qs.encode(),
-        "headers": [[k.lower().encode(), str(v).encode()] for k, v in headers.items()],
+        "headers": normalized_headers,
         "client": None,
         "server": None,
         "scheme": "https",
@@ -96,22 +105,40 @@ def handler(request):
             "Access-Control-Allow-Headers": "Content-Type",
         }
         
+        # Parse Vercel's request format
+        # Vercel sends: {"method": "GET", "path": "/api/files", "headers": {...}, "body": ""}
+        method = request.get("method") or request.get("httpMethod", "GET")
+        path = request.get("path") or request.get("url", "/")
+        headers = request.get("headers") or {}
+        body = request.get("body") or ""
+        query_params = request.get("queryStringParameters") or {}
+        
         # Handle OPTIONS preflight
-        if request.get("method") == "OPTIONS":
+        if method == "OPTIONS":
             return {
                 "statusCode": 200,
                 "headers": cors_headers,
                 "body": ""
             }
         
+        # Prepare request data
+        request_data = {
+            "method": method,
+            "path": path,
+            "headers": headers,
+            "body": body,
+            "queryStringParameters": query_params
+        }
+        
         # Process the request
-        result = asyncio.run(handle_request(request))
+        result = asyncio.run(handle_request(request_data))
         result["headers"].update(cors_headers)
         return result
     except Exception as e:
         import traceback
         error_trace = traceback.format_exc()
         print(f"Handler error: {error_trace}")
+        print(f"Request received: {json.dumps(request, default=str)}")
         return {
             "statusCode": 500,
             "headers": {
