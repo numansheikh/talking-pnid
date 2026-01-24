@@ -95,8 +95,14 @@ export default function AppPage() {
     try {
       const data = await fetchFiles()
       setMappings(data.mappings || [])
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load files:', error)
+      // Show error message to user
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: `⚠️ **Backend API Not Available**\n\nUnable to connect to the backend API. Please ensure:\n\n1. The backend is deployed (Railway, Render, etc.)\n2. The \`VITE_API_BASE_URL\` environment variable is set in Vercel\n3. Check the browser console (F12) for detailed error messages\n\nError: ${error.message || 'Failed to load files'}`
+      }
+      setMessages([errorMessage])
     } finally {
       setLoadingFiles(false)
     }
@@ -367,7 +373,14 @@ export default function AppPage() {
             {loadingFiles ? (
               <div className="empty-state">Loading files...</div>
             ) : mappings.length === 0 ? (
-              <div className="empty-state">No files found</div>
+              <div className="empty-state">
+                <p>No files found</p>
+                <p style={{ fontSize: '12px', marginTop: '8px', opacity: 0.7 }}>
+                  {import.meta.env.VITE_API_BASE_URL 
+                    ? `API: ${import.meta.env.VITE_API_BASE_URL}`
+                    : 'Using relative /api (backend not configured)'}
+                </p>
+              </div>
             ) : (
                   mappings.map((mapping) => (
                     <div
