@@ -2,32 +2,36 @@
 
 Since Vercel's Python runtime doesn't fully support FastAPI/ASGI applications, we'll deploy the backend separately and connect the frontend to it.
 
-## Option 1: Deploy Backend to Railway (Recommended - Free Tier Available)
+## Option 1: Deploy Backend to Render (Recommended - Free Tier Available)
 
-### Backend Deployment (Railway)
+### Backend Deployment (Render) - FREE TIER
 
-1. **Sign up at Railway**: https://railway.app
-2. **Create a new project** and connect your GitHub repository
-3. **Set Root Directory**: `src/talking-pnids-py/backend`
-4. **Add Environment Variables**:
+1. **Sign up at Render**: https://render.com (free tier available)
+2. **Create a new Web Service**
+3. **Connect your GitHub repository**
+4. **Settings**:
+   - **Name**: `talking-pnids-backend` (or any name)
+   - **Root Directory**: `src/talking-pnids-py/backend`
+   - **Environment**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Plan**: Free (spins down after 15 min inactivity, wakes on request)
+5. **Add Environment Variables**:
    - `OPENAI_API_KEY` = your OpenAI API key
    - `OPENAI_MODEL` = `gpt-5.2`
    - `REASONING_EFFORT` = `medium`
    - `PDFS_DIR` = `../data/pdfs`
    - `JSONS_DIR` = `../data/jsons`
    - `MDS_DIR` = `../data/mds`
-5. **Set Start Command**: `python main.py` or `uvicorn main:app --host 0.0.0.0 --port $PORT`
-6. Railway will automatically detect Python and install dependencies from `requirements.txt`
-7. **Note**: Railway will give you a URL like `https://your-app.railway.app`
+6. **Deploy** - Render will give you a URL like `https://your-app.onrender.com`
 
 ### Frontend Deployment (Vercel)
 
 1. **Update Vercel Environment Variables**:
-   - `VITE_API_BASE_URL` = `https://your-app.railway.app/api`
-2. **Remove Python build** from `vercel.json` (keep only frontend build)
-3. **Redeploy** on Vercel
+   - `VITE_API_BASE_URL` = `https://your-app.onrender.com/api`
+2. **Redeploy** on Vercel (or it will auto-redeploy)
 
-## Option 2: Deploy Backend to Render (Free Tier Available)
+## Option 2: Deploy Backend to Fly.io (Free Tier Available)
 
 ### Backend Deployment (Render)
 
