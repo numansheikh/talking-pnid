@@ -25,8 +25,10 @@ from main import app
 from mangum import Mangum
 
 # Create Mangum adapter - this converts ASGI to Lambda/API Gateway format
-adapter = Mangum(app, lifespan="off")
+mangum_adapter = Mangum(app, lifespan="off")
 
-# Vercel's Python runtime expects 'handler' to be a callable
-# Mangum instances are callable, so we can assign directly
-handler = adapter
+# Vercel's Python runtime expects 'handler' to be a function
+# Wrap the Mangum adapter in a function
+def handler(event, context):
+    """Vercel serverless function handler"""
+    return mangum_adapter(event, context)
