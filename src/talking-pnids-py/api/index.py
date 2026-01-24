@@ -21,17 +21,12 @@ os.environ["PROJECT_ROOT"] = str(project_root)
 # Import FastAPI app
 from main import app
 
-# For Vercel, we need to use Mangum to convert ASGI to AWS Lambda format
-# But Vercel's Python runtime might need a specific handler format
-try:
-    from mangum import Mangum
-    # Create Mangum adapter
-    mangum_handler = Mangum(app, lifespan="off")
-    
-    # Vercel expects handler to be callable
-    # Export as handler function that Vercel can invoke
-    def handler(request):
-        return mangum_handler(request)
-except ImportError:
-    # Fallback: export app directly if Mangum not available
-    handler = app
+# Wrap FastAPI app with Mangum for Vercel/Lambda compatibility
+from mangum import Mangum
+
+# Create Mangum adapter - this converts ASGI to Lambda/API Gateway format
+adapter = Mangum(app, lifespan="off")
+
+# Vercel's Python runtime expects 'handler' to be a callable
+# Mangum instances are callable, so we can assign directly
+handler = adapter
