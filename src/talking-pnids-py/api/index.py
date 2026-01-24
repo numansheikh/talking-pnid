@@ -24,4 +24,5 @@ from main import app
 # Wrap FastAPI app with Mangum for Vercel/Lambda compatibility
 from mangum import Mangum
 
+# Create and export handler - Vercel expects this to be a callable class/object
 handler = Mangum(app, lifespan="off")
