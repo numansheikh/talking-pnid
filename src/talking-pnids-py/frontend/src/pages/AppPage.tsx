@@ -44,9 +44,7 @@ export default function AppPage() {
         if (mappingId) {
           const mapping = mappings.find(m => m.id === mappingId)
           if (mapping) {
-            setSelectedMapping((prev) => {
-              return mapping
-            })
+            setSelectedMapping(mapping)
             requestAnimationFrame(() => {
               const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
               if (sidebarItem) {

@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLoading(false)
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, _password: string) => {
     // TODO: Replace with actual API call to Python backend
     // For now, simple mock authentication
     await new Promise((resolve) => setTimeout(resolve, 500))
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('user', JSON.stringify(mockUser))
   }
 
-  const signup = async (email: string, password: string, name: string) => {
+  const signup = async (email: string, _password: string, name: string) => {
     // TODO: Replace with actual API call to Python backend
     await new Promise((resolve) => setTimeout(resolve, 500))
     
