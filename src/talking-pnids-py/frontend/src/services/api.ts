@@ -11,6 +11,12 @@ if (apiBaseUrl.startsWith('http')) {
 }
 const API_BASE_URL = apiBaseUrl
 
+// Debug: Log the API base URL (only in development or if explicitly enabled)
+if (import.meta.env.DEV || import.meta.env.VITE_DEBUG_API) {
+  console.log('API Base URL:', API_BASE_URL)
+  console.log('VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL)
+}
+
 export interface FileMapping {
   id: string
   pdf: string
