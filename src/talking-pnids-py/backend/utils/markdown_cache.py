@@ -27,13 +27,17 @@ class MarkdownCache:
         """Get the project root directory"""
         if os.getenv("PROJECT_ROOT"):
             return Path(os.getenv("PROJECT_ROOT"))
+        
+        # Walk up from current working directory to find data/
         cwd = Path(os.getcwd())
-        if cwd.name == "backend":
-            return cwd.parent
-        elif (cwd / "data").exists():
-            return cwd
-        elif (cwd.parent / "data").exists():
-            return cwd.parent
+        current = cwd
+        for _ in range(5):  # Go up max 5 levels
+            if (current / "data").exists():
+                return current
+            if current.parent == current:  # Reached root
+                break
+            current = current.parent
+        
         return Path(__file__).parent.parent.parent
     
     def load_config(self) -> Dict:

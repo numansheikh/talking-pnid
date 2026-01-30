@@ -58,17 +58,31 @@ async def debug_paths():
     if os.getenv("PROJECT_ROOT"):
         base_path = Path(os.getenv("PROJECT_ROOT"))
     else:
-        # Strategy 2: Use cwd - if cwd is "backend", go up one level
-        cwd = Path(os.getcwd())
-        if cwd.name == "backend":
+        # Strategy 2: Check if main.py is in workspace/backend/ or just workspace/
+        file_path = Path(__file__)  # /workspace/main.py
+        cwd = Path(os.getcwd())  # /workspace
+        
+        # If main.py is directly in workspace, try going up to find data/
+        # Check if data exists relative to workspace
+        if (cwd.parent / "data").exists():
             base_path = cwd.parent
         elif (cwd / "data").exists():
             base_path = cwd
-        elif (cwd.parent / "data").exists():
-            base_path = cwd.parent
+        elif file_path.parent.name == "backend" and (file_path.parent.parent / "data").exists():
+            base_path = file_path.parent.parent
         else:
-            # Strategy 3: Fallback - from main.py location
-            base_path = Path(__file__).parent.parent
+            # Try to find data directory by walking up from cwd
+            current = cwd
+            for _ in range(5):  # Go up max 5 levels
+                if (current / "data").exists():
+                    base_path = current
+                    break
+                if current.parent == current:  # Reached root
+                    break
+                current = current.parent
+            else:
+                # Fallback - assume project root is one level up from backend
+                base_path = cwd.parent if cwd.name in ["backend", "workspace"] else cwd
     
     config_path = base_path / "config" / "config.json"
     data_pdfs = base_path / "data" / "pdfs"

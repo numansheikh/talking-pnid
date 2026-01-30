@@ -9,15 +9,22 @@ def get_project_root() -> Path:
     if os.getenv("PROJECT_ROOT"):
         return Path(os.getenv("PROJECT_ROOT"))
     
-    # Strategy 2: If cwd is "backend", go up one level
+    # Strategy 2: Walk up from current working directory to find data/
     cwd = Path(os.getcwd())
-    if cwd.name == "backend" and (cwd.parent / "data").exists():
-        return cwd.parent
+    current = cwd
+    for _ in range(5):  # Go up max 5 levels
+        if (current / "data").exists():
+            return current
+        if current.parent == current:  # Reached root
+            break
+        current = current.parent
     
-    # Strategy 3: If this file is in backend/utils/, go up two levels
+    # Strategy 3: If this file is in backend/utils/, try going up
     utils_path = Path(__file__).parent
-    if utils_path.name == "utils" and (utils_path.parent.parent / "data").exists():
-        return utils_path.parent.parent
+    if utils_path.name == "utils":
+        potential_root = utils_path.parent.parent
+        if (potential_root / "data").exists():
+            return potential_root
     
     # Strategy 4: Default - assume we're in backend/utils/ so go up two levels
     return Path(__file__).parent.parent.parent
