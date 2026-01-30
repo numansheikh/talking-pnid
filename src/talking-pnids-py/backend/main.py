@@ -53,28 +53,29 @@ async def debug_paths():
     from pathlib import Path
     import os
     
-    # Initialize base_path with a safe default
+    # Initialize base_path with a safe default FIRST
     file_path = Path(__file__)  # e.g., /app/backend/main.py or /workspace/main.py
     cwd = Path(os.getcwd())  # Current working directory
+    
+    # Default fallback - always set this
+    base_path = cwd
     
     # Strategy 1: Use PROJECT_ROOT env var if set
     if os.getenv("PROJECT_ROOT"):
         base_path = Path(os.getenv("PROJECT_ROOT"))
+    # Strategy 2: If main.py is in backend/, go up one level to project root
+    elif file_path.parent.name == "backend":
+        base_path = file_path.parent.parent  # /app (project root)
     else:
-        # Strategy 2: If main.py is in backend/, go up one level to project root
-        if file_path.parent.name == "backend":
-            base_path = file_path.parent.parent  # /app (project root)
-        else:
-            # Strategy 3: Walk up from cwd to find data/
-            base_path = cwd  # Default to cwd
-            current = cwd
-            for _ in range(5):  # Go up max 5 levels
-                if (current / "data").exists():
-                    base_path = current
-                    break
-                if current.parent == current:  # Reached root
-                    break
-                current = current.parent
+        # Strategy 3: Walk up from cwd to find data/
+        current = cwd
+        for _ in range(5):  # Go up max 5 levels
+            if (current / "data").exists():
+                base_path = current
+                break
+            if current.parent == current:  # Reached root
+                break
+            current = current.parent
     
     config_path = base_path / "config" / "config.json"
     data_pdfs = base_path / "data" / "pdfs"
