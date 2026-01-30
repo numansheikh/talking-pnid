@@ -14,12 +14,16 @@ app = FastAPI(title="Talking P&IDs API")
 # CORS middleware - allow localhost and production domains
 # In production (Koyeb, Vercel, etc.), allow all origins
 # For local dev, allow localhost
-is_production = os.getenv("VERCEL") or os.getenv("KOYEB") or os.getenv("RAILWAY") or os.getenv("RENDER")
+# Always allow all origins in production - Koyeb doesn't set KOYEB env var by default
+is_production = os.getenv("VERCEL") or os.getenv("KOYEB") or os.getenv("RAILWAY") or os.getenv("RENDER") or os.getenv("PORT")
 allowed_origins = ["*"] if is_production else ["http://localhost:3000"]
 
 # Add environment variable for custom domain if set (overrides above)
 if os.getenv("FRONTEND_URL"):
     allowed_origins = [os.getenv("FRONTEND_URL")]
+
+# Log CORS configuration for debugging
+print(f"CORS Configuration: is_production={is_production}, allowed_origins={allowed_origins}")
 
 app.add_middleware(
     CORSMiddleware,

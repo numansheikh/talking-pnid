@@ -110,30 +110,32 @@ class ApiService {
   async getFiles(): Promise<{ mappings: FileMapping[] }> {
     const url = `${API_BASE_URL}/files`
     
-    // Always log the URL being called (helps debug production issues)
-    console.error('🚨 API CALL DEBUG - getFiles URL:', url)
-    console.error('🚨 API_BASE_URL value:', API_BASE_URL)
-    console.error('🚨 VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL || 'NOT SET!')
-    
-    const response = await this.fetchWithDebug(url)
-    
-    // Check if response is actually JSON
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('application/json')) {
-      const text = await response.text()
-      console.error('❌ Received non-JSON response!')
-      console.error('❌ Content-Type:', contentType)
-      console.error('❌ Response preview:', text.substring(0, 200))
-      throw new Error(`API returned HTML instead of JSON. Check if VITE_API_BASE_URL is set correctly. URL called: ${url}`)
+    try {
+      const response = await this.fetchWithDebug(url)
+      
+      // Check if response is actually JSON
+      const contentType = response.headers.get('content-type') || ''
+      if (!contentType.includes('application/json')) {
+        const text = await response.text()
+        console.error('❌❌❌ API ERROR - Received HTML instead of JSON ❌❌❌')
+        console.error('URL called:', url)
+        console.error('Status:', response.status, response.statusText)
+        console.error('Content-Type:', contentType)
+        console.error('Response (first 500 chars):', text.substring(0, 500))
+        throw new Error(`Backend returned HTML (${response.status}) instead of JSON. The backend might be down or the endpoint doesn't exist. Check: ${url}`)
+      }
+      
+      const data = await response.json()
+      
+      if (DEBUG_API) {
+        console.log('📋 Files Response:', data)
+      }
+      
+      return data
+    } catch (error) {
+      console.error('❌ getFiles() failed:', error)
+      throw error
     }
-    
-    const data = await response.json()
-    
-    if (DEBUG_API) {
-      console.log('📋 Files Response:', data)
-    }
-    
-    return data
   }
 
   async startSession(): Promise<SessionResponse> {
