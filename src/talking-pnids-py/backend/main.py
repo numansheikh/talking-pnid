@@ -53,35 +53,28 @@ async def debug_paths():
     from pathlib import Path
     import os
     
-    # Try multiple path resolution strategies
+    # Initialize base_path with a safe default
+    file_path = Path(__file__)  # e.g., /app/backend/main.py or /workspace/main.py
+    cwd = Path(os.getcwd())  # Current working directory
+    
     # Strategy 1: Use PROJECT_ROOT env var if set
     if os.getenv("PROJECT_ROOT"):
         base_path = Path(os.getenv("PROJECT_ROOT"))
     else:
-        # Strategy 2: Check if main.py is in workspace/backend/ or just workspace/
-        file_path = Path(__file__)  # /workspace/main.py
-        cwd = Path(os.getcwd())  # /workspace
-        
-        # Initialize base_path with a default
-        base_path = cwd.parent  # Default fallback
-        
-        # Try to find data directory by walking up from cwd
-        current = cwd
-        for _ in range(5):  # Go up max 5 levels
-            if (current / "data").exists():
-                base_path = current
-                break
-            if current.parent == current:  # Reached root
-                break
-            current = current.parent
+        # Strategy 2: If main.py is in backend/, go up one level to project root
+        if file_path.parent.name == "backend":
+            base_path = file_path.parent.parent  # /app (project root)
         else:
-            # If not found, try checking parent of cwd
-            if (cwd.parent / "data").exists():
-                base_path = cwd.parent
-            elif (cwd / "data").exists():
-                base_path = cwd
-            elif file_path.parent.name == "backend" and (file_path.parent.parent / "data").exists():
-                base_path = file_path.parent.parent
+            # Strategy 3: Walk up from cwd to find data/
+            base_path = cwd  # Default to cwd
+            current = cwd
+            for _ in range(5):  # Go up max 5 levels
+                if (current / "data").exists():
+                    base_path = current
+                    break
+                if current.parent == current:  # Reached root
+                    break
+                current = current.parent
     
     config_path = base_path / "config" / "config.json"
     data_pdfs = base_path / "data" / "pdfs"
