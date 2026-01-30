@@ -21,5 +21,8 @@ WORKDIR /app/backend
 ENV PROJECT_ROOT=/app
 ENV PYTHONPATH=/app/backend:/app
 
-# Run the application using python -m for better import resolution
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Make start script executable (it's already copied with backend/)
+RUN chmod +x start.sh
+
+# Run the application using the startup script
+CMD ["./start.sh"]
