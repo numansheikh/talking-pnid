@@ -6,9 +6,24 @@ import json
 
 router = APIRouter()
 
+def get_project_root() -> Path:
+    """Get the project root directory"""
+    import os
+    if os.getenv("PROJECT_ROOT"):
+        return Path(os.getenv("PROJECT_ROOT"))
+    cwd = Path(os.getcwd())
+    if cwd.name == "backend":
+        return cwd.parent
+    elif (cwd / "data").exists():
+        return cwd
+    elif (cwd.parent / "data").exists():
+        return cwd.parent
+    return Path(__file__).parent.parent.parent
+
 def load_config():
     """Load configuration from config.json or environment variables"""
-    config_path = Path(__file__).parent.parent.parent / "config" / "config.json"
+    project_root = get_project_root()
+    config_path = project_root / "config" / "config.json"
     config = {
         "directories": {
             "pdfs": os.getenv("PDFS_DIR", "./data/pdfs"),

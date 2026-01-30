@@ -53,8 +53,23 @@ async def debug_paths():
     from pathlib import Path
     import os
     
-    # main.py is in backend/, so parent.parent is the project root
-    base_path = Path(__file__).parent.parent
+    # Try multiple path resolution strategies
+    # Strategy 1: Use PROJECT_ROOT env var if set
+    if os.getenv("PROJECT_ROOT"):
+        base_path = Path(os.getenv("PROJECT_ROOT"))
+    else:
+        # Strategy 2: Use cwd - if cwd is "backend", go up one level
+        cwd = Path(os.getcwd())
+        if cwd.name == "backend":
+            base_path = cwd.parent
+        elif (cwd / "data").exists():
+            base_path = cwd
+        elif (cwd.parent / "data").exists():
+            base_path = cwd.parent
+        else:
+            # Strategy 3: Fallback - from main.py location
+            base_path = Path(__file__).parent.parent
+    
     config_path = base_path / "config" / "config.json"
     data_pdfs = base_path / "data" / "pdfs"
     data_mds = base_path / "data" / "mds"

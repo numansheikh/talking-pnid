@@ -6,9 +6,23 @@ from typing import List, Dict, Any
 
 router = APIRouter()
 
+def get_project_root() -> Path:
+    """Get the project root directory"""
+    import os
+    # Strategy 1: Use PROJECT_ROOT env var if set
+    if os.getenv("PROJECT_ROOT"):
+        return Path(os.getenv("PROJECT_ROOT"))
+    # Strategy 2: If cwd is "backend", go up one level
+    cwd = Path(os.getcwd())
+    if cwd.name == "backend" and (cwd.parent / "data").exists():
+        return cwd.parent
+    # Strategy 3: Default - assume we're in backend/api/ so go up two levels
+    return Path(__file__).parent.parent.parent
+
 def load_config():
     """Load configuration from config.json or environment variables"""
-    config_path = Path(__file__).parent.parent.parent / "config" / "config.json"
+    project_root = get_project_root()
+    config_path = project_root / "config" / "config.json"
     config = {
         "directories": {
             "pdfs": os.getenv("PDFS_DIR", "./data/pdfs"),
@@ -33,7 +47,8 @@ def load_config():
 
 def load_file_mappings():
     """Load file mappings from file-mappings.json"""
-    mappings_path = Path(__file__).parent.parent.parent / "config" / "file-mappings.json"
+    project_root = get_project_root()
+    mappings_path = project_root / "config" / "file-mappings.json"
     try:
         with open(mappings_path, 'r') as f:
             return json.load(f)
@@ -43,7 +58,7 @@ def load_file_mappings():
 def verify_files():
     """Verify which files exist in the directories"""
     config = load_config()
-    base_path = Path(__file__).parent.parent.parent
+    base_path = get_project_root()
     
     # Normalize paths
     pdfs_path = config["directories"]["pdfs"]

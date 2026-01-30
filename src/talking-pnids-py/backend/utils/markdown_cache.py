@@ -23,9 +23,23 @@ class MarkdownCache:
         self.last_loaded: Optional[float] = None
         self.mds_path: Optional[Path] = None
     
+    def get_project_root(self) -> Path:
+        """Get the project root directory"""
+        if os.getenv("PROJECT_ROOT"):
+            return Path(os.getenv("PROJECT_ROOT"))
+        cwd = Path(os.getcwd())
+        if cwd.name == "backend":
+            return cwd.parent
+        elif (cwd / "data").exists():
+            return cwd
+        elif (cwd.parent / "data").exists():
+            return cwd.parent
+        return Path(__file__).parent.parent.parent
+    
     def load_config(self) -> Dict:
         """Load config to get mds directory"""
-        config_path = Path(__file__).parent.parent.parent / "config" / "config.json"
+        project_root = self.get_project_root()
+        config_path = project_root / "config" / "config.json"
         config = {
             "directories": {
                 "mds": os.getenv("MDS_DIR", "./data/mds"),
@@ -49,7 +63,7 @@ class MarkdownCache:
     def get_mds_path(self) -> Path:
         """Get the markdown directory path"""
         config = self.load_config()
-        base_path = Path(__file__).parent.parent.parent
+        base_path = self.get_project_root()
         mds_path = config["directories"]["mds"]
         if mds_path.startswith("./"):
             mds_path = mds_path[2:]

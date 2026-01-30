@@ -3,9 +3,29 @@ import os
 from pathlib import Path
 from typing import Dict, Any
 
+def get_project_root() -> Path:
+    """Get the project root directory, handling different deployment scenarios"""
+    # Strategy 1: Use PROJECT_ROOT env var if set
+    if os.getenv("PROJECT_ROOT"):
+        return Path(os.getenv("PROJECT_ROOT"))
+    
+    # Strategy 2: If cwd is "backend", go up one level
+    cwd = Path(os.getcwd())
+    if cwd.name == "backend" and (cwd.parent / "data").exists():
+        return cwd.parent
+    
+    # Strategy 3: If this file is in backend/utils/, go up two levels
+    utils_path = Path(__file__).parent
+    if utils_path.name == "utils" and (utils_path.parent.parent / "data").exists():
+        return utils_path.parent.parent
+    
+    # Strategy 4: Default - assume we're in backend/utils/ so go up two levels
+    return Path(__file__).parent.parent.parent
+
 def load_config() -> Dict[str, Any]:
     """Load configuration from config.json or environment variables"""
-    config_path = Path(__file__).parent.parent.parent / "config" / "config.json"
+    project_root = get_project_root()
+    config_path = project_root / "config" / "config.json"
     config: Dict[str, Any] = {
         "openai": {
             "apiKey": os.getenv("OPENAI_API_KEY", ""),
@@ -47,7 +67,8 @@ def load_config() -> Dict[str, Any]:
 
 def load_prompts() -> Dict[str, Any] | None:
     """Load prompts from prompts.json"""
-    prompts_path = Path(__file__).parent.parent.parent / "config" / "prompts.json"
+    project_root = get_project_root()
+    prompts_path = project_root / "config" / "prompts.json"
     try:
         with open(prompts_path, 'r') as f:
             return json.load(f)
