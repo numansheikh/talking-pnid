@@ -16,14 +16,20 @@ app = FastAPI(title="Talking P&IDs API")
 # For local dev, allow localhost
 # Always allow all origins in production - Koyeb doesn't set KOYEB env var by default
 is_production = os.getenv("VERCEL") or os.getenv("KOYEB") or os.getenv("RAILWAY") or os.getenv("RENDER") or os.getenv("PORT")
-allowed_origins = ["*"] if is_production else ["http://localhost:3000"]
 
-# Add environment variable for custom domain if set (overrides above)
-if os.getenv("FRONTEND_URL"):
-    allowed_origins = [os.getenv("FRONTEND_URL")]
+# Get frontend URL from environment or use defaults
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    allowed_origins = [frontend_url]
+elif is_production:
+    # In production, allow all origins (Vercel frontend can be on any domain)
+    allowed_origins = ["*"]
+else:
+    # Local development
+    allowed_origins = ["http://localhost:3000", "http://localhost:5173"]
 
 # Log CORS configuration for debugging
-print(f"CORS Configuration: is_production={is_production}, allowed_origins={allowed_origins}")
+print(f"CORS Configuration: is_production={is_production}, allowed_origins={allowed_origins}, FRONTEND_URL={frontend_url}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -50,43 +56,15 @@ async def health():
 @app.get("/debug/paths")
 async def debug_paths():
     """Debug endpoint to check paths"""
-    from pathlib import Path
+    from utils.paths import get_project_root, get_config_file, get_data_dir
     import os
     
     try:
-        # Initialize base_path with a safe default FIRST - CRITICAL: must be before any conditionals
-        file_path = Path(__file__)  # e.g., /app/backend/main.py or /workspace/main.py
-        cwd = Path(os.getcwd())  # Current working directory
-        
-        # Default fallback - always set this FIRST
-        base_path = cwd
-        
-        # Strategy 1: Use PROJECT_ROOT env var if set
-        project_root = os.getenv("PROJECT_ROOT")
-        if project_root:
-            base_path = Path(project_root)
-        # Strategy 2: If main.py is in backend/, go up one level to project root
-        elif file_path.parent.name == "backend":
-            base_path = file_path.parent.parent  # /app (project root)
-        else:
-            # Strategy 3: Walk up from cwd to find data/
-            current = cwd
-            for _ in range(5):  # Go up max 5 levels
-                if (current / "data").exists():
-                    base_path = current
-                    break
-                if current.parent == current:  # Reached root
-                    break
-                current = current.parent
-        
-        # Ensure base_path is defined (defensive check)
-        if 'base_path' not in locals():
-            base_path = cwd
-        
-        config_path = base_path / "config" / "config.json"
-        data_pdfs = base_path / "data" / "pdfs"
-        data_mds = base_path / "data" / "mds"
-        data_jsons = base_path / "data" / "jsons"
+        base_path = get_project_root()
+        config_path = get_config_file("config.json")
+        data_pdfs = get_data_dir("pdfs")
+        data_mds = get_data_dir("mds")
+        data_jsons = get_data_dir("jsons")
         
         # Convert Path objects to strings for JSON serialization
         pdf_files = [str(f.name) for f in data_pdfs.glob("*.pdf")] if data_pdfs.exists() else []
@@ -108,13 +86,17 @@ async def debug_paths():
             "data_jsons_files": json_files,
             "cwd": os.getcwd(),
             "__file__": __file__,
+            "PROJECT_ROOT": os.getenv("PROJECT_ROOT", "not set"),
         }
     except Exception as e:
+        import traceback
         return {
             "error": str(e),
             "error_type": type(e).__name__,
+            "traceback": traceback.format_exc(),
             "cwd": os.getcwd(),
             "__file__": __file__,
+            "PROJECT_ROOT": os.getenv("PROJECT_ROOT", "not set"),
         }
 
 if __name__ == "__main__":

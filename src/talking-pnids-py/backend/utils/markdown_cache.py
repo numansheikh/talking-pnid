@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional
 from datetime import datetime
+from utils.paths import get_project_root, get_config_file, get_data_dir
 
 class MarkdownFile:
     def __init__(self, filename: str, content: str, mtime: datetime):
@@ -25,25 +26,11 @@ class MarkdownCache:
     
     def get_project_root(self) -> Path:
         """Get the project root directory"""
-        if os.getenv("PROJECT_ROOT"):
-            return Path(os.getenv("PROJECT_ROOT"))
-        
-        # Walk up from current working directory to find data/
-        cwd = Path(os.getcwd())
-        current = cwd
-        for _ in range(5):  # Go up max 5 levels
-            if (current / "data").exists():
-                return current
-            if current.parent == current:  # Reached root
-                break
-            current = current.parent
-        
-        return Path(__file__).parent.parent.parent
+        return get_project_root()
     
     def load_config(self) -> Dict:
         """Load config to get mds directory"""
-        project_root = self.get_project_root()
-        config_path = project_root / "config" / "config.json"
+        config_path = get_config_file("config.json")
         config = {
             "directories": {
                 "mds": os.getenv("MDS_DIR", "./data/mds"),
@@ -66,12 +53,7 @@ class MarkdownCache:
     
     def get_mds_path(self) -> Path:
         """Get the markdown directory path"""
-        config = self.load_config()
-        base_path = self.get_project_root()
-        mds_path = config["directories"]["mds"]
-        if mds_path.startswith("./"):
-            mds_path = mds_path[2:]
-        return base_path / mds_path
+        return get_data_dir("mds")
     
     def create_summary(self, content: str, filename: str) -> MarkdownSummary:
         """Create a markdown summary"""
@@ -145,7 +127,7 @@ class MarkdownCache:
     
     def load_file_mappings(self) -> Dict:
         """Load file mappings"""
-        mappings_path = Path(__file__).parent.parent.parent / "config" / "file-mappings.json"
+        mappings_path = get_config_file("file-mappings.json")
         try:
             with open(mappings_path, 'r') as f:
                 return json.load(f)
@@ -154,7 +136,7 @@ class MarkdownCache:
     
     def save_file_mappings(self, mappings: Dict) -> bool:
         """Save file mappings"""
-        mappings_path = Path(__file__).parent.parent.parent / "config" / "file-mappings.json"
+        mappings_path = get_config_file("file-mappings.json")
         try:
             with open(mappings_path, 'w') as f:
                 json.dump(mappings, f, indent=2)

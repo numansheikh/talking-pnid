@@ -3,26 +3,9 @@ from fastapi.responses import FileResponse
 import os
 from pathlib import Path
 import json
+from utils.paths import get_project_root, get_data_dir
 
 router = APIRouter()
-
-def get_project_root() -> Path:
-    """Get the project root directory"""
-    import os
-    if os.getenv("PROJECT_ROOT"):
-        return Path(os.getenv("PROJECT_ROOT"))
-    
-    # Walk up from current working directory to find data/
-    cwd = Path(os.getcwd())
-    current = cwd
-    for _ in range(5):  # Go up max 5 levels
-        if (current / "data").exists():
-            return current
-        if current.parent == current:  # Reached root
-            break
-        current = current.parent
-    
-    return Path(__file__).parent.parent.parent
 
 def load_config():
     """Load configuration from config.json or environment variables"""
@@ -58,29 +41,8 @@ async def get_pdf(filename: str):
         
         config = load_config()
         
-        # Try to get project root from environment variable (set by api/index.py)
-        # Otherwise fall back to relative path resolution
-        if os.getenv("PROJECT_ROOT"):
-            base_path = Path(os.getenv("PROJECT_ROOT"))
-        else:
-            # Fallback: try multiple path resolution strategies
-            base_path = Path(__file__).parent.parent.parent
-            
-            # If we're in a serverless environment, try alternative paths
-            if not (base_path / "data").exists():
-                # Try relative to current working directory
-                cwd = Path.cwd()
-                if (cwd / "data").exists():
-                    base_path = cwd
-                elif (cwd.parent / "data").exists():
-                    base_path = cwd.parent
-                elif (cwd.parent.parent / "data").exists():
-                    base_path = cwd.parent.parent
-        
-        pdfs_path = config["directories"]["pdfs"]
-        if pdfs_path.startswith("./"):
-            pdfs_path = pdfs_path[2:]
-        pdfs_full_path = base_path / pdfs_path
+        # Use centralized path resolution
+        pdfs_full_path = get_data_dir("pdfs")
         
         file_path = pdfs_full_path / filename
         
