@@ -19,8 +19,13 @@ const DEBUG_API = (import.meta.env.VITE_DEBUG_API === 'true' ||
                    import.meta.env.DEV
 
 // Always log API base URL (helpful for debugging production issues)
-console.log('🔗 API Base URL:', API_BASE_URL)
-console.log('🔗 VITE_API_BASE_URL (raw):', import.meta.env.VITE_API_BASE_URL || '(not set)')
+// Using console.error so it shows up even if console.log is filtered
+console.error('═══════════════════════════════════════')
+console.error('🔗 API CONFIGURATION DEBUG')
+console.error('🔗 API Base URL:', API_BASE_URL)
+console.error('🔗 VITE_API_BASE_URL (raw):', import.meta.env.VITE_API_BASE_URL || '(NOT SET - THIS IS THE PROBLEM!)')
+console.error('🔗 Will call:', API_BASE_URL + '/files')
+console.error('═══════════════════════════════════════')
 
 if (DEBUG_API) {
   console.log('🔍 API Debug Info:')
