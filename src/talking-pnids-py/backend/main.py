@@ -53,56 +53,69 @@ async def debug_paths():
     from pathlib import Path
     import os
     
-    # Initialize base_path with a safe default FIRST
-    file_path = Path(__file__)  # e.g., /app/backend/main.py or /workspace/main.py
-    cwd = Path(os.getcwd())  # Current working directory
-    
-    # Default fallback - always set this
-    base_path = cwd
-    
-    # Strategy 1: Use PROJECT_ROOT env var if set
-    if os.getenv("PROJECT_ROOT"):
-        base_path = Path(os.getenv("PROJECT_ROOT"))
-    # Strategy 2: If main.py is in backend/, go up one level to project root
-    elif file_path.parent.name == "backend":
-        base_path = file_path.parent.parent  # /app (project root)
-    else:
-        # Strategy 3: Walk up from cwd to find data/
-        current = cwd
-        for _ in range(5):  # Go up max 5 levels
-            if (current / "data").exists():
-                base_path = current
-                break
-            if current.parent == current:  # Reached root
-                break
-            current = current.parent
-    
-    config_path = base_path / "config" / "config.json"
-    data_pdfs = base_path / "data" / "pdfs"
-    data_mds = base_path / "data" / "mds"
-    data_jsons = base_path / "data" / "jsons"
-    
-    # Convert Path objects to strings for JSON serialization
-    pdf_files = [str(f.name) for f in data_pdfs.glob("*.pdf")] if data_pdfs.exists() else []
-    md_files = [str(f.name) for f in data_mds.glob("*.md")] if data_mds.exists() else []
-    json_files = [str(f.name) for f in data_jsons.glob("*.json")] if data_jsons.exists() else []
-    
-    return {
-        "base_path": str(base_path),
-        "config_exists": config_path.exists(),
-        "config_path": str(config_path),
-        "data_pdfs_exists": data_pdfs.exists(),
-        "data_pdfs_path": str(data_pdfs),
-        "data_pdfs_files": pdf_files,
-        "data_mds_exists": data_mds.exists(),
-        "data_mds_path": str(data_mds),
-        "data_mds_files": md_files,
-        "data_jsons_exists": data_jsons.exists(),
-        "data_jsons_path": str(data_jsons),
-        "data_jsons_files": json_files,
-        "cwd": os.getcwd(),
-        "__file__": __file__,
-    }
+    try:
+        # Initialize base_path with a safe default FIRST - CRITICAL: must be before any conditionals
+        file_path = Path(__file__)  # e.g., /app/backend/main.py or /workspace/main.py
+        cwd = Path(os.getcwd())  # Current working directory
+        
+        # Default fallback - always set this FIRST
+        base_path = cwd
+        
+        # Strategy 1: Use PROJECT_ROOT env var if set
+        project_root = os.getenv("PROJECT_ROOT")
+        if project_root:
+            base_path = Path(project_root)
+        # Strategy 2: If main.py is in backend/, go up one level to project root
+        elif file_path.parent.name == "backend":
+            base_path = file_path.parent.parent  # /app (project root)
+        else:
+            # Strategy 3: Walk up from cwd to find data/
+            current = cwd
+            for _ in range(5):  # Go up max 5 levels
+                if (current / "data").exists():
+                    base_path = current
+                    break
+                if current.parent == current:  # Reached root
+                    break
+                current = current.parent
+        
+        # Ensure base_path is defined (defensive check)
+        if 'base_path' not in locals():
+            base_path = cwd
+        
+        config_path = base_path / "config" / "config.json"
+        data_pdfs = base_path / "data" / "pdfs"
+        data_mds = base_path / "data" / "mds"
+        data_jsons = base_path / "data" / "jsons"
+        
+        # Convert Path objects to strings for JSON serialization
+        pdf_files = [str(f.name) for f in data_pdfs.glob("*.pdf")] if data_pdfs.exists() else []
+        md_files = [str(f.name) for f in data_mds.glob("*.md")] if data_mds.exists() else []
+        json_files = [str(f.name) for f in data_jsons.glob("*.json")] if data_jsons.exists() else []
+        
+        return {
+            "base_path": str(base_path),
+            "config_exists": config_path.exists(),
+            "config_path": str(config_path),
+            "data_pdfs_exists": data_pdfs.exists(),
+            "data_pdfs_path": str(data_pdfs),
+            "data_pdfs_files": pdf_files,
+            "data_mds_exists": data_mds.exists(),
+            "data_mds_path": str(data_mds),
+            "data_mds_files": md_files,
+            "data_jsons_exists": data_jsons.exists(),
+            "data_jsons_path": str(data_jsons),
+            "data_jsons_files": json_files,
+            "cwd": os.getcwd(),
+            "__file__": __file__,
+        }
+    except Exception as e:
+        return {
+            "error": str(e),
+            "error_type": type(e).__name__,
+            "cwd": os.getcwd(),
+            "__file__": __file__,
+        }
 
 if __name__ == "__main__":
     import uvicorn
