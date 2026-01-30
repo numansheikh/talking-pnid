@@ -19,7 +19,7 @@ WORKDIR /app/backend
 
 # Set environment variables for path resolution
 ENV PROJECT_ROOT=/app
-ENV PYTHONPATH=/app/backend
+ENV PYTHONPATH=/app/backend:/app
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the application using python -m for better import resolution
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
