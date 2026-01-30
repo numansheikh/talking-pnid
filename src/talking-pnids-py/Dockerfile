@@ -22,7 +22,10 @@ ENV PROJECT_ROOT=/app
 ENV PYTHONPATH=/app/backend:/app
 
 # Make start script executable (it's already copied with backend/)
-RUN chmod +x start.sh
+RUN chmod +x start.sh || echo "start.sh not found, will create in CMD"
 
-# Run the application using the startup script
-CMD ["./start.sh"]
+# Make entrypoint executable
+RUN chmod +x entrypoint.py
+
+# Use Python entrypoint script
+CMD ["python3", "entrypoint.py"]
