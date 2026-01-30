@@ -104,7 +104,24 @@ class ApiService {
 
   async getFiles(): Promise<{ mappings: FileMapping[] }> {
     const url = `${API_BASE_URL}/files`
+    
+    // Always log the URL being called (helps debug production issues)
+    console.error('🚨 API CALL DEBUG - getFiles URL:', url)
+    console.error('🚨 API_BASE_URL value:', API_BASE_URL)
+    console.error('🚨 VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL || 'NOT SET!')
+    
     const response = await this.fetchWithDebug(url)
+    
+    // Check if response is actually JSON
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text()
+      console.error('❌ Received non-JSON response!')
+      console.error('❌ Content-Type:', contentType)
+      console.error('❌ Response preview:', text.substring(0, 200))
+      throw new Error(`API returned HTML instead of JSON. Check if VITE_API_BASE_URL is set correctly. URL called: ${url}`)
+    }
+    
     const data = await response.json()
     
     if (DEBUG_API) {
