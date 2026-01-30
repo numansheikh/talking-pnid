@@ -62,27 +62,26 @@ async def debug_paths():
         file_path = Path(__file__)  # /workspace/main.py
         cwd = Path(os.getcwd())  # /workspace
         
-        # If main.py is directly in workspace, try going up to find data/
-        # Check if data exists relative to workspace
-        if (cwd.parent / "data").exists():
-            base_path = cwd.parent
-        elif (cwd / "data").exists():
-            base_path = cwd
-        elif file_path.parent.name == "backend" and (file_path.parent.parent / "data").exists():
-            base_path = file_path.parent.parent
+        # Initialize base_path with a default
+        base_path = cwd.parent  # Default fallback
+        
+        # Try to find data directory by walking up from cwd
+        current = cwd
+        for _ in range(5):  # Go up max 5 levels
+            if (current / "data").exists():
+                base_path = current
+                break
+            if current.parent == current:  # Reached root
+                break
+            current = current.parent
         else:
-            # Try to find data directory by walking up from cwd
-            current = cwd
-            for _ in range(5):  # Go up max 5 levels
-                if (current / "data").exists():
-                    base_path = current
-                    break
-                if current.parent == current:  # Reached root
-                    break
-                current = current.parent
-            else:
-                # Fallback - assume project root is one level up from backend
-                base_path = cwd.parent if cwd.name in ["backend", "workspace"] else cwd
+            # If not found, try checking parent of cwd
+            if (cwd.parent / "data").exists():
+                base_path = cwd.parent
+            elif (cwd / "data").exists():
+                base_path = cwd
+            elif file_path.parent.name == "backend" and (file_path.parent.parent / "data").exists():
+                base_path = file_path.parent.parent
     
     config_path = base_path / "config" / "config.json"
     data_pdfs = base_path / "data" / "pdfs"
