@@ -11,10 +11,15 @@ if (apiBaseUrl.startsWith('http')) {
 }
 const API_BASE_URL = apiBaseUrl
 
-// Debug: Log the API base URL (only in development or if explicitly enabled)
-if (import.meta.env.DEV || import.meta.env.VITE_DEBUG_API) {
-  console.log('API Base URL:', API_BASE_URL)
-  console.log('VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL)
+// Debug mode - can be enabled via VITE_DEBUG_API=true or in development
+const DEBUG_API = import.meta.env.VITE_DEBUG_API === 'true' || import.meta.env.DEV
+
+if (DEBUG_API) {
+  console.log('🔍 API Debug Info:')
+  console.log('  - API Base URL:', API_BASE_URL)
+  console.log('  - VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL)
+  console.log('  - Environment:', import.meta.env.MODE)
+  console.log('  - Dev mode:', import.meta.env.DEV)
 }
 
 export interface FileMapping {
@@ -43,26 +48,77 @@ export interface QueryResponse {
 }
 
 class ApiService {
-  async getFiles(): Promise<{ mappings: FileMapping[] }> {
-    const response = await fetch(`${API_BASE_URL}/files`)
-    if (!response.ok) {
-      throw new Error('Failed to load files')
+  private async fetchWithDebug(url: string, options?: RequestInit) {
+    if (DEBUG_API) {
+      console.log(`🌐 API Request:`, {
+        url,
+        method: options?.method || 'GET',
+        body: options?.body,
+      })
     }
-    return response.json()
+
+    try {
+      const response = await fetch(url, options)
+      
+      if (DEBUG_API) {
+        console.log(`📥 API Response:`, {
+          url,
+          status: response.status,
+          statusText: response.statusText,
+          ok: response.ok,
+        })
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        if (DEBUG_API) {
+          console.error(`❌ API Error:`, {
+            url,
+            status: response.status,
+            error: errorText,
+          })
+        }
+        throw new Error(`HTTP ${response.status}: ${errorText}`)
+      }
+
+      return response
+    } catch (error) {
+      if (DEBUG_API) {
+        console.error(`💥 API Request Failed:`, {
+          url,
+          error: error instanceof Error ? error.message : String(error),
+        })
+      }
+      throw error
+    }
+  }
+
+  async getFiles(): Promise<{ mappings: FileMapping[] }> {
+    const url = `${API_BASE_URL}/files`
+    const response = await this.fetchWithDebug(url)
+    const data = await response.json()
+    
+    if (DEBUG_API) {
+      console.log('📋 Files Response:', data)
+    }
+    
+    return data
   }
 
   async startSession(): Promise<SessionResponse> {
-    const response = await fetch(`${API_BASE_URL}/session`, {
+    const url = `${API_BASE_URL}/session`
+    const response = await this.fetchWithDebug(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     })
     
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Failed to start session')
+    const data = await response.json()
+    
+    if (DEBUG_API) {
+      console.log('🚀 Session Response:', data)
     }
     
-    return response.json()
+    return data
   }
 
   async query(
@@ -70,26 +126,34 @@ class ApiService {
     sessionStarted: boolean,
     selectedMapping: { id: string; pdf: string; md: string } | null
   ): Promise<QueryResponse> {
-    const response = await fetch(`${API_BASE_URL}/query`, {
+    const url = `${API_BASE_URL}/query`
+    const body = JSON.stringify({
+      query,
+      sessionStarted,
+      selectedMapping,
+    })
+    
+    const response = await this.fetchWithDebug(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query,
-        sessionStarted,
-        selectedMapping,
-      }),
+      body,
     })
-
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Failed to process query')
+    
+    const data = await response.json()
+    
+    if (DEBUG_API) {
+      console.log('💬 Query Response:', data)
     }
-
-    return response.json()
+    
+    return data
   }
 
   getPdfUrl(filename: string): string {
-    return `${API_BASE_URL}/pdf/${encodeURIComponent(filename)}`
+    const url = `${API_BASE_URL}/pdf/${encodeURIComponent(filename)}`
+    if (DEBUG_API) {
+      console.log('📄 PDF URL:', url)
+    }
+    return url
   }
 }
 
