@@ -14,18 +14,19 @@ COPY data/ ./data/
 # Expose port
 EXPOSE 8000
 
-# Run the application from backend directory
+# Set environment variables
+ENV PROJECT_ROOT=/app
+ENV PYTHONPATH=/app/backend
+
+# Change to backend directory
 WORKDIR /app/backend
 
-# Set environment variables for path resolution
-ENV PROJECT_ROOT=/app
-ENV PYTHONPATH=/app/backend:/app
+# Verify files exist during build
+RUN ls -la && \
+    echo "=== File check ===" && \
+    test -f main.py && echo "✓ main.py" || echo "✗ main.py MISSING" && \
+    test -d api && echo "✓ api/" || echo "✗ api/ MISSING" && \
+    test -d utils && echo "✓ utils/" || echo "✗ utils/ MISSING"
 
-# Make start script executable (it's already copied with backend/)
-RUN chmod +x start.sh || echo "start.sh not found, will create in CMD"
-
-# Make entrypoint executable
-RUN chmod +x entrypoint.py
-
-# Use Python entrypoint script
+# Use entrypoint script that shows actual import errors
 CMD ["python3", "entrypoint.py"]
