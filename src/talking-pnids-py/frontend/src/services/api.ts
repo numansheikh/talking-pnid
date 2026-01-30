@@ -12,7 +12,15 @@ if (apiBaseUrl.startsWith('http')) {
 const API_BASE_URL = apiBaseUrl
 
 // Debug mode - can be enabled via VITE_DEBUG_API=true or in development
-const DEBUG_API = import.meta.env.VITE_DEBUG_API === 'true' || import.meta.env.DEV
+// Check for both string 'true' and boolean true, and also check if it's not explicitly 'false'
+const DEBUG_API = (import.meta.env.VITE_DEBUG_API === 'true' || 
+                   import.meta.env.VITE_DEBUG_API === true ||
+                   (import.meta.env.VITE_DEBUG_API && import.meta.env.VITE_DEBUG_API !== 'false')) ||
+                   import.meta.env.DEV
+
+// Always log API base URL (helpful for debugging production issues)
+console.log('🔗 API Base URL:', API_BASE_URL)
+console.log('🔗 VITE_API_BASE_URL (raw):', import.meta.env.VITE_API_BASE_URL || '(not set)')
 
 if (DEBUG_API) {
   console.log('🔍 API Debug Info:')
@@ -20,6 +28,7 @@ if (DEBUG_API) {
   console.log('  - VITE_API_BASE_URL env:', import.meta.env.VITE_API_BASE_URL)
   console.log('  - Environment:', import.meta.env.MODE)
   console.log('  - Dev mode:', import.meta.env.DEV)
+  console.log('  - DEBUG_API enabled:', true)
 }
 
 export interface FileMapping {

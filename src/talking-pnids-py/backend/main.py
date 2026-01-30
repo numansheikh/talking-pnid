@@ -11,12 +11,13 @@ load_dotenv()
 
 app = FastAPI(title="Talking P&IDs API")
 
-# CORS middleware - allow localhost and Vercel domains
-# In production, allow all origins since we're on the same domain (Vercel)
+# CORS middleware - allow localhost and production domains
+# In production (Koyeb, Vercel, etc.), allow all origins
 # For local dev, allow localhost
-allowed_origins = ["*"] if os.getenv("VERCEL") else ["http://localhost:3000"]
+is_production = os.getenv("VERCEL") or os.getenv("KOYEB") or os.getenv("RAILWAY") or os.getenv("RENDER")
+allowed_origins = ["*"] if is_production else ["http://localhost:3000"]
 
-# Add environment variable for custom domain if set
+# Add environment variable for custom domain if set (overrides above)
 if os.getenv("FRONTEND_URL"):
     allowed_origins = [os.getenv("FRONTEND_URL")]
 
