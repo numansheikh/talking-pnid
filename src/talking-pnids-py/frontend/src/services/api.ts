@@ -1,4 +1,15 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+// Get API base URL from environment, ensuring it ends with /api
+let apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
+// If a full URL is provided, ensure it ends with /api
+if (apiBaseUrl.startsWith('http')) {
+  // Remove trailing slash if present
+  apiBaseUrl = apiBaseUrl.replace(/\/$/, '')
+  // Add /api if not already present
+  if (!apiBaseUrl.endsWith('/api')) {
+    apiBaseUrl = `${apiBaseUrl}/api`
+  }
+}
+const API_BASE_URL = apiBaseUrl
 
 export interface FileMapping {
   id: string
