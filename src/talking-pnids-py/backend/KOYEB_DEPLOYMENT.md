@@ -38,8 +38,13 @@ git push origin main
 ### 2.2 Configure Repository
 
 1. Select your repository
-2. **Important**: Set the **Root Directory** to `src/talking-pnids-py/backend`
+2. **Important**: Set the **Root Directory** (also called "Working Directory" in some Koyeb interfaces) to:
+   ```
+   src/talking-pnids-py/backend
+   ```
    - This tells Koyeb where your backend code is located
+   - It's the directory where Koyeb will run your build and start commands
+   - Both "Root Directory" and "Working Directory" refer to the same setting
 3. Select the branch (usually `main` or `master`)
 
 ### 2.3 Configure Build Settings
@@ -146,7 +151,8 @@ Once you deploy the frontend to Vercel:
 
 **Solution:**
 - Ensure all dependencies are in `requirements.txt`
-- Check that Root Directory is set to `src/talking-pnids-py/backend`
+- Check that Root Directory/Working Directory is set to `src/talking-pnids-py/backend`
+- Verify that `main.py` and `Procfile` are in that directory
 
 ### Issue: "OpenAI API key not found"
 

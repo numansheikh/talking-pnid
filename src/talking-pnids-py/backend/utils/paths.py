@@ -41,8 +41,15 @@ def get_project_root() -> Path:
     cwd = Path(os.getcwd())
     if (cwd / "backend" / "main.py").exists():
         return cwd
-    if cwd.name == "backend" and (cwd.parent / "data").exists():
+    # If current directory is "backend" or "workspace" (Koyeb), check parent for data/
+    if (cwd.name == "backend" or cwd.name == "workspace") and (cwd.parent / "data").exists():
         return cwd.parent
+    # Also check if we're in workspace and data is in parent
+    if cwd.name == "workspace":
+        # Check if ../data exists (Koyeb deployment scenario)
+        parent = cwd.parent
+        if (parent / "data").exists():
+            return parent
     
     # Strategy 4: Calculate from this file's location
     # This file is in backend/utils/, so go up 2 levels
