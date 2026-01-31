@@ -11,25 +11,14 @@ load_dotenv()
 
 app = FastAPI(title="Talking P&IDs API")
 
-# CORS middleware - allow localhost and production domains
-# In production (Koyeb, Vercel, etc.), allow all origins
-# For local dev, allow localhost
-# Always allow all origins in production - Koyeb doesn't set KOYEB env var by default
-is_production = os.getenv("VERCEL") or os.getenv("KOYEB") or os.getenv("RAILWAY") or os.getenv("RENDER") or os.getenv("PORT")
-
-# Get frontend URL from environment or use defaults
+# CORS middleware - allow localhost for local development
+# For production, set FRONTEND_URL environment variable
 frontend_url = os.getenv("FRONTEND_URL")
 if frontend_url:
     allowed_origins = [frontend_url]
-elif is_production:
-    # In production, allow all origins (Vercel frontend can be on any domain)
-    allowed_origins = ["*"]
 else:
-    # Local development
+    # Local development - allow common localhost ports
     allowed_origins = ["http://localhost:3000", "http://localhost:5173"]
-
-# Log CORS configuration for debugging
-print(f"CORS Configuration: is_production={is_production}, allowed_origins={allowed_origins}, FRONTEND_URL={frontend_url}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -111,4 +100,6 @@ async def debug_paths():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Read port from environment variable (Koyeb sets PORT)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

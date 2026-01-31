@@ -1,5 +1,5 @@
-# Vercel will use this file for Python dependencies
-# Copy from backend/requirements.txt
+# Python dependencies
+# This file mirrors backend/requirements.txt for convenience
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 python-multipart==0.0.6

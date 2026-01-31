@@ -19,7 +19,7 @@ def get_project_root() -> Path:
     Returns:
         Path: The project root directory
     """
-    # Strategy 1: Use PROJECT_ROOT env var if set (best for Docker/Koyeb)
+    # Strategy 1: Use PROJECT_ROOT env var if set (for containerized/serverless deployments)
     project_root_env = os.getenv("PROJECT_ROOT")
     if project_root_env:
         root = Path(project_root_env)
@@ -58,6 +58,7 @@ def get_project_root() -> Path:
 def get_data_dir(subdir: Optional[str] = None) -> Path:
     """
     Get the data directory path.
+    Supports environment variables for absolute paths (useful for cloud deployment).
     
     Args:
         subdir: Optional subdirectory (e.g., 'pdfs', 'jsons', 'mds')
@@ -65,9 +66,29 @@ def get_data_dir(subdir: Optional[str] = None) -> Path:
     Returns:
         Path: The data directory or subdirectory path
     """
+    # Check for environment variable first (allows absolute paths for cloud deployment)
+    if subdir == "pdfs":
+        env_path = os.getenv("PDFS_DIR")
+    elif subdir == "jsons":
+        env_path = os.getenv("JSONS_DIR")
+    elif subdir == "mds":
+        env_path = os.getenv("MDS_DIR")
+    else:
+        env_path = None
+    
+    # If environment variable is set and is an absolute path, use it directly
+    if env_path:
+        env_path_obj = Path(env_path)
+        if env_path_obj.is_absolute():
+            return env_path_obj
+    
+    # Otherwise, use project root relative path
     project_root = get_project_root()
     data_dir = project_root / "data"
     if subdir:
+        # If env var is set but relative, resolve it relative to project root
+        if env_path:
+            return (project_root / env_path).resolve()
         return data_dir / subdir
     return data_dir
 

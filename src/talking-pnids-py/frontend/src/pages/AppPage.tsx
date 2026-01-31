@@ -100,7 +100,7 @@ export default function AppPage() {
       // Show error message to user
       const errorMessage: Message = {
         role: 'assistant',
-        content: `⚠️ **Backend API Not Available**\n\nUnable to connect to the backend API. Please ensure:\n\n1. The backend is deployed (Railway, Render, etc.)\n2. The \`VITE_API_BASE_URL\` environment variable is set in Vercel\n3. Check the browser console (F12) for detailed error messages\n\nError: ${error.message || 'Failed to load files'}`
+        content: `⚠️ **Backend API Not Available**\n\nUnable to connect to the backend API. Please ensure:\n\n1. The backend server is running (usually on http://localhost:8000)\n2. The \`VITE_API_BASE_URL\` environment variable is set correctly\n3. Check the browser console (F12) for detailed error messages\n\nError: ${error.message || 'Failed to load files'}`
       }
       setMessages([errorMessage])
     } finally {

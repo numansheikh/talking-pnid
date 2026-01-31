@@ -5,8 +5,15 @@ from typing import Dict, Any
 from utils.paths import get_project_root, get_config_file
 
 def load_config() -> Dict[str, Any]:
-    """Load configuration from config.json or environment variables"""
+    """
+    Load configuration from environment variables (priority) or config.json.
+    
+    Environment variables take precedence over config.json.
+    This allows for easy deployment across different environments.
+    """
     config_path = get_config_file("config.json")
+    
+    # Start with defaults
     config: Dict[str, Any] = {
         "openai": {
             "apiKey": os.getenv("OPENAI_API_KEY", ""),
@@ -20,26 +27,29 @@ def load_config() -> Dict[str, Any]:
         "settings": {
             "maxTokens": int(os.getenv("MAX_TOKENS", "2000")),
             "temperature": float(os.getenv("TEMPERATURE", "0.7")),
+            "reasoningEffort": os.getenv("REASONING_EFFORT", "medium"),
         },
     }
     
+    # Load from config.json if it exists (env vars already override above)
     if config_path.exists():
         try:
             with open(config_path, 'r') as f:
                 file_config = json.load(f)
-                # Merge config (env vars override file config)
+                # Only use file config if env var is not set
                 config["openai"] = {
-                    "apiKey": os.getenv("OPENAI_API_KEY") or file_config.get("openai", {}).get("apiKey") or config["openai"]["apiKey"],
-                    "model": os.getenv("OPENAI_MODEL") or file_config.get("openai", {}).get("model") or config["openai"]["model"],
+                    "apiKey": os.getenv("OPENAI_API_KEY") or file_config.get("openai", {}).get("apiKey", ""),
+                    "model": os.getenv("OPENAI_MODEL") or file_config.get("openai", {}).get("model", config["openai"]["model"]),
                 }
                 config["directories"] = {
-                    "pdfs": os.getenv("PDFS_DIR") or file_config.get("directories", {}).get("pdfs") or config["directories"]["pdfs"],
-                    "jsons": os.getenv("JSONS_DIR") or file_config.get("directories", {}).get("jsons") or config["directories"]["jsons"],
-                    "mds": os.getenv("MDS_DIR") or file_config.get("directories", {}).get("mds") or config["directories"]["mds"],
+                    "pdfs": os.getenv("PDFS_DIR") or file_config.get("directories", {}).get("pdfs", config["directories"]["pdfs"]),
+                    "jsons": os.getenv("JSONS_DIR") or file_config.get("directories", {}).get("jsons", config["directories"]["jsons"]),
+                    "mds": os.getenv("MDS_DIR") or file_config.get("directories", {}).get("mds", config["directories"]["mds"]),
                 }
                 config["settings"] = {
                     "maxTokens": int(os.getenv("MAX_TOKENS") or str(file_config.get("settings", {}).get("maxTokens", config["settings"]["maxTokens"]))),
                     "temperature": float(os.getenv("TEMPERATURE") or str(file_config.get("settings", {}).get("temperature", config["settings"]["temperature"]))),
+                    "reasoningEffort": os.getenv("REASONING_EFFORT") or file_config.get("settings", {}).get("reasoningEffort", config["settings"]["reasoningEffort"]),
                 }
         except Exception as e:
             print(f"Warning: Error reading config file: {e}")

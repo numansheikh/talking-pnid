@@ -2,8 +2,6 @@
 
 AI-powered Q&A application for Piping & Instrumentation Diagrams with Python FastAPI backend and React frontend.
 
-Updated for Vercel deployment.
-
 ## Quick Start
 
 ### Step 1: Setup Data Files
