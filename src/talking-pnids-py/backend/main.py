@@ -12,13 +12,19 @@ load_dotenv()
 app = FastAPI(title="Talking P&IDs API")
 
 # CORS middleware - allow localhost for local development
-# For production, set FRONTEND_URL environment variable
+# For production, set FRONTEND_URL environment variable (comma-separated for multiple origins)
 frontend_url = os.getenv("FRONTEND_URL")
 if frontend_url:
-    allowed_origins = [frontend_url]
+    # Support comma-separated origins
+    allowed_origins = [origin.strip() for origin in frontend_url.split(",")]
 else:
     # Local development - allow common localhost ports
     allowed_origins = ["http://localhost:3000", "http://localhost:5173"]
+
+# Always include Vercel frontend URL if not already present
+vercel_frontend = "https://talking-pnid.vercel.app"
+if vercel_frontend not in allowed_origins:
+    allowed_origins.append(vercel_frontend)
 
 app.add_middleware(
     CORSMiddleware,
