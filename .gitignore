@@ -9,3 +9,7 @@ wheels/
 # Virtual environments
 .venv
 src/talking-pnids-py/config/config.json
+
+# macOS
+.DS_Store
+**/.DS_Store
