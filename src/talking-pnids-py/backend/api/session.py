@@ -27,12 +27,12 @@ async def start_session():
         prompts = load_prompts()
         print(f"Prompts loaded: {'yes' if prompts else 'no'}")
         
-        # Load markdown summaries (cached)
-        print("Loading markdown summaries...")
-        markdown_summaries = await cache.get_markdown_summaries()
-        print(f"Markdown summaries loaded: {len(markdown_summaries)}")
+        # Load all markdown files (cached)
+        print("Loading all markdown files...")
+        await cache.get_all_markdowns()  # This populates the cache
+        print(f"Markdown files loaded: {len(cache.markdowns)}")
         
-        if len(markdown_summaries) == 0:
+        if len(cache.markdowns) == 0:
             raise HTTPException(
                 status_code=404,
                 detail="No markdown files found. Please add markdown files to the data/mds folder."
@@ -42,16 +42,18 @@ async def start_session():
         system_prompt = get_system_prompt_template(prompts)
         
         # Get session init prompt
-        session_init_prompt = get_session_init_prompt(prompts, len(markdown_summaries))
+        session_init_prompt = get_session_init_prompt(prompts, len(cache.markdowns))
         
-        # Prepare context with markdown summaries
+        # Prepare context with full markdown content
+        markdown_parts = []
+        for idx, (filename, markdown_file) in enumerate(cache.markdowns.items(), 1):
+            markdown_parts.append(
+                f"=== P&ID Documentation File {idx}: {filename} ===\n\n{markdown_file.content}\n\n"
+            )
+        
         markdowns_context = (
-            f"P&ID Documentation Summaries ({len(markdown_summaries)} systems available):\n\n"
-            + "\n".join([
-                f"File {idx + 1}: {summary.filename}\nPreview: {summary.preview}...\nSize: {summary.size} characters\n"
-                for idx, summary in enumerate(markdown_summaries)
-            ])
-            + "\n\nNote: Full markdown documentation will be provided when answering specific questions about the plant."
+            f"P&ID Documentation ({len(cache.markdowns)} systems available):\n\n"
+            + "".join(markdown_parts)
         )
         
         # Create session ID
@@ -94,7 +96,7 @@ async def start_session():
         return {
             "success": True,
             "message": assistant_response,
-            "markdownsLoaded": len(markdown_summaries),
+            "markdownsLoaded": len(cache.markdowns),
             "sessionId": session_id,
         }
     except HTTPException:

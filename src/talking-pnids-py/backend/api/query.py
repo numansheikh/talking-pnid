@@ -40,30 +40,32 @@ async def process_query(request: QueryRequest):
             else:
                 context = f"No markdown found for {request.selectedMapping['md']}.\n\n"
         elif request.sessionStarted:
-            # Session started but no specific mapping: send summaries
-            summaries = await cache.get_markdown_summaries()
-            if len(summaries) > 0:
+            # Session started but no specific mapping: send all full markdowns
+            await cache.get_all_markdowns()  # This populates the cache
+            if len(cache.markdowns) > 0:
+                markdown_parts = []
+                for idx, (filename, markdown_file) in enumerate(cache.markdowns.items(), 1):
+                    markdown_parts.append(
+                        f"=== P&ID Documentation File {idx}: {filename} ===\n\n{markdown_file.content}\n\n"
+                    )
                 context = (
-                    f"P&ID Documentation Summaries ({len(summaries)} systems available):\n\n"
-                    + "\n".join([
-                        f"File {idx + 1}: {summary.filename}\nPreview: {summary.preview}...\nSize: {summary.size} characters\n"
-                        for idx, summary in enumerate(summaries)
-                    ])
-                    + "\n\nNote: Summaries are provided to reduce token usage. If you need details about a specific equipment, instrument, or process from a particular file, indicate which one and the full markdown documentation can be retrieved.\n\n"
+                    f"P&ID Documentation ({len(cache.markdowns)} systems available):\n\n"
+                    + "".join(markdown_parts)
                 )
             else:
                 context = "No P&ID markdown documentation available yet.\n\n"
         else:
-            # Fallback: send summaries
-            summaries = await cache.get_markdown_summaries()
-            if len(summaries) > 0:
+            # Fallback: send all full markdowns
+            await cache.get_all_markdowns()  # This populates the cache
+            if len(cache.markdowns) > 0:
+                markdown_parts = []
+                for idx, (filename, markdown_file) in enumerate(cache.markdowns.items(), 1):
+                    markdown_parts.append(
+                        f"=== P&ID Documentation File {idx}: {filename} ===\n\n{markdown_file.content}\n\n"
+                    )
                 context = (
-                    "P&ID Documentation Summaries:\n\n"
-                    + "\n".join([
-                        f"File {idx + 1}: {summary.filename}\nPreview: {summary.preview}...\n"
-                        for idx, summary in enumerate(summaries)
-                    ])
-                    + "\n\nNote: Summaries are provided. Select a specific file to get full markdown documentation.\n\n"
+                    f"P&ID Documentation ({len(cache.markdowns)} systems available):\n\n"
+                    + "".join(markdown_parts)
                 )
             else:
                 context = "No P&ID markdown documentation available yet.\n\n"
