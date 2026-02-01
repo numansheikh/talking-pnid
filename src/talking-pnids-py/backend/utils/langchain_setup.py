@@ -104,24 +104,46 @@ def get_openai_client(config: Optional[Dict] = None) -> OpenAI:
     return OpenAI(api_key=api_key)
 
 def invoke_with_reasoning(client: OpenAI, model: str, messages: List[Dict], effort_level: str = "medium") -> str:
-    """Invoke OpenAI API with reasoning effort using the new responses.create pattern"""
+    """Invoke OpenAI API with reasoning models (o1/o3 or gpt-5.2)"""
     try:
-        # Convert messages to the format expected by responses.create
+        # Convert messages to the format expected by the API
         input_messages = []
+        system_content = None
+        
         for msg in messages:
             if hasattr(msg, 'content'):
                 # LangChain message objects
-                role = "user" if isinstance(msg, HumanMessage) else ("assistant" if isinstance(msg, AIMessage) else "system")
-                input_messages.append({"role": role, "content": msg.content})
+                if isinstance(msg, SystemMessage):
+                    system_content = msg.content
+                else:
+                    role = "user" if isinstance(msg, HumanMessage) else "assistant"
+                    input_messages.append({"role": role, "content": msg.content})
             elif isinstance(msg, dict):
                 # Already in dict format
-                input_messages.append(msg)
+                if msg.get("role") == "system":
+                    system_content = msg.get("content")
+                else:
+                    input_messages.append(msg)
         
-        response = client.responses.create(
-            model=model,
-            reasoning={"effort": effort_level},
-            input=input_messages
-        )
-        return response.output_text
+        # For o1/o3 models, use chat.completions.create
+        # o1/o3 models don't support system messages, so prepend to first user message
+        if model.startswith("o1") or model.startswith("o3"):
+            # Prepend system message to first user message if present
+            if system_content and input_messages and input_messages[0].get("role") == "user":
+                input_messages[0]["content"] = f"{system_content}\n\n{input_messages[0]['content']}"
+            
+            response = client.chat.completions.create(
+                model=model,
+                messages=input_messages
+            )
+            return response.choices[0].message.content
+        else:
+            # For gpt-5.2, use responses.create
+            response = client.responses.create(
+                model=model,
+                reasoning={"effort": effort_level},
+                input=input_messages
+            )
+            return response.output_text
     except Exception as e:
         raise Exception(f"Error calling OpenAI API: {e}")

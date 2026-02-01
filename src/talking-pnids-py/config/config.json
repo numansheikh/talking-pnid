@@ -1,7 +1,7 @@
 {
   "openai": {
     "apiKey": "",
-    "model": "gpt-5.2"
+    "model": "o1-preview"
   },
   "directories": {
     "pdfs": "./data/pdfs",

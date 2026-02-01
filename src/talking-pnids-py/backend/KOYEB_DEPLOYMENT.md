@@ -64,7 +64,7 @@ OPENAI_API_KEY=sk-your-actual-api-key-here
 
 **Optional (but recommended):**
 ```
-OPENAI_MODEL=gpt-5.2
+OPENAI_MODEL=o1-preview
 REASONING_EFFORT=medium
 PDFS_DIR=/app/data/pdfs
 JSONS_DIR=/app/data/jsons

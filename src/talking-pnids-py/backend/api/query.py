@@ -77,8 +77,8 @@ async def process_query(request: QueryRequest):
         model_name = config.get("openai", {}).get("model", "gpt-4")
         reasoning_effort = config.get("settings", {}).get("reasoningEffort", "medium")
         
-        # Check if using gpt-5.2 with reasoning
-        if model_name == "gpt-5.2":
+        # Check if using reasoning model (o1/o3 or gpt-5.2)
+        if model_name.startswith("o1") or model_name.startswith("o3") or model_name == "gpt-5.2":
             client = get_openai_client(config)
             # Build messages with history
             history = []

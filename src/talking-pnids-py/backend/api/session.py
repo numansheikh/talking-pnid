@@ -64,11 +64,11 @@ async def start_session():
         model_name = config.get("openai", {}).get("model", "gpt-4")
         reasoning_effort = config.get("settings", {}).get("reasoningEffort", "medium")
         
-        # Check if using gpt-5.2 with reasoning
-        if model_name == "gpt-5.2":
-            print("Using gpt-5.2 with reasoning API...")
+        # Check if using reasoning model (o1/o3 or gpt-5.2)
+        if model_name.startswith("o1") or model_name.startswith("o3") or model_name == "gpt-5.2":
+            print(f"Using {model_name} with reasoning API...")
             client = get_openai_client(config)
-            # Create messages in the format expected by responses.create
+            # Create messages in the format expected by the API
             input_messages = [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": init_message}

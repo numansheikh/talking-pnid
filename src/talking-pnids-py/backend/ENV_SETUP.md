@@ -23,7 +23,7 @@ This guide explains how to configure the application using environment variables
 
 ```bash
 export OPENAI_API_KEY=sk-your-actual-api-key-here
-export OPENAI_MODEL=gpt-5.2
+export OPENAI_MODEL=o1-preview
 export REASONING_EFFORT=medium
 ```
 
@@ -37,9 +37,10 @@ export REASONING_EFFORT=medium
 ### Optional - OpenAI Settings
 
 - **`OPENAI_MODEL`**: Model to use (default: `gpt-4`)
-  - Example: `OPENAI_MODEL=gpt-5.2`
-- **`REASONING_EFFORT`**: Reasoning effort level for gpt-5.2 (default: `medium`)
+  - Examples: `OPENAI_MODEL=o1-preview`, `OPENAI_MODEL=o3-mini`, `OPENAI_MODEL=o1-preview`, `OPENAI_MODEL=gpt-4`
+- **`REASONING_EFFORT`**: Reasoning effort level for gpt-5.2 only (default: `medium`)
   - Options: `low`, `medium`, `high`
+  - Note: Not used for o1/o3 models
   - Example: `REASONING_EFFORT=high`
 
 ### Optional - Directory Paths
@@ -93,7 +94,7 @@ Configuration is loaded in this priority order (highest to lowest):
 ```bash
 # .env file
 OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-5.2
+OPENAI_MODEL=o1-preview
 PDFS_DIR=./data/pdfs
 JSONS_DIR=./data/jsons
 MDS_DIR=./data/mds
@@ -104,7 +105,7 @@ MDS_DIR=./data/mds
 ```bash
 # Set in platform's environment variables
 OPENAI_API_KEY=sk-your-key-here
-OPENAI_MODEL=gpt-5.2
+OPENAI_MODEL=o1-preview
 PDFS_DIR=/app/data/pdfs
 JSONS_DIR=/app/data/jsons
 MDS_DIR=/app/data/mds
