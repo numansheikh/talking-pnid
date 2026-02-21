@@ -13,9 +13,17 @@ cd talking-pnid/src/talking-pnids-py
 
 - **Python 3.11+**
 - **Node.js 18+**
-- **OpenAI API key** (ask the project owner if you need one)
+- **OpenAI API key** (see below)
 
-## 3. Configure (pick one)
+## 3. API key
+
+Each collaborator uses their own OpenAI API key. Keys are per-account and shouldn't be shared.
+
+1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
+2. Create an API key
+3. Add it locally (see Configure below) — **never commit it to git**
+
+## 4. Configure (pick one)
 
 **Option A – `.env` (recommended, not committed):**
 
@@ -32,7 +40,7 @@ cp config/config.json.example config/config.json
 # Edit config/config.json and add your API key
 ```
 
-## 4. Run locally
+## 5. Run locally
 
 From `src/talking-pnids-py`:
 
@@ -45,7 +53,7 @@ npm install && npm start
 
 Stop with **Ctrl+C**.
 
-## 5. Project layout
+## 6. Project layout
 
 | Area           | Path                         |
 |----------------|------------------------------|
@@ -55,15 +63,15 @@ Stop with **Ctrl+C**.
 | Data (PDFs)    | `data/`                      |
 | Main docs      | `README.md` in this folder   |
 
-## 6. Deployment
+## 7. Deployment
 
 - **Backend:** Koyeb
 - **Frontend:** Vercel
 
 See `README.md` → "Deployment" and "Verify online deployment".
 
-## 7. Important
+## 8. Important
 
 - Don't commit `.env` or `config/config.json` (they hold secrets)
 - Sample data is in the repo; no extra setup needed
-- Request repo access, API keys, and deployment credentials from the project owner
+- Request repo access and deployment credentials from the project owner
