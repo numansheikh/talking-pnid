@@ -4,17 +4,17 @@ React + TypeScript frontend for the Talking P&IDs application, built with Vite.
 
 ## Setup
 
-1. Install dependencies:
-```bash
-npm install
-```
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-2. Start development server:
-```bash
-npm run dev
-```
+2. **Start development server:**
+   ```bash
+   npm run dev
+   ```
 
-The frontend will run on `http://localhost:3000` and proxy API requests to `http://localhost:8000` (Python backend).
+Runs at http://localhost:3000 and proxies `/api` to http://localhost:8000 (Python backend).
 
 ## Build
 
@@ -22,27 +22,34 @@ The frontend will run on `http://localhost:3000` and proxy API requests to `http
 npm run build
 ```
 
-The built files will be in the `dist` directory.
+Output: `dist/`
 
 ## Project Structure
 
 ```
 src/
 ├── contexts/        # React contexts (AuthContext)
-├── pages/          # Page components (Login, Signup, App)
-├── utils/          # Utility functions (API client)
-├── App.tsx         # Main app component with routing
-├── main.tsx        # Entry point
-└── index.css       # Global styles
+├── pages/           # Page components (Login, Signup, App)
+├── utils/           # API client (fetchFiles, startSession, sendQuery)
+├── services/        # Additional services
+├── App.tsx          # Main app with routing
+├── main.tsx         # Entry point
+└── index.css        # Global styles
 ```
 
 ## API Integration
 
-The frontend expects a Python backend running on `http://localhost:8000` with the following endpoints:
+The frontend expects a Python backend with:
 
-- `GET /api/files` - Get file mappings
-- `POST /api/session` - Start a session
-- `POST /api/query` - Send a query
-- `GET /api/pdf/:filename` - Get PDF file
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/files` | File mappings |
+| POST | `/api/session` | Start session |
+| POST | `/api/query` | Send query |
+| GET | `/api/pdf/:filename` | PDF file |
 
-All API calls are proxied through Vite's dev server during development.
+For production, set `VITE_API_BASE_URL` to the backend URL (without `/api`). The client appends `/api` automatically.
+
+## Deployment
+
+Deploy to Vercel. Root directory: `src/talking-pnids-py/frontend`. Set `VITE_API_BASE_URL` to your backend URL. See the main [README](../README.md#deployment) and [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md).

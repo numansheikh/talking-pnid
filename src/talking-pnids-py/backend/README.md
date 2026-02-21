@@ -4,49 +4,53 @@ Python FastAPI backend for the Talking P&IDs application.
 
 ## Setup
 
-1. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+1. **Virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # Windows: venv\Scripts\activate
+   ```
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Set up environment variables:
-Create a `.env` file in the backend directory:
-```
-OPENAI_API_KEY=your-openai-api-key-here
-OPENAI_MODEL=gpt-4
-PDFS_DIR=./data/pdfs
-JSONS_DIR=./data/jsons
-MDS_DIR=./data/mds
-MAX_TOKENS=2000
-TEMPERATURE=0.7
-```
+3. **Configuration:**
 
-Or create a `config/config.json` file (see `config/config.json.example`).
+   Copy `env.example` to `.env` and add your OpenAI API key:
+   ```bash
+   cp env.example .env
+   ```
 
-4. Run the server:
-```bash
-python main.py
-```
+   Or create `config/config.json` in the parent directory (see `../config/config.json.example`).
 
-Or with uvicorn:
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
+4. **Run:**
+   ```bash
+   python main.py
+   ```
 
-The API will be available at `http://localhost:8000`
+   Or with uvicorn:
+   ```bash
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
 
-## API Endpoints
+API: http://localhost:8000
 
-- `GET /api/files` - Get file mappings with existence verification
-- `POST /api/session` - Initialize a session with OpenAI
-- `POST /api/query` - Process a query with OpenAI
-- `GET /api/pdf/{filename}` - Serve PDF files
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_KEY` | Required. OpenAI API key | — |
+| `OPENAI_MODEL` | Model name | `gpt-4` |
+| `REASONING_EFFORT` | For reasoning models: `low`, `medium`, `high` | `medium` |
+| `PDFS_DIR` | PDF directory | `./data/pdfs` |
+| `JSONS_DIR` | JSON directory | `./data/jsons` |
+| `MDS_DIR` | Markdown directory | `./data/mds` |
+| `MAX_TOKENS` | Max tokens | `2000` |
+| `TEMPERATURE` | Temperature | `0.7` |
+| `FRONTEND_URL` | CORS origin (production) | `http://localhost:3000` |
+
+See `ENV_SETUP.md` for full details.
 
 ## Project Structure
 
@@ -59,16 +63,28 @@ backend/
 │   └── pdf.py        # PDF serving
 ├── utils/
 │   ├── config.py     # Configuration loading
-│   └── markdown_cache.py  # Markdown caching
+│   ├── paths.py      # Path resolution (project root, config, data)
+│   ├── markdown_cache.py
+│   └── langchain_setup.py
 ├── main.py           # FastAPI app
-└── requirements.txt  # Python dependencies
+├── requirements.txt
+├── Procfile          # For Koyeb (used when root is parent dir)
+├── env.example       # Example .env
+├── ENV_SETUP.md      # Detailed env var guide
+└── KOYEB_DEPLOYMENT.md   # Koyeb deployment guide
 ```
 
-## Configuration
+## API Endpoints
 
-The backend looks for configuration in this order:
-1. Environment variables (highest priority)
-2. `config/config.json` file
-3. Default values
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/files` | File mappings with existence verification |
+| POST | `/api/session` | Initialize session |
+| POST | `/api/query` | Process query |
+| GET | `/api/pdf/{filename}` | Serve PDF files |
+| GET | `/health` | Health check |
+| GET | `/debug/paths` | Debug path resolution |
 
-Make sure to set `OPENAI_API_KEY` either in `.env` or `config/config.json`.
+## Deployment
+
+Deploy to Koyeb using the parent project root (`src/talking-pnids-py`). See the main [README](../README.md#deployment) and [KOYEB_DEPLOYMENT.md](KOYEB_DEPLOYMENT.md).

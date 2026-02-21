@@ -38,13 +38,12 @@ git push origin main
 ### 2.2 Configure Repository
 
 1. Select your repository
-2. **Important**: Set the **Root Directory** (also called "Working Directory" in some Koyeb interfaces) to:
+2. **Important**: Set the **Root Directory** to:
    ```
-   src/talking-pnids-py/backend
+   src/talking-pnids-py
    ```
-   - This tells Koyeb where your backend code is located
-   - It's the directory where Koyeb will run your build and start commands
-   - Both "Root Directory" and "Working Directory" refer to the same setting
+   - This ensures `data/` and `config/` are included (needed for file mappings)
+   - The Procfile at this level runs: `cd backend && uvicorn main:app ...`
 3. Select the branch (usually `main` or `master`)
 
 ### 2.3 Configure Build Settings
@@ -76,8 +75,8 @@ TEMPERATURE=0.7
 
 **Important Notes:**
 - Use **absolute paths** for directories in cloud (e.g., `/app/data/pdfs`)
-- The `FRONTEND_URL` should be set to your Vercel frontend URL (we'll set this after deploying frontend)
-- For now, you can leave `FRONTEND_URL` empty or set it to `*` to allow all origins
+- Set `FRONTEND_URL` to your Vercel frontend URL after deploying the frontend
+- For initial testing, you can set `FRONTEND_URL=*` to allow all origins
 
 ### 2.5 Deploy
 
@@ -151,8 +150,8 @@ Once you deploy the frontend to Vercel:
 
 **Solution:**
 - Ensure all dependencies are in `requirements.txt`
-- Check that Root Directory/Working Directory is set to `src/talking-pnids-py/backend`
-- Verify that `main.py` and `Procfile` are in that directory
+- Check that Root Directory is set to `src/talking-pnids-py`
+- Verify the Procfile runs `cd backend && uvicorn main:app ...`
 
 ### Issue: "OpenAI API key not found"
 

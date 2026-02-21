@@ -53,14 +53,12 @@ Click on **"Environment Variables"** and add:
 
 **Required:**
 ```
-VITE_API_BASE_URL=https://decent-lilli-cogit-0d306da3.koyeb.app
+VITE_API_BASE_URL=https://your-backend.koyeb.app
 ```
 
 **Important Notes:**
-- Use your actual Koyeb backend URL (no trailing slash)
-- The frontend will automatically append `/api` to this URL
-- So if your backend is `https://your-app.koyeb.app`, set `VITE_API_BASE_URL=https://your-app.koyeb.app`
-- The code will automatically add `/api` when making requests
+- Replace with your actual Koyeb backend URL (no trailing slash, no `/api`)
+- The frontend automatically appends `/api` when making requests
 
 ### 2.4 Deploy
 
@@ -94,11 +92,7 @@ Koyeb should auto-restart, or you can manually trigger a restart.
 
 ### 4.2 Test API Connection
 
-In browser console, you should see:
-```
-🔗 API CONFIGURATION DEBUG
-🔗 API Base URL: https://decent-lilli-cogit-0d306da3.koyeb.app/api
-```
+In browser console, you should see the API base URL pointing to your backend (with `/api` appended).
 
 ### 4.3 Test Functionality
 
@@ -119,7 +113,7 @@ In browser console, you should see:
 
 **Solution:**
 - Check `VITE_API_BASE_URL` in Vercel environment variables
-- Should be: `https://decent-lilli-cogit-0d306da3.koyeb.app` (no trailing slash, no `/api`)
+- Set to your backend URL only (e.g. `https://your-app.koyeb.app`) with no trailing slash and no `/api`
 - The code automatically adds `/api` to the base URL
 
 ### Issue: Build fails on Vercel
@@ -139,7 +133,7 @@ In browser console, you should see:
 
 ### Vercel (Frontend)
 ```
-VITE_API_BASE_URL=https://decent-lilli-cogit-0d306da3.koyeb.app
+VITE_API_BASE_URL=https://your-backend.koyeb.app
 ```
 
 ### Koyeb (Backend)
@@ -159,10 +153,10 @@ After deployment:
 ## Useful Commands
 
 ```bash
-# Test backend
-curl https://decent-lilli-cogit-0d306da3.koyeb.app/api/files
+# Test backend (replace with your URL)
+curl https://your-backend.koyeb.app/api/files
 
-# Test frontend (after deployment)
+# Test frontend (replace with your URL)
 curl https://your-project.vercel.app
 
 # Check environment variables in Vercel
