@@ -14,21 +14,9 @@ AI-powered Q&A application for Piping & Instrumentation Diagrams with Python Fas
 
 ### Step 1: Setup Data Files
 
-Data files (PDFs, JSONs, markdown) can come from the JS project or your own sources.
+The repo includes sample data in `data/pdfs`, `data/jsons`, and `data/mds`. You can start with that.
 
-**Option A: Copy from JS project** (if `talking-pnids-js` exists as a sibling directory)
-
-```bash
-# From the talking-pnids-py directory
-npm run setup-data
-# or: ./setup-data.sh (macOS/Linux) / setup-data.bat (Windows)
-```
-
-This copies from `../talking-pnids-js/data/` to `./data/`.
-
-**Option B: Use existing data**
-
-Place your files in `data/pdfs`, `data/jsons`, and `data/mds`. Ensure `config/file-mappings.json` matches your files.
+To use your own data: place files in those directories and update `config/file-mappings.json` to match.
 
 ### Step 2: Configure
 
@@ -232,9 +220,23 @@ talking-pnids-py/
 ### Post-deployment
 
 1. Set `FRONTEND_URL` in Koyeb to your Vercel URL.
-2. Verify CORS: open the Vercel app and ensure API calls succeed.
+2. See [Verify online deployment](#verify-online-deployment) below.
 
 See `backend/KOYEB_DEPLOYMENT.md` and `frontend/VERCEL_DEPLOYMENT.md` for more detail.
+
+### Verify online deployment
+
+Use this checklist to confirm your deployed app works:
+
+| Step | What to check | How |
+|------|---------------|-----|
+| 1. Backend health | Backend is up | `curl https://YOUR-KOYEB-URL/health` → `{"status":"ok"}` |
+| 2. Backend API | Files endpoint works | `curl https://YOUR-KOYEB-URL/api/files` → JSON with mappings |
+| 3. Frontend loads | App loads in browser | Open `https://YOUR-VERCEL-URL` → no blank page |
+| 4. API connection | Frontend reaches backend | Browser console (F12): no CORS errors; files list loads |
+| 5. Session + query | AI features work | Select a file, start session, ask a question (requires `OPENAI_API_KEY` in Koyeb) |
+
+**If files don't load or you see CORS errors:** ensure `FRONTEND_URL` in Koyeb exactly matches your Vercel URL (e.g. `https://your-project.vercel.app`), then redeploy or restart the backend.
 
 ## Development
 
