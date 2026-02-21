@@ -2,6 +2,8 @@
 
 React + TypeScript frontend for the Talking P&IDs application, built with Vite.
 
+**Live app:** https://talking-pnid.vercel.app/app
+
 ## Setup
 
 1. **Install dependencies:**
@@ -48,7 +50,7 @@ The frontend expects a Python backend with:
 | POST | `/api/query` | Send query |
 | GET | `/api/pdf/:filename` | PDF file |
 
-For production, set `VITE_API_BASE_URL` to the backend URL (without `/api`). The client appends `/api` automatically.
+For production, set `VITE_API_BASE_URL` to `https://decent-lilli-cogit-0d306da3.koyeb.app`. The client appends `/api` automatically.
 
 ## Deployment
 

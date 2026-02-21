@@ -2,6 +2,9 @@
 
 This guide will help you deploy the FastAPI backend to Koyeb from scratch.
 
+**Live backend:** https://decent-lilli-cogit-0d306da3.koyeb.app  
+**Frontend:** https://talking-pnid.vercel.app/app
+
 ## Prerequisites
 
 1. A Koyeb account (sign up at https://www.koyeb.com - free tier available)
@@ -68,7 +71,7 @@ REASONING_EFFORT=medium
 PDFS_DIR=/app/data/pdfs
 JSONS_DIR=/app/data/jsons
 MDS_DIR=/app/data/mds
-FRONTEND_URL=https://your-frontend.vercel.app
+FRONTEND_URL=https://talking-pnid.vercel.app
 MAX_TOKENS=2000
 TEMPERATURE=0.7
 ```
@@ -82,14 +85,14 @@ TEMPERATURE=0.7
 
 1. Click **"Deploy"**
 2. Wait for the build to complete (usually 2-3 minutes)
-3. Koyeb will provide you with a URL like: `https://your-app-name.koyeb.app`
+3. Koyeb will provide you with a URL (live: https://decent-lilli-cogit-0d306da3.koyeb.app)
 
 ## Step 3: Verify Deployment
 
 ### 3.1 Test Health Endpoint
 
 ```bash
-curl https://your-app-name.koyeb.app/health
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/health
 ```
 
 Should return: `{"status":"ok"}`
@@ -97,7 +100,7 @@ Should return: `{"status":"ok"}`
 ### 3.2 Test API Endpoint
 
 ```bash
-curl https://your-app-name.koyeb.app/api/files
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/api/files
 ```
 
 Should return JSON with file mappings.
@@ -132,7 +135,7 @@ Once you deploy the frontend to Vercel:
 1. Go to Koyeb app settings
 2. Update environment variable:
    ```
-   FRONTEND_URL=https://your-frontend.vercel.app
+   FRONTEND_URL=https://talking-pnid.vercel.app
    ```
 3. Restart the app (or it will auto-restart)
 
@@ -176,26 +179,25 @@ Once you deploy the frontend to Vercel:
 
 After backend is deployed and working:
 
-1. ✅ Note your backend URL: `https://your-app-name.koyeb.app`
+1. ✅ Backend URL: https://decent-lilli-cogit-0d306da3.koyeb.app
 2. ✅ Test all endpoints
-3. ✅ Deploy frontend to Vercel (next step)
-4. ✅ Update `FRONTEND_URL` in Koyeb
-5. ✅ Update frontend to use backend URL
+3. ✅ Frontend: https://talking-pnid.vercel.app/app
+4. ✅ Set `FRONTEND_URL` in Koyeb to `https://talking-pnid.vercel.app`
 
 ## Useful Commands
 
 ```bash
 # Test health
-curl https://your-app-name.koyeb.app/health
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/health
 
 # Test files endpoint
-curl https://your-app-name.koyeb.app/api/files
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/api/files
 
 # Test session (requires API key)
-curl -X POST https://your-app-name.koyeb.app/api/session
+curl -X POST https://decent-lilli-cogit-0d306da3.koyeb.app/api/session
 
 # Debug paths
-curl https://your-app-name.koyeb.app/debug/paths
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/debug/paths
 ```
 
 ## Support

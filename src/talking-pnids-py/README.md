@@ -4,6 +4,11 @@ AI-powered Q&A application for Piping & Instrumentation Diagrams with Python Fas
 
 **Note:** All commands below are run from the `talking-pnids-py` directory (e.g. `src/talking-pnids-py` if this repo includes a `src/` layout).
 
+## Live app
+
+- **Backend:** https://decent-lilli-cogit-0d306da3.koyeb.app
+- **Frontend:** https://talking-pnid.vercel.app/app
+
 ## Quick Start
 
 ### Prerequisites
@@ -193,14 +198,14 @@ talking-pnids-py/
    | Variable | Value |
    |----------|-------|
    | `OPENAI_API_KEY` | Your API key |
-   | `FRONTEND_URL` | Your Vercel URL (e.g. `https://your-app.vercel.app`) |
+   | `FRONTEND_URL` | `https://talking-pnid.vercel.app` |
    | `OPENAI_MODEL` | Optional, e.g. `gpt-4` |
    | `REASONING_EFFORT` | Optional, e.g. `medium` |
    | `PDFS_DIR` | `/app/data/pdfs` (absolute paths for cloud) |
    | `JSONS_DIR` | `/app/data/jsons` |
    | `MDS_DIR` | `/app/data/mds` |
 
-6. Deploy. Note your backend URL (e.g. `https://your-app.koyeb.app`).
+6. Deploy. Live backend: https://decent-lilli-cogit-0d306da3.koyeb.app
 
 **Data files:** Keep the `data/` directory in the repo so it is deployed with the app. Use absolute paths in env vars as above.
 
@@ -213,13 +218,13 @@ talking-pnids-py/
 
    | Variable | Value |
    |----------|-------|
-   | `VITE_API_BASE_URL` | Backend URL without `/api` (e.g. `https://your-app.koyeb.app`) |
+   | `VITE_API_BASE_URL` | `https://decent-lilli-cogit-0d306da3.koyeb.app` |
 
 5. Deploy.
 
 ### Post-deployment
 
-1. Set `FRONTEND_URL` in Koyeb to your Vercel URL.
+1. Set `FRONTEND_URL` in Koyeb to `https://talking-pnid.vercel.app`.
 2. See [Verify online deployment](#verify-online-deployment) below.
 
 See `backend/KOYEB_DEPLOYMENT.md` and `frontend/VERCEL_DEPLOYMENT.md` for more detail.
@@ -230,13 +235,13 @@ Use this checklist to confirm your deployed app works:
 
 | Step | What to check | How |
 |------|---------------|-----|
-| 1. Backend health | Backend is up | `curl https://YOUR-KOYEB-URL/health` → `{"status":"ok"}` |
-| 2. Backend API | Files endpoint works | `curl https://YOUR-KOYEB-URL/api/files` → JSON with mappings |
-| 3. Frontend loads | App loads in browser | Open `https://YOUR-VERCEL-URL` → no blank page |
+| 1. Backend health | Backend is up | `curl https://decent-lilli-cogit-0d306da3.koyeb.app/health` → `{"status":"ok"}` |
+| 2. Backend API | Files endpoint works | `curl https://decent-lilli-cogit-0d306da3.koyeb.app/api/files` → JSON with mappings |
+| 3. Frontend loads | App loads in browser | Open https://talking-pnid.vercel.app/app → no blank page |
 | 4. API connection | Frontend reaches backend | Browser console (F12): no CORS errors; files list loads |
 | 5. Session + query | AI features work | Select a file, start session, ask a question (requires `OPENAI_API_KEY` in Koyeb) |
 
-**If files don't load or you see CORS errors:** ensure `FRONTEND_URL` in Koyeb exactly matches your Vercel URL (e.g. `https://your-project.vercel.app`), then redeploy or restart the backend.
+**If files don't load or you see CORS errors:** ensure `FRONTEND_URL` in Koyeb is `https://talking-pnid.vercel.app` (or include `https://talking-pnid.vercel.app/app` if needed), then redeploy or restart the backend.
 
 ## Development
 

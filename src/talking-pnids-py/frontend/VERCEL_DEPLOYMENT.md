@@ -2,6 +2,9 @@
 
 This guide will help you deploy the React frontend to Vercel and connect it to your Koyeb backend.
 
+**Live app:** https://talking-pnid.vercel.app/app  
+**Backend:** https://decent-lilli-cogit-0d306da3.koyeb.app
+
 ## Prerequisites
 
 1. A Vercel account (sign up at https://vercel.com - free tier available)
@@ -53,18 +56,18 @@ Click on **"Environment Variables"** and add:
 
 **Required:**
 ```
-VITE_API_BASE_URL=https://your-backend.koyeb.app
+VITE_API_BASE_URL=https://decent-lilli-cogit-0d306da3.koyeb.app
 ```
 
 **Important Notes:**
-- Replace with your actual Koyeb backend URL (no trailing slash, no `/api`)
+- Use the backend URL without trailing slash and without `/api`
 - The frontend automatically appends `/api` when making requests
 
 ### 2.4 Deploy
 
 1. Click **"Deploy"**
 2. Wait for the build to complete (usually 1-2 minutes)
-3. Vercel will provide you with a URL like: `https://your-project.vercel.app`
+3. Vercel will provide you with a URL (live app: https://talking-pnid.vercel.app/app)
 
 ## Step 3: Update Backend CORS
 
@@ -73,10 +76,8 @@ VITE_API_BASE_URL=https://your-backend.koyeb.app
 Go back to your Koyeb dashboard and update the environment variable:
 
 ```
-FRONTEND_URL=https://your-project.vercel.app
+FRONTEND_URL=https://talking-pnid.vercel.app
 ```
-
-Replace `your-project.vercel.app` with your actual Vercel domain.
 
 ### 3.2 Restart Backend (if needed)
 
@@ -86,7 +87,7 @@ Koyeb should auto-restart, or you can manually trigger a restart.
 
 ### 4.1 Test Frontend
 
-1. Open your Vercel URL: `https://your-project.vercel.app`
+1. Open https://talking-pnid.vercel.app/app
 2. Check browser console (F12) for any errors
 3. Verify that files are loading from the backend
 
@@ -113,7 +114,7 @@ In browser console, you should see the API base URL pointing to your backend (wi
 
 **Solution:**
 - Check `VITE_API_BASE_URL` in Vercel environment variables
-- Set to your backend URL only (e.g. `https://your-app.koyeb.app`) with no trailing slash and no `/api`
+- Should be `https://decent-lilli-cogit-0d306da3.koyeb.app` (no trailing slash, no `/api`)
 - The code automatically adds `/api` to the base URL
 
 ### Issue: Build fails on Vercel
@@ -133,13 +134,13 @@ In browser console, you should see the API base URL pointing to your backend (wi
 
 ### Vercel (Frontend)
 ```
-VITE_API_BASE_URL=https://your-backend.koyeb.app
+VITE_API_BASE_URL=https://decent-lilli-cogit-0d306da3.koyeb.app
 ```
 
 ### Koyeb (Backend)
 ```
 OPENAI_API_KEY=sk-your-key-here
-FRONTEND_URL=https://your-project.vercel.app
+FRONTEND_URL=https://talking-pnid.vercel.app
 ```
 
 ## Next Steps
@@ -153,11 +154,11 @@ After deployment:
 ## Useful Commands
 
 ```bash
-# Test backend (replace with your URL)
-curl https://your-backend.koyeb.app/api/files
+# Test backend
+curl https://decent-lilli-cogit-0d306da3.koyeb.app/api/files
 
-# Test frontend (replace with your URL)
-curl https://your-project.vercel.app
+# Test frontend
+curl https://talking-pnid.vercel.app/app
 
 # Check environment variables in Vercel
 # Go to Project Settings → Environment Variables

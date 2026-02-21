@@ -2,6 +2,8 @@
 
 Python FastAPI backend for the Talking P&IDs application.
 
+**Live API:** https://decent-lilli-cogit-0d306da3.koyeb.app
+
 ## Setup
 
 1. **Virtual environment:**

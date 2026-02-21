@@ -2,6 +2,11 @@
 
 Quick setup guide for new team members.
 
+## Live app
+
+- **Backend:** https://decent-lilli-cogit-0d306da3.koyeb.app
+- **Frontend:** https://talking-pnid.vercel.app/app
+
 ## 1. Clone and enter the project
 
 ```bash
@@ -65,8 +70,8 @@ Stop with **Ctrl+C**.
 
 ## 7. Deployment
 
-- **Backend:** Koyeb
-- **Frontend:** Vercel
+- **Backend:** Koyeb — https://decent-lilli-cogit-0d306da3.koyeb.app
+- **Frontend:** Vercel — https://talking-pnid.vercel.app/app
 
 See `README.md` → "Deployment" and "Verify online deployment".
 
