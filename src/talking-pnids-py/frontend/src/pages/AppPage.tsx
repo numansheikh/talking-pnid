@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 // import { useAuth } from '../contexts/AuthContext'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -14,6 +15,7 @@ export default function AppPage() {
   // const { user, logout } = useAuth()
   const user = { email: 'user@example.com', name: 'User' }
   const logout = () => {}
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
@@ -355,6 +357,15 @@ export default function AppPage() {
       {/* Top Navigation */}
       <div className="top-nav">
         <div className="nav-brand">Talking P&IDs</div>
+        <div className="nav-links">
+          <button 
+            className="nav-button"
+            onClick={() => navigate('/knowledge')}
+            title="Manage knowledge base for GPT context"
+          >
+            📚 Knowledge Base
+          </button>
+        </div>
         {user && (
           <div className="nav-user">
             <span className="user-email">{user.email}</span>

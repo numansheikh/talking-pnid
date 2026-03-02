@@ -5,7 +5,7 @@ from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
 
-from api import files, session, query, pdf
+from api import files, session, query, pdf, knowledge
 
 load_dotenv()
 
@@ -39,6 +39,7 @@ app.include_router(files.router, prefix="/api", tags=["files"])
 app.include_router(session.router, prefix="/api", tags=["session"])
 app.include_router(query.router, prefix="/api", tags=["query"])
 app.include_router(pdf.router, prefix="/api", tags=["pdf"])
+app.include_router(knowledge.router, prefix="/api", tags=["knowledge"])
 
 @app.get("/")
 async def root():
