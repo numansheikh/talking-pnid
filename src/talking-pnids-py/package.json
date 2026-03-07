@@ -13,6 +13,7 @@
     "build": "cd frontend && npm install && npm run build"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "vite": "^7.3.1"
   }
 }
