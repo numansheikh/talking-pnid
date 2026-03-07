@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 // import LoginPage from './pages/LoginPage'
 // import SignupPage from './pages/SignupPage'
 import AppPage from './pages/AppPage'
-import KnowledgePage from './pages/KnowledgePage'
 
 // Login disabled - all routes are public for now
 export default function App() {
@@ -11,7 +10,6 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/app" replace />} />
       <Route path="/app" element={<AppPage />} />
-      <Route path="/knowledge" element={<KnowledgePage />} />
       {/* Login routes disabled for now */}
       {/* <Route path="/login" element={<LoginPage />} /> */}
       {/* <Route path="/signup" element={<SignupPage />} /> */}

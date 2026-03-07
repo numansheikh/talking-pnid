@@ -1,10 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-import json
-from pathlib import Path
 from utils.config import load_config, load_prompts
 from utils.markdown_cache import cache
-from utils.paths import get_config_file
 from utils.langchain_setup import (
     get_chat_model,
     get_system_prompt_template,
@@ -15,17 +12,6 @@ from utils.langchain_setup import (
 )
 
 router = APIRouter()
-
-def load_knowledge_base():
-    """Load the knowledge base"""
-    try:
-        knowledge_file = get_config_file("knowledge_base.json")
-        if knowledge_file.exists():
-            with open(knowledge_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-    except Exception as e:
-        print(f"Error loading knowledge base: {e}")
-    return {"entries": []}
 
 class QueryRequest(BaseModel):
     query: str
@@ -45,15 +31,6 @@ async def process_query(request: QueryRequest):
         
         # Build context based on selected mapping or session state
         context = ""
-        
-        # Load and add knowledge base context
-        knowledge_base = load_knowledge_base()
-        knowledge_context = ""
-        if knowledge_base.get("entries"):
-            knowledge_parts = []
-            for entry in knowledge_base.get("entries", []):
-                knowledge_parts.append(f"=== {entry['title']} ===\n{entry['content']}\n")
-            knowledge_context = f"KNOWLEDGE BASE CONTEXT:\n\n" + "\n".join(knowledge_parts) + "\n\n"
         
         # If a specific mapping is selected, send that full markdown
         if request.selectedMapping and request.selectedMapping.get("md"):
@@ -93,14 +70,11 @@ async def process_query(request: QueryRequest):
             else:
                 context = "No P&ID markdown documentation available yet.\n\n"
         
-        # Combine knowledge context with document context
-        full_context = knowledge_context + context
-        
         # Get or create session ID
         session_id = request.sessionId or "default"
         
         # Build the full query with context
-        full_query = f"{full_context}Question: {request.query}" if full_context else request.query
+        full_query = f"{context}Question: {request.query}" if context else request.query
         
         model_name = config.get("openai", {}).get("model", "gpt-4")
         reasoning_effort = config.get("settings", {}).get("reasoningEffort", "medium")
