@@ -19,5 +19,8 @@ src/talking-pnids-py/config/config.json
 .DS_Store
 **/.DS_Store
 
+# Node
+node_modules/
+
 # Ignore JS version
 src/talking-pnids-js/
