@@ -1,0 +1,311 @@
+{
+  "tile": "r2c1",
+  "coord_range": "x:0-441, y:387-842 pts",
+  "components": [
+    {
+      "tag": "SPHN-0030",
+      "type": "instrument",
+      "symbol_description": "Square box with diagonal line inside and tag label; likely a local panel or speed/signal conditioner",
+      "connections": ["UC", "HV0001"],
+      "position_hint": "center-left, mid-height",
+      "confidence": "medium",
+      "notes": "Tag reads 'SPHN 0030'; square symbol with internal diagonal suggests local panel or junction box per ISA convention"
+    },
+    {
+      "tag": "HV0001",
+      "type": "valve",
+      "symbol_description": "Gate/ball valve symbol (two opposing triangles) on 2\"x0.75\" reduced line",
+      "connections": ["SPHN-0030", "HV0051", "2\"-PP01-567-GF0002-B03F9"],
+      "position_hint": "center, mid-height",
+      "confidence": "high",
+      "notes": "Located after 2\"x0.75\" reducer; part of utility connection (UC) line"
+    },
+    {
+      "tag": "HV0051",
+      "type": "valve",
+      "symbol_description": "Needle or globe valve symbol with dashed operator line (asterisk/star actuator symbol below)",
+      "connections": ["HV0001", "HV0002"],
+      "position_hint": "center, slightly below mid-height",
+      "confidence": "medium",
+      "notes": "Dashed line with asterisk below valve suggests local manual or special operator; tag partially small"
+    },
+    {
+      "tag": "HV0002",
+      "type": "valve",
+      "symbol_description": "Check or globe valve (triangular arrow symbol) labeled NC (Normally Closed)",
+      "connections": ["HV0051", "N9", "IG"],
+      "position_hint": "center-right, mid-height",
+      "confidence": "high",
+      "notes": "NC annotation visible — Normally Closed; CO2 tag symbol visible adjacent indicating commissioning connection"
+    },
+    {
+      "tag": "N9",
+      "type": "nozzle",
+      "symbol_description": "Nozzle stub with flanged end connecting into vessel wall",
+      "connections": ["HV0002", "vessel (continues into upper tile)"],
+      "position_hint": "center-right, mid-height, at vessel wall",
+      "confidence": "high",
+      "notes": "Connects horizontal utility line to vessel shell"
+    },
+    {
+      "tag": "N4",
+      "type": "nozzle",
+      "symbol_description": "Nozzle with flanged blind/spectacle plate, labeled NOTE-2; 12\" stub below 16\"x12\" reducer",
+      "connections": ["16\"x12\" reducer (top)", "vessel top"],
+      "position_hint": "upper right, second from right cluster",
+      "confidence": "high",
+      "notes": "NOTE-2 reference likely specifies blind flange or spectacle plate requirement; 12\" nominal diameter"
+    },
+    {
+      "tag": "N5",
+      "type": "nozzle",
+      "symbol_description": "Nozzle with flanged blind/spectacle plate, labeled NOTE-2; 12\" stub below 16\"x12\" reducer",
+      "connections": ["16\"x12\" reducer (top)", "vessel top"],
+      "position_hint": "upper right, adjacent to N4",
+      "confidence": "high",
+      "notes": "Identical configuration to N4; both reference NOTE-2"
+    },
+    {
+      "tag": "N17",
+      "type": "nozzle",
+      "symbol_description": "Nozzle at vessel top, partially cut off at right edge; 3\" diameter indicated",
+      "connections": ["vessel top", "continues into r2c2 tile"],
+      "position_hint": "upper far right, cut off at right edge",
+      "confidence": "medium",
+      "notes": "Only partially visible; tag and connection details continue into adjacent tile r2c2"
+    },
+    {
+      "tag": "N18A",
+      "type": "nozzle",
+      "symbol_description": "Vessel side nozzle stub (2\") connected to HV0024 valve",
+      "connections": ["HV0024", "vessel shell"],
+      "position_hint": "right side, upper mid area",
+      "confidence": "high",
+      "notes": "2\" diameter; part of level gauge bridle or drain connection"
+    },
+    {
+      "tag": "HV0024",
+      "type": "valve",
+      "symbol_description": "Gate valve with XO symbol (cross with circle) indicating remotely operated or lock-open",
+      "connections": ["N18A", "LG-0001"],
+      "position_hint": "right side, upper mid area",
+      "confidence": "high",
+      "notes": "XO symbol typically denotes car-sealed open or normally open locked valve in P&ID convention"
+    },
+    {
+      "tag": "LG-0001",
+      "type": "instrument",
+      "symbol_description": "Circle instrument bubble labeled LG (Level Gauge / Level Glass)",
+      "connections": ["HV0024", "HV0025"],
+      "position_hint": "right side, mid area",
+      "confidence": "high",
+      "notes": "Local level glass/gauge; located between HV0024 and HV0025 suggesting bridle assembly"
+    },
+    {
+      "tag": "N18B",
+      "type": "nozzle",
+      "symbol_description": "Vessel side nozzle stub (2\") connected to HV0025 valve, below N18A",
+      "connections": ["HV0025", "vessel shell"],
+      "position_hint": "right side, below N18A",
+      "confidence": "high",
+      "notes": "Lower nozzle of level gauge bridle pair with N18A"
+    },
+    {
+      "tag": "HV0025",
+      "type": "valve",
+      "symbol_description": "Gate valve with XO symbol (cross with circle)",
+      "connections": ["N18B", "LG-0001"],
+      "position_hint": "right side, below LG-0001",
+      "confidence": "high",
+      "notes": "Lower isolation valve of the LG-0001 bridle; mirrors HV0024 above"
+    },
+    {
+      "tag": "HV0026",
+      "type": "valve",
+      "symbol_description": "Gate or globe valve at right edge, partially visible",
+      "connections": ["continues into r2c2 tile"],
+      "position_hint": "right edge, upper mid",
+      "confidence": "medium",
+      "notes": "Partially cut off; continuation expected in tile r2c2"
+    },
+    {
+      "tag": "HV0027",
+      "type": "valve",
+      "symbol_description": "Gate or globe valve at right edge, partially visible with IG symbol above",
+      "connections": ["continues into r2c2 tile"],
+      "position_hint": "right edge, mid to lower-mid",
+      "confidence": "medium",
+      "notes": "Partially cut off at right edge; IG tag (instrument connection) visible adjacent"
+    },
+    {
+      "tag": "CO2",
+      "type": "annotation",
+      "symbol_description": "Small diamond or flag symbol labeled CO2; appears multiple times — likely commissioning connection markers",
+      "connections": ["HV0002", "N18A line", "HV0027 area"],
+      "position_hint": "multiple locations: center-right and right side",
+      "confidence": "medium",
+      "notes": "CO2 repeated at several points; in P&ID context may denote chemical injection (CO2 inhibitor) or commissioning/blowdown tie-in; requires cross-reference with drawing legend"
+    },
+    {
+      "tag": "UC",
+      "type": "annotation",
+      "symbol_description": "Text label 'UC' — Utility Connection terminus arrow",
+      "connections": ["SPHN-0030"],
+      "position_hint": "center-left, on utility line leading to SPHN-0030",
+      "confidence": "high",
+      "notes": "UC = Utility Connection; indicates off-drawing tie-in point for utilities"
+    },
+    {
+      "tag": "NC",
+      "type": "annotation",
+      "symbol_description": "Text label 'NC' — Normally Closed status tag",
+      "connections": ["HV0002"],
+      "position_hint": "center, adjacent to HV0002",
+      "confidence": "high",
+      "notes": "Specifies normal operating position of HV0002 as Normally Closed"
+    },
+    {
+      "tag": "2\"-PP01-567-GF0002-B03F9",
+      "type": "line_number",
+      "symbol_description": "Underlined line number tag for 2\" process pipe",
+      "connections": ["HV0001", "N9 line"],
+      "position_hint": "center, below the valve train, horizontal",
+      "confidence": "high",
+      "notes": "Full line number: 2\"-PP01-567-GF0002-B03F9; PP=process pipe, spec B03F9"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0076-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "Vertical line number tag for 1\" process pipe routed downward",
+      "connections": ["vessel bottom drain", "GRADE LEVEL"],
+      "position_hint": "right-center, vertical along drain leg",
+      "confidence": "high",
+      "notes": "1\" drain or blowdown line; B03F9 pipe spec; -PP suffix may indicate process piping class; routed to grade"
+    },
+    {
+      "tag": "B03F9/B01M8",
+      "type": "annotation",
+      "symbol_description": "Pipe specification change label (two specs meeting)",
+      "connections": ["1\"-PP01-512-PK0076-B03F9-PP"],
+      "position_hint": "right-center, on drain line",
+      "confidence": "medium",
+      "notes": "Indicates pipe spec change from B03F9 to B01M8 at this point on the drain line"
+    },
+    {
+      "tag": "GRADE LEVEL",
+      "type": "annotation",
+      "symbol_description": "Ground/grade level symbol — diagonal hatching with label and downward arrow with 'MIN.' dimension",
+      "connections": ["1\"-PP01-512-PK0076-B03F9-PP"],
+      "position_hint": "lower center-right",
+      "confidence": "high",
+      "notes": "Drain line terminates at or near grade; MIN. arrow indicates minimum elevation or drop distance to grade"
+    },
+    {
+      "tag": "REDUCER-16x12-N4",
+      "type": "reducer",
+      "symbol_description": "16\"x12\" concentric or eccentric reducer symbol on nozzle N4 inlet",
+      "connections": ["N4", "HVC line above (cut off)"],
+      "position_hint": "upper right, above N4",
+      "confidence": "high",
+      "notes": "Size marked '16\"x12\"'; line above is cut off at tile top — continues into r1c1/r1c2 tile"
+    },
+    {
+      "tag": "REDUCER-16x12-N5",
+      "type": "reducer",
+      "symbol_description": "16\"x12\" concentric or eccentric reducer symbol on nozzle N5 inlet",
+      "connections": ["N5", "HVC line above (cut off)"],
+      "position_hint": "upper right, above N5, adjacent to N4 reducer",
+      "confidence": "high",
+      "notes": "Identical to reducer above N4; both feed 12\" nozzles from 16\" headers"
+    },
+    {
+      "tag": "NOTE-2",
+      "type": "annotation",
+      "symbol_description": "Hatched rectangular symbol with 'NOTE-2' label; appears twice on nozzles N4 and N5",
+      "connections": ["N4", "N5"],
+      "position_hint": "upper right, below reducers, on N4 and N5",
+      "confidence": "high",
+      "notes": "Likely references a drawing note specifying spectacle blind, slip blind, or special flange requirement"
+    },
+    {
+      "tag": "IG",
+      "type": "annotation",
+      "symbol_description": "Small 'IG' tag/label appearing near valves — likely Inert Gas or Instrument Gas connection indicator",
+      "connections": ["HV0002 area", "HV0027 area"],
+      "position_hint": "center-right and right edge",
+      "confidence": "low",
+      "notes": "IG appears in small font near valves; could denote Inert Gas purge, Instrument Gas, or be part of instrument tag; context unclear without legend"
+    }
+  ],
+  "pipes": [
+    {
+      "from": "UC (utility connection arrow)",
+      "to": "SPHN-0030 inlet",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "notes": "2\" utility supply line entering from left to local panel/conditioner"
+    },
+    {
+      "from": "SPHN-0030 outlet",
+      "to": "HV0001 (via 2\"x0.75\" reducer)",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "notes": "Line reduces from 2\" to 0.75\" before HV0001, then returns to 2\" — orifice/restriction arrangement"
+    },
+    {
+      "from": "HV0001",
+      "to": "HV0051",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "notes": "Short 2\" spool between HV0001 and HV0051"
+    },
+    {
+      "from": "HV0051",
+      "to": "HV0002",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "notes": ""
+    },
+    {
+      "from": "HV0002",
+      "to": "N9 (vessel nozzle)",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "notes": "2\" line enters vessel through N9"
+    },
+    {
+      "from": "N18A",
+      "to": "LG-0001 top",
+      "line_spec": "2\" (no separate line number visible)",
+      "notes": "Upper bridle leg of level gauge assembly"
+    },
+    {
+      "from": "LG-0001 bottom",
+      "to": "N18B",
+      "line_spec": "2\" (no separate line number visible)",
+      "notes": "Lower bridle leg of level gauge assembly"
+    },
+    {
+      "from": "Vessel bottom drain / sump",
+      "to": "GRADE LEVEL",
+      "line_spec": "1\"-PP01-512-PK0076-B03F9-PP",
+      "notes": "1\" drain line descending vertically from vessel; spec change B03F9→B01M8 partway down; terminates at grade level with MIN. distance indicated"
+    },
+    {
+      "from": "Upper tile header (HVC line)",
+      "to": "REDUCER-16x12-N4 → N4",
+      "line_spec": "16\" (continues from r1c1 tile above)",
+      "notes": "Top of tile cut off; 16\" inlet line feeds N4 via reducer"
+    },
+    {
+      "from": "Upper tile header (HVC line)",
+      "to": "REDUCER-16x12-N5 → N5",
+      "line_spec": "16\" (continues from r1c1 tile above)",
+      "notes": "Top of tile cut off; 16\" inlet line feeds N5 via reducer"
+    }
+  ],
+  "edge_components": [
+    "N17 — cut off at right edge; continues into r2c2",
+    "HV0026 — cut off at right edge; continues into r2c2",
+    "HV0027 — cut off at right edge; continues into r2c2",
+    "REDUCER-16x12-N4 / REDUCER-16x12-N5 — top connections cut off; continue into r1c1 or r1c2 tile above",
+    "16\" header lines above N4 and N5 — cut off at top edge",
+    "N17 inlet line — cut off at top-right corner",
+    "IG and CO2 connections on right edge — partial; continue into r2c2"
+  ]
+}

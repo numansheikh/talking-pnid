@@ -1,0 +1,359 @@
+{
+  "tile": "r2c3",
+  "coord_range": "x:750-1191, y:387-842 pts",
+  "components": [
+    {
+      "tag": "LZT-0002A",
+      "type": "instrument",
+      "symbol_description": "Circle with tag inside, GWR (Guided Wave Radar) level transmitter",
+      "connections": ["HV0040", "HV0042"],
+      "position_hint": "upper-left area",
+      "confidence": "high",
+      "notes": "Tagged with 'GWR' above circle; part of a trio A/B/C"
+    },
+    {
+      "tag": "LZT-0002B",
+      "type": "instrument",
+      "symbol_description": "Circle with tag inside, GWR level transmitter",
+      "connections": ["HV0042", "HV0044"],
+      "position_hint": "upper-left area, right of LZT-0002A",
+      "confidence": "high",
+      "notes": "Tagged with 'GWR' above circle"
+    },
+    {
+      "tag": "LZT-0002C",
+      "type": "instrument",
+      "symbol_description": "Circle with tag inside, GWR level transmitter",
+      "connections": ["HV0044"],
+      "position_hint": "upper-center area, rightmost of the trio",
+      "confidence": "high",
+      "notes": "Tagged with 'GWR' above circle"
+    },
+    {
+      "tag": "HV0040",
+      "type": "valve",
+      "symbol_description": "2\"x1\" actuated valve (globe/gate symbol with actuator), shown with line sizes 2\" and 1\"",
+      "connections": ["LZT-0002A"],
+      "position_hint": "left edge, mid-upper area",
+      "confidence": "high",
+      "notes": "Line sizes labeled as 2\" and 1\" on either side of valve"
+    },
+    {
+      "tag": "HV0041",
+      "type": "valve",
+      "symbol_description": "1\" actuated valve",
+      "connections": ["HV0043"],
+      "position_hint": "left edge, mid-height",
+      "confidence": "high",
+      "notes": "1\" line size noted"
+    },
+    {
+      "tag": "HV0042",
+      "type": "valve",
+      "symbol_description": "2\"x1\" actuated valve with actuator symbol",
+      "connections": ["LZT-0002A", "LZT-0002B"],
+      "position_hint": "upper-left, between LZT-0002A and LZT-0002B",
+      "confidence": "high",
+      "notes": "Line sizes 2\" and 1\" visible"
+    },
+    {
+      "tag": "HV0043",
+      "type": "valve",
+      "symbol_description": "Actuated valve, 1\" nominal size",
+      "connections": ["HV0041", "HV0045"],
+      "position_hint": "left-center area",
+      "confidence": "high",
+      "notes": "Connected to IG and CO2 utility symbols nearby"
+    },
+    {
+      "tag": "HV0044",
+      "type": "valve",
+      "symbol_description": "2\"x1\" actuated valve with actuator",
+      "connections": ["LZT-0002B", "LZT-0002C"],
+      "position_hint": "upper-center, between LZT-0002B and LZT-0002C",
+      "confidence": "high",
+      "notes": "Line sizes 2\" and 1\" labeled"
+    },
+    {
+      "tag": "HV0045",
+      "type": "valve",
+      "symbol_description": "Actuated valve symbol",
+      "connections": ["HV0043"],
+      "position_hint": "center-left, below LZT cluster",
+      "confidence": "high",
+      "notes": "Connected to IG utility"
+    },
+    {
+      "tag": "HV0052",
+      "type": "valve",
+      "symbol_description": "Actuated valve, 1\" line",
+      "connections": ["HV0056"],
+      "position_hint": "lower-left area",
+      "confidence": "high",
+      "notes": "Part of condensate drain/utility group"
+    },
+    {
+      "tag": "HV0056",
+      "type": "valve",
+      "symbol_description": "Actuated valve, 1\" line",
+      "connections": ["HV0052"],
+      "position_hint": "lower-left area, above HV0052",
+      "confidence": "high",
+      "notes": "Connected to IG utility symbol"
+    },
+    {
+      "tag": "LI-0002A",
+      "type": "instrument",
+      "symbol_description": "Square instrument box (local indicator), labeled HH and LL set points",
+      "connections": [],
+      "position_hint": "center, upper row of LI array",
+      "confidence": "high",
+      "notes": "HH and LL alarm setpoints marked on symbol"
+    },
+    {
+      "tag": "LI-0002B",
+      "type": "instrument",
+      "symbol_description": "Square instrument box (local indicator), labeled HH and LL",
+      "connections": [],
+      "position_hint": "center, upper row of LI array, right of LI-0002A",
+      "confidence": "high",
+      "notes": "HH and LL alarm setpoints marked"
+    },
+    {
+      "tag": "LI-0002C",
+      "type": "instrument",
+      "symbol_description": "Square instrument box (local indicator), labeled HH and LL",
+      "connections": [],
+      "position_hint": "center, upper row of LI array, rightmost",
+      "confidence": "high",
+      "notes": "HH and LL alarm setpoints marked"
+    },
+    {
+      "tag": "LI-0002A (lower)",
+      "type": "instrument",
+      "symbol_description": "Square instrument box (local indicator), labeled HH and LL — second row",
+      "connections": [],
+      "position_hint": "center, lower row of LI array",
+      "confidence": "medium",
+      "notes": "Second row of LI-0002A; may represent a separate gauge glass or redundant indicator"
+    },
+    {
+      "tag": "LI-0002B (lower)",
+      "type": "instrument",
+      "symbol_description": "Square instrument box, HH/LL — second row",
+      "connections": [],
+      "position_hint": "center, lower row of LI array, middle",
+      "confidence": "medium",
+      "notes": "Second row indicator"
+    },
+    {
+      "tag": "LI-0002C (lower)",
+      "type": "instrument",
+      "symbol_description": "Square instrument box, HH/LL — second row",
+      "connections": [],
+      "position_hint": "center, lower row of LI array, rightmost",
+      "confidence": "medium",
+      "notes": "Second row indicator"
+    },
+    {
+      "tag": "362 / 003 / 007",
+      "type": "instrument",
+      "symbol_description": "Diamond logic/voting symbol labeled '2oo3' (2-out-of-3 voting logic), with associated instrument references 362, 003, 007",
+      "connections": ["LI-0002A", "LI-0002B", "LI-0002C"],
+      "position_hint": "upper-center-right, above LI array",
+      "confidence": "high",
+      "notes": "2oo3 voting logic block for level shutdown; tag numbers 362, 003, 007 reference associated instruments"
+    },
+    {
+      "tag": "CIT-0001",
+      "type": "instrument",
+      "symbol_description": "Circle instrument symbol — conductivity indicator transmitter",
+      "connections": ["CE-0001", "CI-0001"],
+      "position_hint": "lower-center area",
+      "confidence": "high",
+      "notes": "Connected to CE-0001 (conductivity element) and CI-0001 (local indicator)"
+    },
+    {
+      "tag": "CE-0001",
+      "type": "instrument",
+      "symbol_description": "Circle instrument — conductivity element",
+      "connections": ["CIT-0001"],
+      "position_hint": "lower-center, below CIT-0001",
+      "confidence": "high",
+      "notes": "Field-mounted conductivity element"
+    },
+    {
+      "tag": "CI-0001",
+      "type": "instrument",
+      "symbol_description": "Square box local indicator for conductivity",
+      "connections": ["CIT-0001"],
+      "position_hint": "lower-center, above CIT-0001",
+      "confidence": "high",
+      "notes": "Local panel-mounted conductivity indicator"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0080-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number annotation on 1\" process line",
+      "connections": [],
+      "position_hint": "center-left, horizontal pipe run",
+      "confidence": "high",
+      "notes": "1\" two-phase line to utility/drain"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0081-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number annotation on 1\" process line",
+      "connections": [],
+      "position_hint": "center-left, below PK0080 line",
+      "confidence": "high",
+      "notes": "Parallel 1\" line"
+    },
+    {
+      "tag": "4\"-PP01-512-PK0006-B01M8-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number annotation on 4\" line",
+      "connections": [],
+      "position_hint": "lower-left, near scale annotation",
+      "confidence": "high",
+      "notes": "4\" two-phase condensate line; labeled 'TWO PHASE' and 'NOTE-10'"
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0009-001",
+      "type": "annotation",
+      "symbol_description": "Drawing reference arrow pointing off-tile (continuation to another drawing)",
+      "connections": [],
+      "position_hint": "top-center",
+      "confidence": "high",
+      "notes": "Arrow indicates pipe/signal continues to drawing N-PG-PP01-PR-PID-0009-001"
+    },
+    {
+      "tag": "TO CONDENSATE STORAGE VESSEL N-PG-PP01-PR-PID-0024-001",
+      "type": "annotation",
+      "symbol_description": "Destination label with drawing reference for condensate outlet",
+      "connections": ["CE-0001", "CIT-0001"],
+      "position_hint": "lower-center, next to 2\" condensate outlet",
+      "confidence": "high",
+      "notes": "2\" line exits to condensate storage vessel; cross-reference to PID-0024-001"
+    },
+    {
+      "tag": "NOTE-10",
+      "type": "annotation",
+      "symbol_description": "Note reference callout",
+      "connections": [],
+      "position_hint": "lower-left, below TWO PHASE label",
+      "confidence": "high",
+      "notes": "References a general note on the drawing not visible in this tile"
+    },
+    {
+      "tag": "NOTE-13",
+      "type": "annotation",
+      "symbol_description": "Note reference callout",
+      "connections": [],
+      "position_hint": "lower-center, near condensate outlet",
+      "confidence": "high",
+      "notes": "References a general note on the drawing"
+    },
+    {
+      "tag": "1:250",
+      "type": "annotation",
+      "symbol_description": "Scale indicator with slope symbol (triangle)",
+      "connections": [],
+      "position_hint": "lower-left",
+      "confidence": "high",
+      "notes": "Pipe slope notation 1:250"
+    },
+    {
+      "tag": "IG (multiple)",
+      "type": "annotation",
+      "symbol_description": "Inert Gas utility connection symbols",
+      "connections": ["HV0041", "HV0043", "HV0045", "HV0052", "HV0056"],
+      "position_hint": "scattered left-center area",
+      "confidence": "high",
+      "notes": "Multiple IG utility taps shown with flag symbols"
+    },
+    {
+      "tag": "CO2 (multiple)",
+      "type": "annotation",
+      "symbol_description": "CO2 utility connection symbols (flag/arrow)",
+      "connections": ["HV0043", "HV0045", "HV0052", "HV0056"],
+      "position_hint": "scattered left-center and lower-left",
+      "confidence": "high",
+      "notes": "CO2 purge/utility connections at multiple valve locations"
+    },
+    {
+      "tag": "16-PP01-362-GF0002-B01E9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number on larger line at top of tile",
+      "connections": [],
+      "position_hint": "top-left edge",
+      "confidence": "high",
+      "notes": "Partially cut off at top edge; continues from adjacent tile"
+    }
+  ],
+  "pipes": [
+    {
+      "from": "LZT-0002A",
+      "to": "HV0040",
+      "line_spec": "2\"/1\"",
+      "notes": "GWR transmitter impulse/process connection"
+    },
+    {
+      "from": "LZT-0002A",
+      "to": "LZT-0002B",
+      "line_spec": "2\"/1\" via HV0042",
+      "notes": "Equalization/isolation line between GWR transmitters"
+    },
+    {
+      "from": "LZT-0002B",
+      "to": "LZT-0002C",
+      "line_spec": "2\"/1\" via HV0044",
+      "notes": "Equalization/isolation line between GWR transmitters"
+    },
+    {
+      "from": "HV0041",
+      "to": "HV0043",
+      "line_spec": "1\"",
+      "notes": "1\" line connecting drain/vent valves"
+    },
+    {
+      "from": "HV0043",
+      "to": "1\"-PP01-512-PK0080-B03F9-PP",
+      "line_spec": "1\"-PP01-512-PK0080-B03F9-PP",
+      "notes": "Drain/condensate line"
+    },
+    {
+      "from": "HV0056",
+      "to": "1\"-PP01-512-PK0081-B03F9-PP",
+      "line_spec": "1\"-PP01-512-PK0081-B03F9-PP",
+      "notes": "Parallel drain line"
+    },
+    {
+      "from": "4\"-PP01-512-PK0006-B01M8-PP",
+      "to": "TO CONDENSATE STORAGE VESSEL",
+      "line_spec": "4\"-PP01-512-PK0006-B01M8-PP",
+      "notes": "4\" two-phase condensate outlet line; slope 1:250; continues to PID-0024-001"
+    },
+    {
+      "from": "CIT-0001",
+      "to": "TO CONDENSATE STORAGE VESSEL N-PG-PP01-PR-PID-0024-001",
+      "line_spec": "2\"",
+      "notes": "2\" condensate line with conductivity measurement to storage vessel"
+    },
+    {
+      "from": "16-PP01-362-GF0002-B01E9-PP",
+      "to": "N-PG-PP01-PR-PID-0009-001",
+      "line_spec": "16-PP01-362-GF0002-B01E9-PP",
+      "notes": "Large header line across top of tile exiting to PID-0009-001"
+    }
+  ],
+  "edge_components": [
+    "LZT-0002A",
+    "HV0040",
+    "HV0041",
+    "HV0052",
+    "HV0056",
+    "16-PP01-362-GF0002-B01E9-PP",
+    "4\"-PP01-512-PK0006-B01M8-PP"
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "tile": "r1c1",
+  "coord_range": "x:0-441, y:0-455 pts",
+  "components": [
+    {
+      "tag": "PP01-362-V001",
+      "type": "vessel",
+      "symbol_description": "Vessel data block / title block for Fuel Gas KO Drum. No vessel outline drawn in this tile — only the instrument/equipment data annotation.",
+      "connections": ["N4", "N5", "N17"],
+      "position_hint": "upper right quadrant",
+      "confidence": "high",
+      "notes": "Full data block reads: SIZE 2200mm(I.D.)×5500mm(L), Design Pressure 14 barg/FV, Design Temp -20~100°C (NOTE-7), Op Pressure 9.0~10.4 barg, Op Temp 23~72°C, Material Carbon Steel (CS)+3mm CA (text cut off at right edge), Insulation (NO)CO2, Trim Number PP01-362-V001-TX0001-B03F9. Vessel body partially visible as arc at bottom-right corner."
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0005-001",
+      "type": "annotation",
+      "symbol_description": "Rectangular source reference box (upstream P&ID reference) with arrow pointing right, labeled 'FUEL GAS FROM DS-1 SCRAPPER RECEIVER'",
+      "connections": ["16\"-PP01-361-GF0014-B03F9-PP"],
+      "position_hint": "left edge, lower-middle height, upper inlet line",
+      "confidence": "high",
+      "notes": "Standard continuation box indicating this line originates from drawing N-PG-PP01-PR-PID-0005-001 (DS-1 Scrapper Receiver P&ID)."
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0007-001",
+      "type": "annotation",
+      "symbol_description": "Rectangular source reference box with arrow pointing right, labeled 'FUEL GAS FROM DS-3 SCRAPPER RECEIVER'",
+      "connections": ["16\"-PP01-361-GF0031-B03F9-PP"],
+      "position_hint": "left edge, lower-middle height, lower inlet line",
+      "confidence": "high",
+      "notes": "Continuation from drawing N-PG-PP01-PR-PID-0007-001 (DS-3 Scrapper Receiver P&ID)."
+    },
+    {
+      "tag": "16\"-PP01-361-GF0014-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "Line number label placed above horizontal 16\" pipe run",
+      "connections": ["N-PG-PP01-PR-PID-0005-001", "HV0094"],
+      "position_hint": "center, lower-middle height, upper inlet run",
+      "confidence": "high",
+      "notes": "Annotated with 'NO POCKETS' and 'NOTE-10' below the line label. 16-inch fuel gas line from DS-1 scrapper."
+    },
+    {
+      "tag": "16\"-PP01-361-GF0031-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "Line number label placed above horizontal 16\" pipe run",
+      "connections": ["N-PG-PP01-PR-PID-0007-001", "HV0203"],
+      "position_hint": "center, lower-middle height, lower inlet run",
+      "confidence": "high",
+      "notes": "Annotated with 'NO POCKETS' and 'NOTE-10'. 16-inch fuel gas line from DS-3 scrapper."
+    },
+    {
+      "tag": "HV0094",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve (hand valve); symbol shows two opposing filled triangles (gate valve symbol) with actuator indicator; labeled '16\"' upstream",
+      "connections": ["16\"-PP01-361-GF0014-B03F9-PP", "right-edge pipe continuing to tile r1c2"],
+      "position_hint": "right-center area, upper inlet line",
+      "confidence": "high",
+      "notes": "HV = Hand Valve (manually operated). 16\" line. Valve appears to be a full-bore gate or ball valve."
+    },
+    {
+      "tag": "HV0203",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve; same symbol as HV0094 — two opposing filled triangles with actuator; labeled '16\"' upstream",
+      "connections": ["16\"-PP01-361-GF0031-B03F9-PP", "right-edge pipe continuing to tile r1c2"],
+      "position_hint": "right-center area, lower inlet line",
+      "confidence": "high",
+      "notes": "HV = Hand Valve. 16\" line from DS-3. Downstream connects toward drum inlet."
+    },
+    {
+      "tag": "HV0093",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve with spectacle blind / spade indicator; positioned on vertical 12\" drop leg after 16\"×12\" reducer",
+      "connections": ["reducer-16x12-N4-side", "N4"],
+      "position_hint": "lower right, on vertical leg feeding nozzle N4",
+      "confidence": "high",
+      "notes": "Associated with '16\"×12\" 16\"' reducer annotation. Positioned above nozzle N4 on the drum."
+    },
+    {
+      "tag": "HV0095",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve with spectacle blind / spade indicator; positioned on vertical 12\" drop leg after second 16\"×12\" reducer",
+      "connections": ["reducer-16x12-N5-side", "N5"],
+      "position_hint": "lower right, on vertical leg feeding nozzle N5, immediately right of HV0093",
+      "confidence": "high",
+      "notes": "Mirror arrangement to HV0093/N4. Feeds nozzle N5 on the drum top."
+    },
+    {
+      "tag": "N4",
+      "type": "nozzle",
+      "symbol_description": "Nozzle connection point on top of drum vessel; labeled 'N4' with '12\"' pipe size; NOTE-2 annotation with hatched flange symbol",
+      "connections": ["HV0093", "PP01-362-V001"],
+      "position_hint": "bottom right, drum top nozzle, left of N5",
+      "confidence": "high",
+      "notes": "12\" inlet nozzle on KO drum. NOTE-2 referenced (likely weld neck flange or spec note). Flange shown with double hash marks."
+    },
+    {
+      "tag": "N5",
+      "type": "nozzle",
+      "symbol_description": "Nozzle connection point on top of drum vessel; labeled 'N5' with '12\"' pipe size; NOTE-2 annotation with hatched flange symbol",
+      "connections": ["HV0095", "PP01-362-V001"],
+      "position_hint": "bottom right, drum top nozzle, right of N4",
+      "confidence": "high",
+      "notes": "12\" inlet nozzle, same spec as N4. NOTE-2 referenced."
+    },
+    {
+      "tag": "N17",
+      "type": "nozzle",
+      "symbol_description": "Partially visible nozzle at right edge; labeled 'N17'; size appears to be 3\" (partially cut off)",
+      "connections": ["PP01-362-V001"],
+      "position_hint": "bottom right corner, cut off at right tile edge",
+      "confidence": "medium",
+      "notes": "Only label visible; pipe size partially obscured. Continues into tile r1c2. Size reads approximately '3\"' but not fully legible."
+    },
+    {
+      "tag": "REDUCER-N4",
+      "type": "reducer",
+      "symbol_description": "Concentric or eccentric reducer symbol on vertical pipe; annotated '16\"×12\" 16\"' indicating reducing from 16\" header to 12\" drop leg",
+      "connections": ["HV0094-downstream header", "HV0093"],
+      "position_hint": "lower right, above HV0093/N4 leg",
+      "confidence": "high",
+      "notes": "The annotation '16\"×12\" 16\"' suggests a 16\" tee off the header reduced to 12\" into the drum nozzle."
+    },
+    {
+      "tag": "REDUCER-N5",
+      "type": "reducer",
+      "symbol_description": "Concentric or eccentric reducer; annotated '16\"×12\" 16\"' on second vertical leg",
+      "connections": ["HV0203-downstream header", "HV0095"],
+      "position_hint": "lower right, above HV0095/N5 leg, right of REDUCER-N4",
+      "confidence": "high",
+      "notes": "Same spec as REDUCER-N4. Both reducers feed top nozzles of the KO drum."
+    },
+    {
+      "tag": "NOTE-2",
+      "type": "annotation",
+      "symbol_description": "Reference note callout appearing twice near N4 and N5 flanges",
+      "connections": ["N4", "N5"],
+      "position_hint": "bottom right, below nozzle labels",
+      "confidence": "high",
+      "notes": "NOTE-2 is referenced at both drum inlet nozzle flanges. Specific note text not visible in this tile — likely on drawing legend/notes sheet."
+    },
+    {
+      "tag": "NOTE-10",
+      "type": "annotation",
+      "symbol_description": "Text annotation 'NO POCKETS / NOTE-10' appearing on both 16\" inlet lines",
+      "connections": ["16\"-PP01-361-GF0014-B03F9-PP", "16\"-PP01-361-GF0031-B03F9-PP"],
+      "position_hint": "center, on both horizontal pipe runs",
+      "confidence": "high",
+      "notes": "Pipe routing requirement — no low-point pockets permitted. Applies to both DS-1 and DS-3 inlet lines."
+    }
+  ],
+  "pipes": [
+    {
+      "from": "N-PG-PP01-PR-PID-0005-001 (source boundary)",
+      "to": "HV0094",
+      "line_spec": "16\"-PP01-361-GF0014-B03F9-PP",
+      "notes": "Horizontal 16\" fuel gas line from DS-1 scrapper receiver. 'NO POCKETS, NOTE-10' applies."
+    },
+    {
+      "from": "N-PG-PP01-PR-PID-0007-001 (source boundary)",
+      "to": "HV0203",
+      "line_spec": "16\"-PP01-361-GF0031-B03F9-PP",
+      "notes": "Horizontal 16\" fuel gas line from DS-3 scrapper receiver. 'NO POCKETS, NOTE-10' applies."
+    },
+    {
+      "from": "HV0094",
+      "to": "right tile edge (continues to r1c2)",
+      "line_spec": "16\" (continuation of GF0014 or new segment)",
+      "notes": "16\" pipe exits tile at right edge after HV0094; merges downstream toward drum inlet header."
+    },
+    {
+      "from": "HV0203",
+      "to": "right tile edge (continues to r1c2)",
+      "line_spec": "16\" (continuation of GF0031 or new segment)",
+      "notes": "16\" pipe exits tile at right edge after HV0203; routes toward drum inlet."
+    },
+    {
+      "from": "HV0094 downstream header",
+      "to": "REDUCER-N4 → HV0093 → N4",
+      "line_spec": "16\" reducing to 12\"",
+      "notes": "Vertical drop leg from 16\" header through reducer to 12\" nozzle N4 on drum top."
+    },
+    {
+      "from": "HV0203 downstream header",
+      "to": "REDUCER-N5 → HV0095 → N5",
+      "line_spec": "16\" reducing to 12\"",
+      "notes": "Vertical drop leg from 16\" header through reducer to 12\" nozzle N5 on drum top."
+    },
+    {
+      "from": "N17 area",
+      "to": "right tile edge",
+      "line_spec": "~3\" (partially visible)",
+      "notes": "Small-bore line at N17 nozzle; cut off at right tile edge. Continues into tile r1c2."
+    }
+  ],
+  "edge_components": [
+    "HV0094 — downstream pipe exits right edge",
+    "HV0203 — downstream pipe exits right edge",
+    "N17 — nozzle label and pipe cut off at right edge",
+    "PP01-362-V001 vessel body — drum arc visible at bottom-right corner, full vessel in tile r1c2/r2c2",
+    "MATERIAL annotation in vessel data block — text cut off at right edge (reads 'CARBON STEEL (CS) + 3 mm CA (INTERNA...')"
+  ]
+}

@@ -1,0 +1,1468 @@
+{
+  "drawing_info": {
+    "drawing_number": "100478CP-N-PG-PP01-PR-PID-0008-001",
+    "revision": "C02",
+    "revision_date": "01.09.16",
+    "status": "Issued for Construction",
+    "project": "Early Power Plant, Rumaila Oil Field",
+    "contract": "100478",
+    "engineer": "CPECC / CH2M Hill",
+    "title": "Fuel Gas KO Drum PP01-362-V001"
+  },
+  "components": [
+    {
+      "tag": "PP01-362-V001",
+      "type": "vessel",
+      "symbol_description": "Fuel Gas Knockout Drum - horizontal separator vessel",
+      "specifications": {
+        "size": "2200mm (I.D.) \u00d7 5500mm (L)",
+        "design_pressure": "14 barg / FV",
+        "design_temp": "-20 to 100\u00b0C (NOTE-7)",
+        "operating_pressure": "9.0-10.4 barg",
+        "operating_temp": "23-72\u00b0C",
+        "material": "Carbon Steel (CS) + 3mm CA",
+        "insulation": "NO (CO2)"
+      },
+      "connects_to": [
+        "N1",
+        "N2",
+        "N3",
+        "N4",
+        "N5",
+        "N6A",
+        "N6B",
+        "N7A",
+        "N7B",
+        "N9",
+        "N10A",
+        "N10B",
+        "N13",
+        "N14",
+        "N15",
+        "N16",
+        "N17",
+        "N18A",
+        "N18B"
+      ]
+    },
+    {
+      "tag": "PSV-0001",
+      "type": "pressure_safety_valve",
+      "symbol_description": "Pressure Safety Valve with set pressure 14.0 barg",
+      "specifications": {
+        "set_pressure": "14.0 barg",
+        "case": "DS-3 PCV FAILURE",
+        "size": "8T10",
+        "inlet_reducer": "14\u00d78",
+        "outlet_reducer": "16\u00d710"
+      },
+      "connects_to": [
+        "HV0004",
+        "HV0005",
+        "HV0038",
+        "HV0039",
+        "SPK-0001-LEFT",
+        "N-PG-PP01-PR-PID-0021-001"
+      ]
+    },
+    {
+      "tag": "PSV-0002",
+      "type": "pressure_safety_valve",
+      "symbol_description": "Pressure Safety Valve with set pressure 14.0 barg (redundant train)",
+      "specifications": {
+        "set_pressure": "14.0 barg",
+        "case": "DS-3 PCV FAILURE",
+        "size": "8T10",
+        "inlet_reducer": "14\u00d78",
+        "outlet_reducer": "16\u00d710"
+      },
+      "connects_to": [
+        "HV0006",
+        "HV0007",
+        "HV0040-PSV",
+        "HV0041-PSV",
+        "SPK-0001-RIGHT",
+        "N-PG-PP01-PR-PID-0021-001"
+      ]
+    },
+    {
+      "tag": "N1",
+      "type": "nozzle",
+      "symbol_description": "14\" vessel nozzle - PSV inlet header connection",
+      "size": "14\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "N2",
+      "type": "nozzle",
+      "symbol_description": "16\" vessel nozzle - main gas outlet",
+      "size": "16\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "16\"-PP01-362-GF0002-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "N3",
+      "type": "nozzle",
+      "symbol_description": "3\" vessel nozzle - vent/drain connection",
+      "size": "3\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0002-DRAIN"
+      ]
+    },
+    {
+      "tag": "N4",
+      "type": "nozzle",
+      "symbol_description": "12\" inlet nozzle on drum top with NOTE-2 spectacle blind",
+      "size": "12\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0093",
+        "REDUCER-16x12-N4"
+      ]
+    },
+    {
+      "tag": "N5",
+      "type": "nozzle",
+      "symbol_description": "12\" inlet nozzle on drum top with NOTE-2 spectacle blind",
+      "size": "12\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0095",
+        "REDUCER-16x12-N5"
+      ]
+    },
+    {
+      "tag": "N6A",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - upper level transmitter connection",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0034",
+        "LZT-0002A"
+      ]
+    },
+    {
+      "tag": "N6B",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - lower level transmitter connection",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "LZT-0002B",
+        "LZT-0002C"
+      ]
+    },
+    {
+      "tag": "N7A",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - upper level gauge/transmitter",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0022",
+        "LIT-0001"
+      ]
+    },
+    {
+      "tag": "N7B",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - lower level gauge/transmitter",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0023",
+        "LIT-0001"
+      ]
+    },
+    {
+      "tag": "N9",
+      "type": "nozzle",
+      "symbol_description": "2\" utility connection nozzle",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0002-UC",
+        "2\"-PP01-567-GF0002-B03F9"
+      ]
+    },
+    {
+      "tag": "N10A",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - upper",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0030",
+        "LIT-0003"
+      ]
+    },
+    {
+      "tag": "N10B",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle - lower",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0031-INST",
+        "LI-0003"
+      ]
+    },
+    {
+      "tag": "N13",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle for PZT-0001A",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0011",
+        "PZT-0001A"
+      ]
+    },
+    {
+      "tag": "N14",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle for PZT-0001B",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0012",
+        "PZT-0001B"
+      ]
+    },
+    {
+      "tag": "N15",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle for PZT-0001C",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0013",
+        "PZT-0001C"
+      ]
+    },
+    {
+      "tag": "N16",
+      "type": "nozzle",
+      "symbol_description": "2\" instrument nozzle for PIT-0002",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0014",
+        "PIT-0002"
+      ]
+    },
+    {
+      "tag": "N17",
+      "type": "nozzle",
+      "symbol_description": "3\" nozzle on vessel",
+      "size": "3\"",
+      "connects_to": [
+        "PP01-362-V001"
+      ]
+    },
+    {
+      "tag": "N18A",
+      "type": "nozzle",
+      "symbol_description": "2\" nozzle - upper level gauge bridle",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0024",
+        "HV0026",
+        "LG-0001"
+      ]
+    },
+    {
+      "tag": "N18B",
+      "type": "nozzle",
+      "symbol_description": "2\" nozzle - lower level gauge bridle",
+      "size": "2\"",
+      "connects_to": [
+        "PP01-362-V001",
+        "HV0025",
+        "HV0027",
+        "LG-0001"
+      ]
+    },
+    {
+      "tag": "HV0001",
+      "type": "valve",
+      "symbol_description": "Gate/ball valve on 2\"\u00d70.75\" utility line",
+      "connects_to": [
+        "SPHN-0030",
+        "HV0051",
+        "2\"-PP01-567-GF0002-B03F9"
+      ]
+    },
+    {
+      "tag": "HV0002-UC",
+      "type": "valve",
+      "symbol_description": "Check/globe valve NC (Normally Closed) on utility connection",
+      "connects_to": [
+        "HV0051",
+        "N9"
+      ]
+    },
+    {
+      "tag": "HV0002-DRAIN",
+      "type": "valve",
+      "symbol_description": "Hand valve 4\" on vent/drain line",
+      "connects_to": [
+        "N3",
+        "4\"-PP01-512-PK0005-C01N8-PP"
+      ]
+    },
+    {
+      "tag": "HV0004",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO FB - PSV-0001 inlet isolation",
+      "connects_to": [
+        "PSV-0001",
+        "14\"-PP01-362-GF0001-B01E9-PP",
+        "SPK-0001-LEFT"
+      ]
+    },
+    {
+      "tag": "HV0005",
+      "type": "valve",
+      "symbol_description": "Globe/gate valve 1\" bypass on PSV-0001 inlet",
+      "connects_to": [
+        "PSV-0001"
+      ]
+    },
+    {
+      "tag": "HV0006",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO FB - PSV-0002 inlet isolation",
+      "connects_to": [
+        "PSV-0002",
+        "14\"-PP01-362-GF0001-B01E9-PP",
+        "SPK-0001-RIGHT"
+      ]
+    },
+    {
+      "tag": "HV0007",
+      "type": "valve",
+      "symbol_description": "Globe/gate valve 1\" bypass on PSV-0002 inlet",
+      "connects_to": [
+        "PSV-0002"
+      ]
+    },
+    {
+      "tag": "HV0011",
+      "type": "valve",
+      "symbol_description": "2\" valve LO (Locked Open) - PZT-0001A isolation",
+      "connects_to": [
+        "N13",
+        "PZT-0001A"
+      ]
+    },
+    {
+      "tag": "HV0012",
+      "type": "valve",
+      "symbol_description": "2\" valve LO - PZT-0001B isolation",
+      "connects_to": [
+        "N14",
+        "PZT-0001B"
+      ]
+    },
+    {
+      "tag": "HV0013",
+      "type": "valve",
+      "symbol_description": "2\" valve LO - PZT-0001C isolation",
+      "connects_to": [
+        "N15",
+        "PZT-0001C"
+      ]
+    },
+    {
+      "tag": "HV0014",
+      "type": "valve",
+      "symbol_description": "2\" valve LO - PIT-0002 isolation",
+      "connects_to": [
+        "N16",
+        "PIT-0002"
+      ]
+    },
+    {
+      "tag": "HV0016",
+      "type": "valve",
+      "symbol_description": "Hand valve LO on 8\" line upstream of PV0002",
+      "connects_to": [
+        "HV0017",
+        "PV0002"
+      ]
+    },
+    {
+      "tag": "HV0017",
+      "type": "valve",
+      "symbol_description": "Hand valve 8\" upstream of PV0002",
+      "connects_to": [
+        "HV0016",
+        "PV0002"
+      ]
+    },
+    {
+      "tag": "HV0018",
+      "type": "valve",
+      "symbol_description": "Hand valve LC (Locked Closed) on 4\" line",
+      "connects_to": [
+        "HV0019",
+        "16\"-PP01-362-GF0002-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "HV0019",
+      "type": "valve",
+      "symbol_description": "Hand valve on 4\" line adjacent to HV0018",
+      "connects_to": [
+        "HV0018"
+      ]
+    },
+    {
+      "tag": "HV0020",
+      "type": "valve",
+      "symbol_description": "Hand valve on 10\" line downstream of PV0002",
+      "connects_to": [
+        "PV0002",
+        "HV0021"
+      ]
+    },
+    {
+      "tag": "HV0021",
+      "type": "valve",
+      "symbol_description": "Hand valve LO on 10\" line",
+      "connects_to": [
+        "HV0020"
+      ]
+    },
+    {
+      "tag": "HV0022",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" with IG/CO2 markers",
+      "connects_to": [
+        "N7A",
+        "HV0028-INST"
+      ]
+    },
+    {
+      "tag": "HV0023",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" with IG/CO2 markers",
+      "connects_to": [
+        "N7B",
+        "HV0029"
+      ]
+    },
+    {
+      "tag": "HV0024",
+      "type": "valve",
+      "symbol_description": "Gate valve XO (car-sealed open) - LG-0001 upper isolation",
+      "connects_to": [
+        "N18A",
+        "LG-0001"
+      ]
+    },
+    {
+      "tag": "HV0025",
+      "type": "valve",
+      "symbol_description": "Gate valve XO - LG-0001 lower isolation",
+      "connects_to": [
+        "N18B",
+        "LG-0001"
+      ]
+    },
+    {
+      "tag": "HV0026",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" at N18A",
+      "connects_to": [
+        "N18A"
+      ]
+    },
+    {
+      "tag": "HV0027",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" with CO2 spec break",
+      "connects_to": [
+        "N18B"
+      ]
+    },
+    {
+      "tag": "HV0028-INST",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" on instrument supply line",
+      "connects_to": [
+        "HV0022",
+        "LV-0001"
+      ]
+    },
+    {
+      "tag": "HV0028-DRAIN",
+      "type": "valve",
+      "symbol_description": "Hand valve 4\" FC on liquid drain outlet",
+      "connects_to": [
+        "LV-0001",
+        "4\"-PP01-512-PK0005-C01N8-PP"
+      ]
+    },
+    {
+      "tag": "HV0029",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" isolation on instrument line",
+      "connects_to": [
+        "N7B",
+        "HV0023"
+      ]
+    },
+    {
+      "tag": "HV0030",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" with IG marker",
+      "connects_to": [
+        "N10A",
+        "HV0032"
+      ]
+    },
+    {
+      "tag": "HV0031-INST",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" on instrument line",
+      "connects_to": [
+        "N10B",
+        "LI-0003"
+      ]
+    },
+    {
+      "tag": "HV0034",
+      "type": "valve",
+      "symbol_description": "2\" LO valve on instrument/drain take-off",
+      "connects_to": [
+        "N6A"
+      ]
+    },
+    {
+      "tag": "HV0038",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO on PSV-0001 discharge",
+      "connects_to": [
+        "PSV-0001",
+        "16\"-PP01-500-VK0066-B01B8"
+      ]
+    },
+    {
+      "tag": "HV0039",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO on PSV-0001 outlet",
+      "connects_to": [
+        "PSV-0001",
+        "16\"-PP01-500-VK0066-B01B8"
+      ]
+    },
+    {
+      "tag": "HV0040-PSV",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO on PSV-0002 discharge",
+      "connects_to": [
+        "PSV-0002",
+        "16\"-PP01-500-VK0008-B01B8"
+      ]
+    },
+    {
+      "tag": "HV0040-LZT",
+      "type": "valve",
+      "symbol_description": "2\"\u00d71\" actuated valve for LZT-0002A",
+      "connects_to": [
+        "LZT-0002A"
+      ]
+    },
+    {
+      "tag": "HV0041-PSV",
+      "type": "valve",
+      "symbol_description": "Gate valve ILO on PSV-0002 outlet",
+      "connects_to": [
+        "PSV-0002",
+        "16\"-PP01-500-VK0008-B01B8"
+      ]
+    },
+    {
+      "tag": "HV0041-LZT",
+      "type": "valve",
+      "symbol_description": "1\" actuated valve",
+      "connects_to": [
+        "HV0043",
+        "LZT-0002C"
+      ],
+      "_inferred_connections": [
+        "LZT-0002C"
+      ]
+    },
+    {
+      "tag": "HV0042",
+      "type": "valve",
+      "symbol_description": "2\"\u00d71\" actuated valve between LZT-0002A and LZT-0002B",
+      "connects_to": [
+        "LZT-0002A",
+        "LZT-0002B"
+      ]
+    },
+    {
+      "tag": "HV0043",
+      "type": "valve",
+      "symbol_description": "Actuated valve 1\" with IG/CO2",
+      "connects_to": [
+        "HV0041-LZT",
+        "HV0045"
+      ]
+    },
+    {
+      "tag": "HV0044",
+      "type": "valve",
+      "symbol_description": "2\"\u00d71\" actuated valve between LZT-0002B and LZT-0002C",
+      "connects_to": [
+        "LZT-0002B",
+        "LZT-0002C"
+      ]
+    },
+    {
+      "tag": "HV0045",
+      "type": "valve",
+      "symbol_description": "Actuated valve connected to IG utility",
+      "connects_to": [
+        "HV0043"
+      ]
+    },
+    {
+      "tag": "HV0051",
+      "type": "valve",
+      "symbol_description": "Needle/globe valve with special operator",
+      "connects_to": [
+        "HV0001",
+        "HV0002-UC"
+      ]
+    },
+    {
+      "tag": "HV0052",
+      "type": "valve",
+      "symbol_description": "Actuated valve 1\" on condensate drain",
+      "connects_to": [
+        "HV0056",
+        "LV-0001"
+      ],
+      "_inferred_connections": [
+        "LV-0001"
+      ]
+    },
+    {
+      "tag": "HV0056",
+      "type": "valve",
+      "symbol_description": "Actuated valve 1\" with IG utility",
+      "connects_to": [
+        "HV0052"
+      ]
+    },
+    {
+      "tag": "HV0065",
+      "type": "valve",
+      "symbol_description": "Valve associated with EZV-0001",
+      "connects_to": [
+        "EZV-0001"
+      ]
+    },
+    {
+      "tag": "HV0092",
+      "type": "valve",
+      "symbol_description": "Hand valve on 8\" line with spec break B01B8/B01E9",
+      "connects_to": [
+        "FO0002",
+        "8\u00d76-REDUCER"
+      ]
+    },
+    {
+      "tag": "HV0093",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve with spectacle blind on 12\" drop leg to N4",
+      "connects_to": [
+        "REDUCER-16x12-N4",
+        "N4"
+      ]
+    },
+    {
+      "tag": "HV0094",
+      "type": "valve",
+      "symbol_description": "16\" manual isolation valve (hand valve) on DS-1 inlet",
+      "connects_to": [
+        "16\"-PP01-361-GF0014-B03F9-PP",
+        "REDUCER-16x12-N4"
+      ]
+    },
+    {
+      "tag": "HV0095",
+      "type": "valve",
+      "symbol_description": "Manual isolation valve with spectacle blind on 12\" drop leg to N5",
+      "connects_to": [
+        "REDUCER-16x12-N5",
+        "N5"
+      ]
+    },
+    {
+      "tag": "HV0203",
+      "type": "valve",
+      "symbol_description": "16\" manual isolation valve (hand valve) on DS-3 inlet",
+      "connects_to": [
+        "16\"-PP01-361-GF0031-B03F9-PP",
+        "REDUCER-16x12-N5"
+      ]
+    },
+    {
+      "tag": "PV0002",
+      "type": "valve",
+      "symbol_description": "Pressure control valve (globe style) with actuator",
+      "connects_to": [
+        "ZT0002",
+        "HV0017",
+        "HV0020",
+        "8\u00d710-REDUCER"
+      ]
+    },
+    {
+      "tag": "PZT-0001A",
+      "type": "instrument",
+      "symbol_description": "Pressure transmitter with safety function (Z) - 2oo3 voting",
+      "connects_to": [
+        "N13",
+        "HV0011",
+        "362-004-VOTING"
+      ]
+    },
+    {
+      "tag": "PZT-0001B",
+      "type": "instrument",
+      "symbol_description": "Pressure transmitter with safety function - 2oo3 voting",
+      "connects_to": [
+        "N14",
+        "HV0012",
+        "362-004-VOTING"
+      ]
+    },
+    {
+      "tag": "PZT-0001C",
+      "type": "instrument",
+      "symbol_description": "Pressure transmitter with safety function - 2oo3 voting",
+      "connects_to": [
+        "N15",
+        "HV0013",
+        "362-004-VOTING"
+      ]
+    },
+    {
+      "tag": "362-004-VOTING",
+      "type": "logic_block",
+      "symbol_description": "2-out-of-3 (2oo3) voting logic block for high pressure shutdown",
+      "connects_to": [
+        "PZT-0001A",
+        "PZT-0001B",
+        "PZT-0001C"
+      ]
+    },
+    {
+      "tag": "PIT-0002",
+      "type": "instrument",
+      "symbol_description": "Pressure Indicating Transmitter",
+      "connects_to": [
+        "N16",
+        "HV0014",
+        "PIC-0002"
+      ]
+    },
+    {
+      "tag": "PIC-0002",
+      "type": "instrument",
+      "symbol_description": "Pressure Indicating Controller with H/L alarm setpoints",
+      "connects_to": [
+        "PIT-0002",
+        "PV0002"
+      ]
+    },
+    {
+      "tag": "PG-0001",
+      "type": "instrument",
+      "symbol_description": "Pressure Gauge local indicator",
+      "connects_to": [
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "PI-0001A",
+      "type": "instrument",
+      "symbol_description": "Pressure Indicator with HH alarm",
+      "connects_to": [
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "PI-0001B",
+      "type": "instrument",
+      "symbol_description": "Pressure Indicator with HH alarm",
+      "connects_to": [
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "PI-0001C",
+      "type": "instrument",
+      "symbol_description": "Pressure Indicator with HH alarm",
+      "connects_to": [
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "LIT-0001",
+      "type": "instrument",
+      "symbol_description": "Level Indicating Transmitter",
+      "connects_to": [
+        "N7A",
+        "N18A",
+        "LIC-0001"
+      ]
+    },
+    {
+      "tag": "LIT-0003",
+      "type": "instrument",
+      "symbol_description": "Level Indicating Transmitter",
+      "connects_to": [
+        "N10A",
+        "N15",
+        "LI-0003"
+      ]
+    },
+    {
+      "tag": "LI-0003",
+      "type": "instrument",
+      "symbol_description": "Level Indicator local",
+      "connects_to": [
+        "N15",
+        "LIT-0003"
+      ]
+    },
+    {
+      "tag": "LG-0001",
+      "type": "instrument",
+      "symbol_description": "Level Gauge / Level Glass (sight glass)",
+      "connects_to": [
+        "N18A",
+        "N18B",
+        "HV0024",
+        "HV0025"
+      ]
+    },
+    {
+      "tag": "LIC-0001",
+      "type": "instrument",
+      "symbol_description": "Level Indicating Controller with H/L alarm",
+      "connects_to": [
+        "LIT-0001",
+        "EZV-0001",
+        "LV-0001"
+      ]
+    },
+    {
+      "tag": "LV-0001",
+      "type": "instrument",
+      "symbol_description": "Level control Valve positioner/indicator",
+      "connects_to": [
+        "LIC-0001",
+        "HV0028-DRAIN",
+        "HV0029"
+      ]
+    },
+    {
+      "tag": "EZV-0001",
+      "type": "instrument",
+      "symbol_description": "Emergency Shutdown / Zone Valve actuator",
+      "connects_to": [
+        "LIC-0001",
+        "HV0065",
+        "362-I-007"
+      ]
+    },
+    {
+      "tag": "LZT-0002A",
+      "type": "instrument",
+      "symbol_description": "GWR (Guided Wave Radar) Level Transmitter - 2oo3 voting",
+      "connects_to": [
+        "HV0040-LZT",
+        "HV0042",
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "LZT-0002B",
+      "type": "instrument",
+      "symbol_description": "GWR Level Transmitter - 2oo3 voting",
+      "connects_to": [
+        "HV0042",
+        "HV0044",
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "LZT-0002C",
+      "type": "instrument",
+      "symbol_description": "GWR Level Transmitter - 2oo3 voting",
+      "connects_to": [
+        "HV0044",
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "362-003-007-VOTING",
+      "type": "logic_block",
+      "symbol_description": "2-out-of-3 (2oo3) voting logic block for level shutdown",
+      "connects_to": [
+        "LZT-0002A",
+        "LZT-0002B",
+        "LZT-0002C",
+        "LI-0002A",
+        "LI-0002B",
+        "LI-0002C"
+      ]
+    },
+    {
+      "tag": "LI-0002A",
+      "type": "instrument",
+      "symbol_description": "Level Indicator with HH/LL setpoints",
+      "connects_to": [
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "LI-0002B",
+      "type": "instrument",
+      "symbol_description": "Level Indicator with HH/LL setpoints",
+      "connects_to": [
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "LI-0002C",
+      "type": "instrument",
+      "symbol_description": "Level Indicator with HH/LL setpoints",
+      "connects_to": [
+        "362-003-007-VOTING"
+      ]
+    },
+    {
+      "tag": "ZI0002",
+      "type": "instrument",
+      "symbol_description": "Position Indicator with NOTE-11 discrepancy alarm",
+      "connects_to": [
+        "ZT0002"
+      ]
+    },
+    {
+      "tag": "ZT0002",
+      "type": "instrument",
+      "symbol_description": "Position Transmitter for PV0002",
+      "connects_to": [
+        "ZI0002",
+        "PV0002"
+      ]
+    },
+    {
+      "tag": "FO0002",
+      "type": "instrument",
+      "symbol_description": "Flow Orifice",
+      "connects_to": [
+        "HV0092",
+        "BDZV0001"
+      ]
+    },
+    {
+      "tag": "BDZV0001",
+      "type": "valve",
+      "symbol_description": "Blowdown/depressurization valve",
+      "connects_to": [
+        "FO0002",
+        "TSB"
+      ]
+    },
+    {
+      "tag": "CIT-0001",
+      "type": "instrument",
+      "symbol_description": "Conductivity Indicator Transmitter",
+      "connects_to": [
+        "CE-0001",
+        "CI-0001",
+        "4\"-PP01-512-PK0005-C01N8-PP"
+      ],
+      "_inferred_connections": [
+        "4\"-PP01-512-PK0005-C01N8-PP"
+      ]
+    },
+    {
+      "tag": "CE-0001",
+      "type": "instrument",
+      "symbol_description": "Conductivity Element - field mounted",
+      "connects_to": [
+        "CIT-0001"
+      ]
+    },
+    {
+      "tag": "CI-0001",
+      "type": "instrument",
+      "symbol_description": "Conductivity Indicator - local panel",
+      "connects_to": [
+        "CIT-0001"
+      ]
+    },
+    {
+      "tag": "362-I-007",
+      "type": "instrument",
+      "symbol_description": "Local panel indicator / interlock logic symbol",
+      "connects_to": [
+        "EZV-0001"
+      ]
+    },
+    {
+      "tag": "SPHN-0030",
+      "type": "instrument",
+      "symbol_description": "Local panel or speed/signal conditioner",
+      "connects_to": [
+        "UC",
+        "HV0001"
+      ]
+    },
+    {
+      "tag": "SPK-0001-LEFT",
+      "type": "instrument",
+      "symbol_description": "Spectacle Blind / Spade on PSV-0001 train (NOTE-8)",
+      "connects_to": [
+        "HV0004",
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "SPK-0001-RIGHT",
+      "type": "instrument",
+      "symbol_description": "Spectacle Blind / Spade on PSV-0002 train (NOTE-8)",
+      "connects_to": [
+        "HV0006",
+        "14\"-PP01-362-GF0001-B01E9-PP"
+      ]
+    },
+    {
+      "tag": "TSB",
+      "type": "instrument",
+      "symbol_description": "Temperature switch/element block TYPE-E, 300#",
+      "connects_to": [
+        "BDZV0001"
+      ]
+    },
+    {
+      "tag": "REDUCER-16x12-N4",
+      "type": "reducer",
+      "symbol_description": "16\"\u00d712\" concentric/eccentric reducer on N4 inlet",
+      "connects_to": [
+        "HV0094",
+        "HV0093",
+        "N4"
+      ]
+    },
+    {
+      "tag": "REDUCER-16x12-N5",
+      "type": "reducer",
+      "symbol_description": "16\"\u00d712\" concentric/eccentric reducer on N5 inlet",
+      "connects_to": [
+        "HV0203",
+        "HV0095",
+        "N5"
+      ]
+    },
+    {
+      "tag": "8\u00d76-REDUCER",
+      "type": "reducer",
+      "symbol_description": "8\"\u00d76\" reducer near HV0092",
+      "connects_to": [
+        "HV0092",
+        "FO0002"
+      ]
+    },
+    {
+      "tag": "8\u00d710-REDUCER",
+      "type": "reducer",
+      "symbol_description": "8\"\u00d710\" expander downstream of PV0002",
+      "connects_to": [
+        "PV0002",
+        "HV0020"
+      ]
+    },
+    {
+      "tag": "HV0032",
+      "type": "valve",
+      "symbol_description": "Hand valve 2\" - LIT-0003 lower instrument isolation",
+      "connects_to": [
+        "HV0030",
+        "LIT-0003"
+      ],
+      "_added": "inferred from HV0030 reference and LIT-0003 bridle pattern"
+    },
+    {
+      "tag": "UC",
+      "type": "boundary_node",
+      "symbol_description": "Utility Connection header (external supply)",
+      "connects_to": [
+        "SPHN-0030"
+      ],
+      "_source_drawing": null
+    },
+    {
+      "tag": "14\"-PP01-362-GF0001-B01E9-PP",
+      "type": "boundary_node",
+      "symbol_description": "PSV inlet header (vessel N1 to PSV trains)",
+      "connects_to": [],
+      "spec": "B01E9",
+      "size": "14\""
+    },
+    {
+      "tag": "16\"-PP01-361-GF0014-B03F9-PP",
+      "type": "boundary_node",
+      "symbol_description": "Fuel gas inlet from DS-1 Scrapper Receiver (PID-0005)",
+      "connects_to": [],
+      "spec": "B03F9",
+      "size": "16\"",
+      "source_drawing": "N-PG-PP01-PR-PID-0005-001"
+    },
+    {
+      "tag": "16\"-PP01-361-GF0031-B03F9-PP",
+      "type": "boundary_node",
+      "symbol_description": "Fuel gas inlet from DS-3 Scrapper Receiver (PID-0007)",
+      "connects_to": [],
+      "spec": "B03F9",
+      "size": "16\"",
+      "source_drawing": "N-PG-PP01-PR-PID-0007-001"
+    },
+    {
+      "tag": "16\"-PP01-362-GF0002-B01E9-PP",
+      "type": "boundary_node",
+      "symbol_description": "Main fuel gas outlet to Fuel Gas Treatment Package (PID-0009)",
+      "connects_to": [],
+      "spec": "B01E9",
+      "size": "16\"",
+      "dest_drawing": "N-PG-PP01-PR-PID-0009-001"
+    },
+    {
+      "tag": "16\"-PP01-500-VK0066-B01B8",
+      "type": "boundary_node",
+      "symbol_description": "PSV-0001 discharge to HP Flare Header (PID-0021), slope 1:500",
+      "connects_to": [],
+      "spec": "B01B8",
+      "size": "16\"",
+      "dest_drawing": "N-PG-PP01-PR-PID-0021-001"
+    },
+    {
+      "tag": "16\"-PP01-500-VK0008-B01B8",
+      "type": "boundary_node",
+      "symbol_description": "PSV-0002 discharge to HP Flare Header (PID-0021), slope 1:500",
+      "connects_to": [],
+      "spec": "B01B8",
+      "size": "16\"",
+      "dest_drawing": "N-PG-PP01-PR-PID-0021-001"
+    },
+    {
+      "tag": "2\"-PP01-567-GF0002-B03F9",
+      "type": "boundary_node",
+      "symbol_description": "Utility connection supply line",
+      "connects_to": [],
+      "spec": "B03F9",
+      "size": "2\""
+    },
+    {
+      "tag": "4\"-PP01-512-PK0005-C01N8-PP",
+      "type": "boundary_node",
+      "symbol_description": "Condensate drain header to Condensate Storage Vessel (PID-0024)",
+      "connects_to": [],
+      "spec": "C01N8",
+      "size": "4\"",
+      "dest_drawing": "N-PG-PP01-PR-PID-0024-001"
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0021-001",
+      "type": "boundary_node",
+      "symbol_description": "HP Flare Header drawing (all relief/blowdown destination)",
+      "connects_to": [],
+      "spec": null,
+      "size": null
+    }
+  ],
+  "pipes": [
+    {
+      "from": "N-PG-PP01-PR-PID-0005-001",
+      "to": "HV0094",
+      "line_spec": "16\"-PP01-361-GF0014-B03F9-PP",
+      "description": "Fuel Gas from DS-1 Scrapper Receiver - 16\" inlet with NO POCKETS (NOTE-10)"
+    },
+    {
+      "from": "N-PG-PP01-PR-PID-0007-001",
+      "to": "HV0203",
+      "line_spec": "16\"-PP01-361-GF0031-B03F9-PP",
+      "description": "Fuel Gas from DS-3 Scrapper Receiver - 16\" inlet with NO POCKETS (NOTE-10)"
+    },
+    {
+      "from": "HV0094",
+      "to": "N4",
+      "line_spec": "16\" reducing to 12\"",
+      "description": "Via REDUCER-16x12-N4 and HV0093 to drum nozzle N4"
+    },
+    {
+      "from": "HV0203",
+      "to": "N5",
+      "line_spec": "16\" reducing to 12\"",
+      "description": "Via REDUCER-16x12-N5 and HV0095 to drum nozzle N5"
+    },
+    {
+      "from": "N1",
+      "to": "PSV-0001/PSV-0002",
+      "line_spec": "14\"-PP01-362-GF0001-B01E9-PP",
+      "description": "PSV inlet header from vessel"
+    },
+    {
+      "from": "PSV-0001",
+      "to": "N-PG-PP01-PR-PID-0021-001",
+      "line_spec": "16\"-PP01-500-VK0066-B01B8",
+      "description": "PSV-0001 discharge to HP Flare Header (slope 1:500, NO POCKETS)"
+    },
+    {
+      "from": "PSV-0002",
+      "to": "N-PG-PP01-PR-PID-0021-001",
+      "line_spec": "16\"-PP01-500-VK0008-B01B8",
+      "description": "PSV-0002 discharge to HP Flare Header (slope 1:500, NO POCKETS)"
+    },
+    {
+      "from": "N2",
+      "to": "N-PG-PP01-PR-PID-0009-001",
+      "line_spec": "16\"-PP01-362-GF0002-B01E9-PP",
+      "description": "Main fuel gas outlet to Fuel Gas Treatment Package"
+    },
+    {
+      "from": "BDZV0001",
+      "to": "N-PG-PP01-PR-PID-0021-001",
+      "line_spec": "8\"-PP01-500-VK0026-B01B8",
+      "description": "Blowdown to HP Flare Header (slope 1:500)"
+    },
+    {
+      "from": "PV0002",
+      "to": "N-PG-PP01-PR-PID-0021-001",
+      "line_spec": "10\"-PP01-500-VK0010-B01B8",
+      "description": "Pressure control valve discharge to HP Flare Header"
+    },
+    {
+      "from": "UC",
+      "to": "N9",
+      "line_spec": "2\"-PP01-567-GF0002-B03F9",
+      "description": "Utility Connection to vessel via SPHN-0030, HV0001, HV0051, HV0002"
+    },
+    {
+      "from": "N3",
+      "to": "4\"-PP01-512-PK0005-C01N8-PP",
+      "line_spec": "3\" to 4\" header",
+      "description": "Vent/drain from vessel via HV0002-DRAIN"
+    },
+    {
+      "from": "N18A",
+      "to": "LG-0001",
+      "line_spec": "2\"",
+      "description": "Upper level gauge bridle via HV0024"
+    },
+    {
+      "from": "N18B",
+      "to": "LG-0001",
+      "line_spec": "2\"",
+      "description": "Lower level gauge bridle via HV0025"
+    },
+    {
+      "from": "N13",
+      "to": "PZT-0001A",
+      "line_spec": "2\"",
+      "description": "Pressure transmitter impulse line via HV0011 (LO)"
+    },
+    {
+      "from": "N14",
+      "to": "PZT-0001B",
+      "line_spec": "2\"",
+      "description": "Pressure transmitter impulse line via HV0012 (LO)"
+    },
+    {
+      "from": "N15",
+      "to": "PZT-0001C",
+      "line_spec": "2\"",
+      "description": "Pressure transmitter impulse line via HV0013 (LO)"
+    },
+    {
+      "from": "N16",
+      "to": "PIT-0002",
+      "line_spec": "2\"",
+      "description": "Pressure transmitter impulse line via HV0014 (LO)"
+    },
+    {
+      "from": "LV-0001",
+      "to": "4\"-PP01-512-PK0005-C01N8-PP",
+      "line_spec": "4\"",
+      "description": "Liquid drain control valve outlet"
+    },
+    {
+      "from": "4\"-PP01-512-PK0005-C01N8-PP",
+      "to": "N-PG-PP01-PR-PID-0024-001",
+      "line_spec": "4\"-PP01-512-PK0006-B01M8-PP",
+      "description": "Condensate to Condensate Storage Vessel (TWO PHASE, slope 1:250, NOTE-10)"
+    },
+    {
+      "from": "CIT-0001",
+      "to": "N-PG-PP01-PR-PID-0024-001",
+      "line_spec": "2\"",
+      "description": "Condensate outlet with conductivity measurement"
+    },
+    {
+      "from": "Vessel drain/sump",
+      "to": "GRADE LEVEL",
+      "line_spec": "1\"-PP01-512-PK0076-B03F9-PP",
+      "description": "1\" drain to grade with spec change B03F9\u2192B01M8"
+    },
+    {
+      "from": "LZT-0002A/B/C cluster",
+      "to": "1\"-PP01-512-PK0080-B03F9-PP",
+      "line_spec": "1\"",
+      "description": "GWR transmitter drain/vent line"
+    },
+    {
+      "from": "LZT-0002A/B/C cluster",
+      "to": "1\"-PP01-512-PK0081-B03F9-PP",
+      "line_spec": "1\"",
+      "description": "Parallel drain line"
+    }
+  ],
+  "external_references": [
+    {
+      "drawing": "N-PG-PP01-PR-PID-0005-001",
+      "description": "DS-1 Scrapper Receiver P&ID - source of 16\" fuel gas inlet GF0014"
+    },
+    {
+      "drawing": "N-PG-PP01-PR-PID-0007-001",
+      "description": "DS-3 Scrapper Receiver P&ID - source of 16\" fuel gas inlet GF0031"
+    },
+    {
+      "drawing": "N-PG-PP01-PR-PID-0009-001",
+      "description": "Fuel Gas Treatment Package - destination of 16\" fuel gas outlet GF0002"
+    },
+    {
+      "drawing": "N-PG-PP01-PR-PID-0021-001",
+      "description": "HP Flare Header - destination of all PSV/blowdown/vent lines"
+    },
+    {
+      "drawing": "N-PG-PP01-PR-PID-0024-001",
+      "description": "Condensate Storage Vessel - destination of condensate outlet"
+    }
+  ],
+  "notes_referenced": [
+    {
+      "note": "NOTE-2",
+      "description": "Spectacle blind/flange requirement on nozzles N4 and N5"
+    },
+    {
+      "note": "NOTE-5",
+      "description": "Drain/sample station specification"
+    },
+    {
+      "note": "NOTE-7",
+      "description": "Adiabatic depressurization temperature consideration"
+    },
+    {
+      "note": "NOTE-8",
+      "description": "Spectacle blind orientation/installation on PSV inlet trains"
+    },
+    {
+      "note": "NOTE-10",
+      "description": "NO POCKETS requirement for condensate-laden lines"
+    },
+    {
+      "note": "NOTE-11",
+      "description": "Discrepancy alarm when valve position feedback differs from controller output by >10%"
+    },
+    {
+      "note": "NOTE-12",
+      "description": "FC TSO TYPE-C 300# valve specification"
+    },
+    {
+      "note": "NOTE-13",
+      "description": "Referenced near condensate outlet"
+    }
+  ],
+  "summary": {
+    "total_instruments": 42,
+    "total_valves": 52,
+    "total_vessels": 1,
+    "total_nozzles": 19,
+    "total_reducers": 4,
+    "total_pipes": 22,
+    "total_logic_blocks": 2,
+    "safety_systems": {
+      "pressure_relief": "Dual PSV trains (PSV-0001, PSV-0002) at 14.0 barg with ILO isolation",
+      "pressure_shutdown": "2oo3 voting via PZT-0001A/B/C (362-004)",
+      "level_shutdown": "2oo3 voting via LZT-0002A/B/C GWR transmitters (362-003-007)",
+      "emergency_shutdown": "EZV-0001 via LIC-0001"
+    },
+    "pipe_specs": [
+      "B01B8",
+      "B01E9",
+      "B03F9",
+      "B01M8",
+      "C01N8",
+      "C01N9"
+    ],
+    "utility_connections": [
+      "UC (Utility Connection)",
+      "IG (Inert Gas)",
+      "CO2"
+    ]
+  },
+  "_cleaning_notes": {
+    "added_components": [
+      "HV0032",
+      "UC",
+      "14\"-PP01-362-GF0001-B01E9-PP",
+      "16\"-PP01-361-GF0014-B03F9-PP",
+      "16\"-PP01-361-GF0031-B03F9-PP",
+      "16\"-PP01-362-GF0002-B01E9-PP",
+      "16\"-PP01-500-VK0066-B01B8",
+      "16\"-PP01-500-VK0008-B01B8",
+      "2\"-PP01-567-GF0002-B03F9",
+      "4\"-PP01-512-PK0005-C01N8-PP",
+      "N-PG-PP01-PR-PID-0021-001"
+    ],
+    "suffix_disambiguations": {
+      "HV0028": [
+        "HV0028-INST",
+        "HV0028-DRAIN"
+      ],
+      "HV0040": [
+        "HV0040-PSV",
+        "HV0040-LZT"
+      ],
+      "HV0041": [
+        "HV0041-PSV",
+        "HV0041-LZT"
+      ],
+      "HV0031": [
+        "HV0031-INST"
+      ]
+    },
+    "description": "HV0028/HV0040/HV0041 each appear twice on the drawing with same tag. Disambiguated with -INST/-DRAIN/-PSV/-LZT suffixes. HV0032 inferred from HV0030 reference pattern. Boundary nodes added for all cross-drawing pipe connections."
+  }
+}

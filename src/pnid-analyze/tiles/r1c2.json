@@ -1,0 +1,465 @@
+{
+  "tile": "r1c2",
+  "coord_range": "x:441–882, y:0–455 pts (approximate, center tile of top row)",
+  "components": [
+    {
+      "tag": "PSV-0001",
+      "type": "instrument",
+      "symbol_description": "Circle with PSV label, with triangle/arrow symbol indicating pressure safety valve, set at 14.0 barg",
+      "connections": ["HV0004", "HV0005", "16x10-reducer"],
+      "position_hint": "upper-left quadrant",
+      "confidence": "high",
+      "notes": "SET AT 14.0 barg, CASE: DS-3 PCV FAILURE, SIZE: 8T10"
+    },
+    {
+      "tag": "PSV-0002",
+      "type": "instrument",
+      "symbol_description": "Circle with PSV label, with triangle/arrow symbol indicating pressure safety valve, set at 14.0 barg",
+      "connections": ["HV0006", "HV0007", "16x10-reducer-2"],
+      "position_hint": "upper-center",
+      "confidence": "high",
+      "notes": "SET AT 14.0 barg, CASE: DS-3 PCV FAILURE, SIZE: 8T10"
+    },
+    {
+      "tag": "HV0004",
+      "type": "valve",
+      "symbol_description": "Gate valve symbol with ILO (indicated locked open) designation, FB (full bore)",
+      "connections": ["PSV-0001", "14-inch line"],
+      "position_hint": "left-center, below PSV-0001",
+      "confidence": "high",
+      "notes": "Tag reads HV0004, ILO FB designation visible"
+    },
+    {
+      "tag": "HV0005",
+      "type": "valve",
+      "symbol_description": "Globe/gate valve symbol with 1-inch bypass, circle-I actuator symbol",
+      "connections": ["PSV-0001"],
+      "position_hint": "left-center, inline on 1-inch bypass line",
+      "confidence": "high",
+      "notes": "1\" bypass valve on PSV-0001 inlet"
+    },
+    {
+      "tag": "HV0006",
+      "type": "valve",
+      "symbol_description": "Gate valve symbol with ILO (indicated locked open) designation, FB (full bore)",
+      "connections": ["PSV-0002", "14-inch line"],
+      "position_hint": "center, below PSV-0002",
+      "confidence": "high",
+      "notes": "Tag reads HV0006, ILO FB designation visible"
+    },
+    {
+      "tag": "HV0007",
+      "type": "valve",
+      "symbol_description": "Globe/gate valve symbol with 1-inch bypass, circle-I actuator symbol",
+      "connections": ["PSV-0002"],
+      "position_hint": "center, inline on 1-inch bypass line below PSV-0002",
+      "confidence": "high",
+      "notes": "1\" bypass valve on PSV-0002 inlet"
+    },
+    {
+      "tag": "HV0038",
+      "type": "valve",
+      "symbol_description": "Gate valve with ILO designation",
+      "connections": ["PSV-0001 outlet line", "FB line"],
+      "position_hint": "upper-left, on PSV-0001 discharge header",
+      "confidence": "high",
+      "notes": "ILO FB labeled"
+    },
+    {
+      "tag": "HV0039",
+      "type": "valve",
+      "symbol_description": "Gate valve with ILO designation",
+      "connections": ["PSV-0001 outlet line"],
+      "position_hint": "upper-left area, near PSV-0001 outlet",
+      "confidence": "high",
+      "notes": "ILO FB labeled, appears on discharge side"
+    },
+    {
+      "tag": "HV0040",
+      "type": "valve",
+      "symbol_description": "Gate valve with ILO designation",
+      "connections": ["PSV-0002 outlet line"],
+      "position_hint": "upper-center, on PSV-0002 discharge",
+      "confidence": "high",
+      "notes": "ILO FB labeled"
+    },
+    {
+      "tag": "HV0041",
+      "type": "valve",
+      "symbol_description": "Gate valve with ILO designation",
+      "connections": ["PSV-0002 outlet line"],
+      "position_hint": "upper-center area near PSV-0002 outlet",
+      "confidence": "high",
+      "notes": "ILO FB labeled"
+    },
+    {
+      "tag": "SPK-0001 (left)",
+      "type": "instrument",
+      "symbol_description": "Square box labeled SPK (spectacle blind / spade) with NOTE-8 reference",
+      "connections": ["HV0004", "14-inch inlet line"],
+      "position_hint": "left-center below PSV-0001 loop",
+      "confidence": "medium",
+      "notes": "NOTE-8 referenced; appears twice — one on each PSV inlet train"
+    },
+    {
+      "tag": "SPK-0001 (right)",
+      "type": "instrument",
+      "symbol_description": "Square box labeled SPK (spectacle blind / spade) with NOTE-8 reference",
+      "connections": ["HV0006", "14-inch inlet line"],
+      "position_hint": "center below PSV-0002 loop",
+      "confidence": "medium",
+      "notes": "NOTE-8 referenced; possible duplicate tag — may be separate spade"
+    },
+    {
+      "tag": "PI-0001A",
+      "type": "instrument",
+      "symbol_description": "Diamond-shaped pressure indicator symbol, labeled PI 0001A, with HH alarm designation",
+      "connections": ["14-PP01-362-GF0001-B01E9-PP line"],
+      "position_hint": "center-left, on main 14-inch process line",
+      "confidence": "high",
+      "notes": "HH high-high alarm shown; appears in both upper and lower row (two instances for redundancy)"
+    },
+    {
+      "tag": "PI-0001B",
+      "type": "instrument",
+      "symbol_description": "Diamond-shaped pressure indicator, labeled PI 0001B, HH alarm",
+      "connections": ["14-PP01-362-GF0001-B01E9-PP line"],
+      "position_hint": "center, on main 14-inch process line",
+      "confidence": "high",
+      "notes": "HH high-high alarm; appears twice (upper and lower row)"
+    },
+    {
+      "tag": "PI-0001C",
+      "type": "instrument",
+      "symbol_description": "Diamond-shaped pressure indicator, labeled PI 0001C, HH alarm",
+      "connections": ["14-PP01-362-GF0001-B01E9-PP line"],
+      "position_hint": "center-right, on main 14-inch process line",
+      "confidence": "high",
+      "notes": "HH high-high alarm; appears twice (upper and lower row)"
+    },
+    {
+      "tag": "PZT-0001A",
+      "type": "instrument",
+      "symbol_description": "Circle instrument symbol labeled PZT (pressure transmitter), tag 0001A",
+      "connections": ["HV0011", "14-inch line or vessel nozzle"],
+      "position_hint": "lower-center-left",
+      "confidence": "high",
+      "notes": "Connected via 2-inch instrument line with HV0011"
+    },
+    {
+      "tag": "PZT-0001B",
+      "type": "instrument",
+      "symbol_description": "Circle instrument symbol labeled PZT, tag 0001B",
+      "connections": ["HV0012", "14-inch line or vessel nozzle"],
+      "position_hint": "lower-center",
+      "confidence": "high",
+      "notes": "Connected via 2-inch instrument line with HV0012"
+    },
+    {
+      "tag": "PZT-0001C",
+      "type": "instrument",
+      "symbol_description": "Circle instrument symbol labeled PZT, tag 0001C",
+      "connections": ["HV0013", "14-inch line or vessel nozzle"],
+      "position_hint": "lower-center-right",
+      "confidence": "high",
+      "notes": "Connected via 2-inch instrument line with HV0013"
+    },
+    {
+      "tag": "HV0011",
+      "type": "valve",
+      "symbol_description": "2-inch valve with LO (locked open) designation, crossed square symbol (block valve)",
+      "connections": ["PZT-0001A", "process tapping"],
+      "position_hint": "lower-center-left, on 2-inch instrument take-off",
+      "confidence": "high",
+      "notes": "LO designation; 2\" size"
+    },
+    {
+      "tag": "HV0012",
+      "type": "valve",
+      "symbol_description": "2-inch valve with LO designation, crossed square symbol",
+      "connections": ["PZT-0001B", "process tapping"],
+      "position_hint": "lower-center, on 2-inch instrument take-off",
+      "confidence": "high",
+      "notes": "LO designation; 2\" size"
+    },
+    {
+      "tag": "HV0013",
+      "type": "valve",
+      "symbol_description": "2-inch valve with LO designation, crossed square symbol",
+      "connections": ["PZT-0001C", "process tapping"],
+      "position_hint": "lower-center-right, on 2-inch instrument take-off",
+      "confidence": "high",
+      "notes": "LO designation; 2\" size"
+    },
+    {
+      "tag": "PIT-0002",
+      "type": "instrument",
+      "symbol_description": "Circle instrument symbol labeled PIT (pressure indicating transmitter), tag 0002",
+      "connections": ["HV0014", "PIC-0002"],
+      "position_hint": "lower-center, right of PZT group",
+      "confidence": "high",
+      "notes": "Connects to PIC-0002 controller"
+    },
+    {
+      "tag": "HV0014",
+      "type": "valve",
+      "symbol_description": "2-inch valve with LO designation, crossed square symbol",
+      "connections": ["PIT-0002", "process tapping"],
+      "position_hint": "lower-center, below PIT-0002",
+      "confidence": "high",
+      "notes": "LO designation; 2\" size"
+    },
+    {
+      "tag": "PIC-0002",
+      "type": "instrument",
+      "symbol_description": "Square box labeled PIC (pressure indicating controller), tag 0002, with H and L alarm setpoints shown",
+      "connections": ["PIT-0002", "control output"],
+      "position_hint": "center, right of PZT cluster",
+      "confidence": "high",
+      "notes": "H and L labels visible indicating high/low alarm setpoints"
+    },
+    {
+      "tag": "362-004",
+      "type": "annotation",
+      "symbol_description": "Loop number / logic box labeled 362 with sub-tag 004 and 2oo3 (two-out-of-three voting logic)",
+      "connections": ["PI-0001A", "PI-0001B", "PI-0001C", "PZT-0001A", "PZT-0001B", "PZT-0001C"],
+      "position_hint": "center, in instrument cluster area",
+      "confidence": "high",
+      "notes": "2oo3 voting logic for pressure — likely SIS/safety system logic solver reference"
+    },
+    {
+      "tag": "PG-0001",
+      "type": "instrument",
+      "symbol_description": "Circle labeled PG (pressure gauge), tag 0001",
+      "connections": ["HV0015", "8-inch or 6-inch line"],
+      "position_hint": "center-right area",
+      "confidence": "high",
+      "notes": "Local pressure gauge"
+    },
+    {
+      "tag": "HV0015",
+      "type": "valve",
+      "symbol_description": "2-inch valve, crossed square, LO designation",
+      "connections": ["PG-0001"],
+      "position_hint": "center-right, below PG-0001",
+      "confidence": "high",
+      "notes": "2\" LO block valve for PG-0001"
+    },
+    {
+      "tag": "14\"-PP01-362-GF0001-B01E9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number annotation on 14-inch process gas pipe",
+      "connections": ["HV0004", "HV0006", "PI-0001A/B/C"],
+      "position_hint": "center-left, horizontal pipe run",
+      "confidence": "high",
+      "notes": "Main 14-inch fuel gas process line feeding PSVs and instruments"
+    },
+    {
+      "tag": "14\"-PP01-362-GF0004-B01E9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line number annotation on 14-inch process pipe (different GF segment)",
+      "connections": ["downstream of PSV discharge", "continues right"],
+      "position_hint": "center, horizontal pipe run below PSV outlets",
+      "confidence": "high",
+      "notes": "Continuation or separate 14-inch line segment"
+    },
+    {
+      "tag": "B01B8 / B01E9",
+      "type": "annotation",
+      "symbol_description": "Flange/spec break annotation visible near PSV-0001 and PSV-0002 inlet piping",
+      "connections": ["PSV-0001 inlet", "PSV-0002 inlet"],
+      "position_hint": "mid-height, adjacent to both PSV assemblies",
+      "confidence": "medium",
+      "notes": "Appears as pipe spec break indicator; shown on both PSV trains"
+    },
+    {
+      "tag": "N1",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N1 at bottom edge of tile on vessel or header",
+      "connections": ["14-inch line", "vessel shell"],
+      "position_hint": "bottom-center-left edge",
+      "confidence": "high",
+      "notes": "Vessel nozzle; label at bottom boundary"
+    },
+    {
+      "tag": "N13",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N13",
+      "connections": ["HV0011 / PZT-0001A take-off"],
+      "position_hint": "bottom edge, center-left",
+      "confidence": "high",
+      "notes": "Instrument nozzle on vessel"
+    },
+    {
+      "tag": "N14",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N14",
+      "connections": ["HV0012 / PZT-0001B take-off"],
+      "position_hint": "bottom edge, center",
+      "confidence": "high",
+      "notes": "Instrument nozzle on vessel"
+    },
+    {
+      "tag": "N15",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N15",
+      "connections": ["HV0013 / PZT-0001C take-off"],
+      "position_hint": "bottom edge, center-right",
+      "confidence": "high",
+      "notes": "Instrument nozzle on vessel"
+    },
+    {
+      "tag": "N16",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N16",
+      "connections": ["HV0014 / PIT-0002 take-off"],
+      "position_hint": "bottom edge, right of center",
+      "confidence": "high",
+      "notes": "Instrument nozzle on vessel"
+    },
+    {
+      "tag": "N2",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N2, crossed-hatch pattern suggesting blind or special fitting",
+      "connections": ["16-inch line at bottom"],
+      "position_hint": "bottom-center-right edge",
+      "confidence": "high",
+      "notes": "May be process inlet/outlet nozzle; near N6A"
+    },
+    {
+      "tag": "N6A",
+      "type": "nozzle",
+      "symbol_description": "Nozzle designation N6A near bottom edge",
+      "connections": ["2-inch LO line", "HV0034"],
+      "position_hint": "bottom-right area, near N2",
+      "confidence": "high",
+      "notes": "Small instrument or drain nozzle"
+    },
+    {
+      "tag": "HV0034",
+      "type": "valve",
+      "symbol_description": "Crossed square valve symbol, 2-inch LO (locked open)",
+      "connections": ["N6A nozzle"],
+      "position_hint": "bottom-right, near N2/N6A",
+      "confidence": "medium",
+      "notes": "2\" LO valve on instrument/drain take-off"
+    },
+    {
+      "tag": "NOTE-8",
+      "type": "annotation",
+      "symbol_description": "Text note reference tag NOTE-8",
+      "connections": ["SPK-0001 (left)", "SPK-0001 (right)"],
+      "position_hint": "appears near both SPK symbols, center area",
+      "confidence": "high",
+      "notes": "Referenced twice; likely refers to spectacle blind orientation or installation note"
+    },
+    {
+      "tag": "16x10-reducer (PSV-0001 outlet)",
+      "type": "reducer",
+      "symbol_description": "16\"×10\" concentric or eccentric reducer symbol on PSV-0001 discharge",
+      "connections": ["PSV-0001 outlet", "10-inch header"],
+      "position_hint": "upper-left, on PSV-0001 discharge piping",
+      "confidence": "high",
+      "notes": "Size transition from 16\" to 10\""
+    },
+    {
+      "tag": "16x10-reducer (PSV-0002 outlet)",
+      "type": "reducer",
+      "symbol_description": "16\"×10\" concentric or eccentric reducer on PSV-0002 discharge",
+      "connections": ["PSV-0002 outlet", "10-inch header"],
+      "position_hint": "upper-center, on PSV-0002 discharge piping",
+      "confidence": "high",
+      "notes": "Size transition from 16\" to 10\""
+    },
+    {
+      "tag": "14x8-reducer (PSV-0001 inlet)",
+      "type": "reducer",
+      "symbol_description": "14\"×8\" reducer on PSV-0001 inlet",
+      "connections": ["14-inch main line", "PSV-0001 inlet flange"],
+      "position_hint": "upper-left, PSV-0001 inlet side",
+      "confidence": "high",
+      "notes": "Label reads 14\"×8\""
+    },
+    {
+      "tag": "14x8-reducer (PSV-0002 inlet)",
+      "type": "reducer",
+      "symbol_description": "14\"×8\" reducer on PSV-0002 inlet",
+      "connections": ["14-inch main line", "PSV-0002 inlet flange"],
+      "position_hint": "upper-center, PSV-0002 inlet side",
+      "confidence": "high",
+      "notes": "Label reads 14\"×8\""
+    }
+  ],
+  "pipes": [
+    {
+      "from": "HV0004 (left PSV isolation valve)",
+      "to": "PSV-0001 inlet",
+      "line_spec": "14\"-PP01-362-GF0001-B01E9-PP (branch)",
+      "notes": "14-inch branch to PSV-0001, reduced to 8\" at inlet"
+    },
+    {
+      "from": "HV0006 (right PSV isolation valve)",
+      "to": "PSV-0002 inlet",
+      "line_spec": "14\"-PP01-362-GF0001-B01E9-PP (branch)",
+      "notes": "14-inch branch to PSV-0002, reduced to 8\" at inlet"
+    },
+    {
+      "from": "PSV-0001 outlet",
+      "to": "flare/blowdown header (exits tile top)",
+      "line_spec": "10-inch, spec partially visible",
+      "notes": "Discharge exits tile toward top; HV0038/HV0039 in line"
+    },
+    {
+      "from": "PSV-0002 outlet",
+      "to": "flare/blowdown header (exits tile top)",
+      "line_spec": "10-inch, spec partially visible",
+      "notes": "Discharge exits tile toward top; HV0040/HV0041 in line"
+    },
+    {
+      "from": "Main 14-inch header (enters left edge)",
+      "to": "Main 14-inch header (exits right edge)",
+      "line_spec": "14\"-PP01-362-GF0004-B01E9-PP",
+      "notes": "Horizontal main process line passing through tile center"
+    },
+    {
+      "from": "Process line tapping",
+      "to": "PZT-0001A via HV0011",
+      "line_spec": "2\" instrument take-off from N13",
+      "notes": "2\" LO impulse line"
+    },
+    {
+      "from": "Process line tapping",
+      "to": "PZT-0001B via HV0012",
+      "line_spec": "2\" instrument take-off from N14",
+      "notes": "2\" LO impulse line"
+    },
+    {
+      "from": "Process line tapping",
+      "to": "PZT-0001C via HV0013",
+      "line_spec": "2\" instrument take-off from N15",
+      "notes": "2\" LO impulse line"
+    },
+    {
+      "from": "Process line tapping",
+      "to": "PIT-0002 via HV0014",
+      "line_spec": "2\" instrument take-off from N16",
+      "notes": "2\" LO impulse line"
+    },
+    {
+      "from": "16-inch line (bottom center-right)",
+      "to": "N2 nozzle",
+      "line_spec": "16\"",
+      "notes": "Large process line at bottom boundary; likely vessel inlet or outlet"
+    }
+  ],
+  "edge_components": [
+    "PSV-0001 discharge piping — continues to top edge (flare header)",
+    "PSV-0002 discharge piping — continues to top edge (flare header)",
+    "14-inch main process line — continues to left edge (tile r1c1) and right edge (tile r1c3)",
+    "Vessel outline / drum — bottom edge (continues into tile r2c2)",
+    "N2, N6A, N13–N16 nozzles — bottom edge, vessel continues downward",
+    "HV0093, HV0095, HV0003 — partially visible left edge (from tile r1c1 overlap)",
+    "FO-0002, BDZV-0001, HV0091/0092, PV-0002, HV0016/0017/0018, EZV-0002 — right edge (continue into tile r1c3)",
+    "LZT-0002B — partially visible lower-right corner"
+  ]
+}

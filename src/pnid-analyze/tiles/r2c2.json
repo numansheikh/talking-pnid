@@ -1,0 +1,934 @@
+{
+  "tile": "r2c2",
+  "coord_range": "x:375-816, y:387-842 pts",
+  "components": [
+    {
+      "tag": "LIT-0001",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LIT 0001' – Level Indicating Transmitter",
+      "connections": ["N7A", "N18A", "LIC-0001"],
+      "position_hint": "upper-left quadrant, mid-height",
+      "confidence": "high",
+      "notes": "Connected via dashed signal line to LIC-0001"
+    },
+    {
+      "tag": "LIT-0003",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LIT 0003' – Level Indicating Transmitter",
+      "connections": ["N10A", "N15"],
+      "position_hint": "upper-center, slightly left of center",
+      "confidence": "high",
+      "notes": "Paired with LI-0003 nearby"
+    },
+    {
+      "tag": "LI-0003",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LI 0003' – Level Indicator",
+      "connections": ["N15", "LIT-0003"],
+      "position_hint": "upper-center",
+      "confidence": "high",
+      "notes": "Local level indicator, adjacent to LIT-0003"
+    },
+    {
+      "tag": "LG-0001",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LG 0001' – Level Gauge (sight glass type)",
+      "connections": ["N18A", "N18B"],
+      "position_hint": "left edge, mid-upper area",
+      "confidence": "high",
+      "notes": "Flanked by isolation valves HV0024 and HV0025"
+    },
+    {
+      "tag": "LIC-0001",
+      "type": "instrument",
+      "symbol_description": "Square/circle combo labeled 'LIC 0001' with H and L set-point markers – Level Indicating Controller",
+      "connections": ["LIT-0001", "EZV-0001", "LV-0001"],
+      "position_hint": "center, lower-middle section",
+      "confidence": "high",
+      "notes": "Has H (high) and L (low) alarm indicators; dashed signal lines to final elements"
+    },
+    {
+      "tag": "LV-0001",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LV 0001' – Level control Valve positioner/indicator",
+      "connections": ["LIC-0001", "HV0028", "HV0029", "HV0031"],
+      "position_hint": "lower-center, above bottom drain line",
+      "confidence": "high",
+      "notes": "Associated with the 4\" liquid drain control loop"
+    },
+    {
+      "tag": "EZV-0001",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'EZV 0001' – Emergency Shut-down / Zone Valve actuator symbol",
+      "connections": ["LIC-0001", "HV0065"],
+      "position_hint": "lower-center, left of LV-0001",
+      "confidence": "high",
+      "notes": "Associated with FC TSO TYPE-C, 300# NOTE-12 annotation"
+    },
+    {
+      "tag": "PZT-0001A",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'PZT 0001A' – Pressure transmitter with safety function (Z)",
+      "connections": ["N13"],
+      "position_hint": "top edge, left-of-center",
+      "confidence": "high",
+      "notes": "Cut off at top edge; nozzle N13 below it"
+    },
+    {
+      "tag": "PZT-0001B",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'PZT 0001B'",
+      "connections": ["N14"],
+      "position_hint": "top edge, center",
+      "confidence": "high",
+      "notes": "Cut off at top edge"
+    },
+    {
+      "tag": "PZT-0001C",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'PZT 0001C'",
+      "connections": ["N15"],
+      "position_hint": "top edge, right of center",
+      "confidence": "high",
+      "notes": "Cut off at top edge"
+    },
+    {
+      "tag": "PIT-0002",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'PIT 0002' – Pressure Indicating Transmitter",
+      "connections": ["N16"],
+      "position_hint": "top edge, center-right",
+      "confidence": "high",
+      "notes": "Cut off at top edge; nozzle N16 below"
+    },
+    {
+      "tag": "LZT-0002A",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LZT 0002A' – Level transmitter (safety/GWR type)",
+      "connections": ["GWR"],
+      "position_hint": "right edge, upper area",
+      "confidence": "high",
+      "notes": "Guided Wave Radar (GWR) indicated; cut off at right edge"
+    },
+    {
+      "tag": "LZT-0002B",
+      "type": "instrument",
+      "symbol_description": "Circle bubble labeled 'LZT 0002B'",
+      "connections": ["GWR"],
+      "position_hint": "top-right corner",
+      "confidence": "high",
+      "notes": "Cut off at top and right edges"
+    },
+    {
+      "tag": "362-I-007",
+      "type": "instrument",
+      "symbol_description": "Diamond shape labeled '362 I 007' – local panel indicator or interlock logic symbol",
+      "connections": ["EZV-0001"],
+      "position_hint": "lower-center, left section",
+      "confidence": "medium",
+      "notes": "Diamond symbol typical of discrete I/O or interlock node in ISA notation"
+    },
+    {
+      "tag": "HV0002",
+      "type": "valve",
+      "symbol_description": "Hand valve (globe/gate with actuator) – 4\" on vent/drain line",
+      "connections": ["N3", "4\"-PP01-512-PK0005-C01N8-PP"],
+      "position_hint": "center, just below nozzle N3",
+      "confidence": "high",
+      "notes": "IG marker present; spec B01E9/C01N9 break nearby"
+    },
+    {
+      "tag": "HV0022",
+      "type": "valve",
+      "symbol_description": "Hand valve with cross symbol – 2\", with IG and CO2 markers",
+      "connections": ["N7A", "HV0028"],
+      "position_hint": "upper-left, nozzle N7A area",
+      "confidence": "high",
+      "notes": "2\" × 1\" reducer present on connection"
+    },
+    {
+      "tag": "HV0023",
+      "type": "valve",
+      "symbol_description": "Hand valve with cross symbol – 2\", with IG and CO2 markers",
+      "connections": ["N7B", "HV0029"],
+      "position_hint": "upper-left, nozzle N7B area",
+      "confidence": "high",
+      "notes": "Parallel to HV0022 on lower nozzle N7B; 1:120 ratio label nearby"
+    },
+    {
+      "tag": "HV0024",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", isolation valve for LG-0001 upper connection",
+      "connections": ["N18A", "LG-0001"],
+      "position_hint": "left edge, above LG-0001",
+      "confidence": "high",
+      "notes": "Part of gauge isolation set"
+    },
+    {
+      "tag": "HV0025",
+      "type": "valve",
+      "symbol_description": "Hand valve – lower isolation valve for LG-0001",
+      "connections": ["N18B", "LG-0001"],
+      "position_hint": "left edge, below LG-0001",
+      "confidence": "high",
+      "notes": "CO2 spec break marker present"
+    },
+    {
+      "tag": "HV0026",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\"",
+      "connections": ["N18A"],
+      "position_hint": "left edge, upper nozzle N18A",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0027",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", with CO2 spec break",
+      "connections": ["N18B"],
+      "position_hint": "left edge, lower nozzle N18B",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0028",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\" globe/gate, on instrument supply line",
+      "connections": ["HV0022", "N7A"],
+      "position_hint": "upper-left, inline on 2\" branch",
+      "confidence": "high",
+      "notes": "Two instances of HV0028 tag visible – one upper (instrument isolation) and one lower (drain line); possible duplicate tag or reuse"
+    },
+    {
+      "tag": "HV0028 (lower)",
+      "type": "valve",
+      "symbol_description": "Hand valve – 4\" on liquid drain outlet, FC (fail closed) noted",
+      "connections": ["LV-0001", "4\"-PP01-512-PK0005-C01N8-PP"],
+      "position_hint": "lower-center, drain line",
+      "confidence": "medium",
+      "notes": "Possible separate HV0028 or labeling overlap; verify against full drawing"
+    },
+    {
+      "tag": "HV0029",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", isolation on instrument line",
+      "connections": ["N7B", "HV0023"],
+      "position_hint": "upper-left, nozzle N7B branch",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0030",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", with IG marker",
+      "connections": ["N10A", "HV0032"],
+      "position_hint": "upper-center, nozzle N10A branch",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0031",
+      "type": "valve",
+      "symbol_description": "Hand valve – 4\" on outlet drain",
+      "connections": ["LV-0001", "4\"-PP01-512-PK0005-C01N8-PP"],
+      "position_hint": "lower-center, right of HV0028 lower",
+      "confidence": "high",
+      "notes": "Another instance visible on lower right side as well"
+    },
+    {
+      "tag": "HV0032",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", LC (lock closed) designation",
+      "connections": ["N10A", "HV0030"],
+      "position_hint": "upper-center and lower-center (two instances)",
+      "confidence": "high",
+      "notes": "LC tag visible on lower instance; possible two separate valves with same tag"
+    },
+    {
+      "tag": "HV0033",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", with CO2 marker",
+      "connections": ["N10B", "N12B"],
+      "position_hint": "upper-center-right area",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0034",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\" LO (lock open), nozzle N2/N6A branch",
+      "connections": ["N6A", "N2"],
+      "position_hint": "upper-center-right, nozzle N6A",
+      "confidence": "high",
+      "notes": "LO designation"
+    },
+    {
+      "tag": "HV0035",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", on lower nozzle N8 branch",
+      "connections": ["N8"],
+      "position_hint": "center-right, N8 area",
+      "confidence": "high",
+      "notes": "CO2 marker present"
+    },
+    {
+      "tag": "HV0036",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\" LO",
+      "connections": ["N11A"],
+      "position_hint": "upper-right, nozzle N11A",
+      "confidence": "high",
+      "notes": "LO designation"
+    },
+    {
+      "tag": "HV0037",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", CO2 marker",
+      "connections": ["N11B"],
+      "position_hint": "center-right area",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0038",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", on nozzle N12A branch",
+      "connections": ["N12A"],
+      "position_hint": "upper-right, nozzle N12A",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0039",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\" LO",
+      "connections": ["N12B"],
+      "position_hint": "center-right, nozzle N12B area",
+      "confidence": "high",
+      "notes": "LO label visible"
+    },
+    {
+      "tag": "HV0040",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\", right-side branch",
+      "connections": ["LZT-0002A"],
+      "position_hint": "right edge, upper area",
+      "confidence": "high",
+      "notes": "Continues into right tile"
+    },
+    {
+      "tag": "HV0041",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", with IG marker, right side",
+      "connections": [],
+      "position_hint": "right edge, center-upper",
+      "confidence": "medium",
+      "notes": "Partially cut; connects to MW 24\" manway branch or instrument line"
+    },
+    {
+      "tag": "HV0042",
+      "type": "valve",
+      "symbol_description": "Hand valve – 2\" 1\" reducer branch, right edge",
+      "connections": ["LZT-0002A"],
+      "position_hint": "top-right corner",
+      "confidence": "medium",
+      "notes": "Cut off at right edge; tag partially visible"
+    },
+    {
+      "tag": "HV0043",
+      "type": "valve",
+      "symbol_description": "Hand valve with CO2 spec break, 1\"",
+      "connections": [],
+      "position_hint": "right edge, center",
+      "confidence": "medium",
+      "notes": "Cut off at right edge"
+    },
+    {
+      "tag": "HV0049",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line 1\"-PP01-512-PK0076-B03F9-PP",
+      "connections": ["HV0053", "1\"-PP01-512-PK0076-B03F9-PP"],
+      "position_hint": "lower-left, inline on sample/drain line",
+      "confidence": "high",
+      "notes": "IG and CO2 markers present; B03F9/B01M8 spec break"
+    },
+    {
+      "tag": "HV0050",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line 1\"-PP01-512-PK0077-B03F9-PP",
+      "connections": ["HV0054", "1\"-PP01-512-PK0077-B03F9-PP"],
+      "position_hint": "lower-left, second drain line",
+      "confidence": "high",
+      "notes": "IG and CO2 markers present"
+    },
+    {
+      "tag": "HV0051",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line 1\"-PP01-512-PK0005 branch",
+      "connections": ["HV0055", "4\"-PP01-512-PK0005-C01N8-PP"],
+      "position_hint": "lower-center, left of HV0055",
+      "confidence": "high",
+      "notes": "B03F9/B01M8 spec break"
+    },
+    {
+      "tag": "HV0052",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", CO2 marker, right-side drain line",
+      "connections": ["1\"-PP01-512-PK0054-B01M8-PP"],
+      "position_hint": "lower-right area",
+      "confidence": "high",
+      "notes": "B03F9/B01M8 spec break"
+    },
+    {
+      "tag": "HV0053",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line PK0076",
+      "connections": ["HV0049", "1\"-PP01-512-PK0076-B03F9-PP"],
+      "position_hint": "lower-left, inline on sample line",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0054",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line PK0077",
+      "connections": ["HV0050", "1\"-PP01-512-PK0077-B03F9-PP"],
+      "position_hint": "lower-left, second drain line",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0055",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line PK0078 branch",
+      "connections": ["HV0051", "1\"-PP01-512-PK0078-B03F9-PP"],
+      "position_hint": "lower-center",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "HV0056",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on line PK0054 or PK0079",
+      "connections": ["1\"-PP01-512-PK0054-B01M8-PP"],
+      "position_hint": "lower-right",
+      "confidence": "high",
+      "notes": "B03F9/B01M8 spec break"
+    },
+    {
+      "tag": "HV0065",
+      "type": "valve",
+      "symbol_description": "Hand valve – NC (Normally Closed), with needle-valve symbol; connected to WO drain",
+      "connections": ["EZV-0001", "WO"],
+      "position_hint": "lower-left-center, drain to WO",
+      "confidence": "high",
+      "notes": "NC designation clearly marked"
+    },
+    {
+      "tag": "HV0004",
+      "type": "valve",
+      "symbol_description": "Hand valve – 1\", on bottom drain/sample line",
+      "connections": ["C01N9", "B01M8", "1\"-PP01-512-PK0054-B01M8-PP"],
+      "position_hint": "bottom-center, lowest drain point",
+      "confidence": "high",
+      "notes": "NOTE-5 referenced; 2\"×1\" and 1½\"×1\" reducers visible adjacent"
+    },
+    {
+      "tag": "N1",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle labeled 'N1', 14\"",
+      "connections": ["vessel 362-V001"],
+      "position_hint": "top edge, left of center",
+      "confidence": "high",
+      "notes": "14\" line size"
+    },
+    {
+      "tag": "N2",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle labeled 'N2', 16\"",
+      "connections": ["HV0034", "vessel 362-V001"],
+      "position_hint": "top edge, center-right",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N3",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle labeled 'N3', 3\"– bottom drain nozzle",
+      "connections": ["HV0002"],
+      "position_hint": "center, connecting to vertical drain line",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N5",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle labeled 'N5' with NOTE-2 reference (hatched symbol = spectacle blind / figure-8)",
+      "connections": ["vessel 362-V001"],
+      "position_hint": "top-left edge",
+      "confidence": "high",
+      "notes": "NOTE-2 may refer to spectacle blind or blind flange requirement"
+    },
+    {
+      "tag": "N6A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N6A', 2\" – upper level instrument nozzle",
+      "connections": ["HV0034", "LZT-0002A"],
+      "position_hint": "upper-right vessel wall",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N6B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N6B', 2\" – lower level instrument nozzle",
+      "connections": ["HV0035"],
+      "position_hint": "center-right vessel wall",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N7A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N7A', 2\" – upper instrument nozzle, left side",
+      "connections": ["HV0022", "LIT-0001"],
+      "position_hint": "upper-left vessel wall",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N7B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N7B', 2\" – lower instrument nozzle, left side",
+      "connections": ["HV0023", "LIT-0001"],
+      "position_hint": "left vessel wall, below N7A",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N8",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N8'",
+      "connections": ["HV0035"],
+      "position_hint": "center-right vessel wall, lower",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N10A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N10A', 2\" – upper center instrument nozzle",
+      "connections": ["HV0030", "LIT-0003"],
+      "position_hint": "upper vessel wall, center",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N10B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N10B', 2\" – lower center instrument nozzle",
+      "connections": ["HV0033"],
+      "position_hint": "vessel wall, center, below N10A",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N11A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N11A', 2\"",
+      "connections": ["HV0036"],
+      "position_hint": "upper-right vessel wall",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N11B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N11B', 2\"",
+      "connections": ["HV0037"],
+      "position_hint": "right vessel wall, below N11A",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N12A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N12A', 2\"",
+      "connections": ["HV0038"],
+      "position_hint": "right vessel wall",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N12B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N12B', 2\" LO",
+      "connections": ["HV0039", "HV0033"],
+      "position_hint": "right vessel wall, below N12A",
+      "confidence": "high",
+      "notes": "LO (lock open) designation"
+    },
+    {
+      "tag": "N13",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N13' – instrument connection for PZT-0001A",
+      "connections": ["PZT-0001A"],
+      "position_hint": "top vessel wall, left of center",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N14",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N14' – instrument connection for PZT-0001B",
+      "connections": ["PZT-0001B"],
+      "position_hint": "top vessel wall, center",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N15",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N15' – instrument connection for PZT-0001C / LI-0003",
+      "connections": ["PZT-0001C", "LI-0003"],
+      "position_hint": "top vessel wall, right of center",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N16",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N16', 16\" – PIT-0002 connection",
+      "connections": ["PIT-0002"],
+      "position_hint": "top vessel wall, right side",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N17",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N17', 12\" inlet",
+      "connections": ["vessel 362-V001"],
+      "position_hint": "top-left edge",
+      "confidence": "high",
+      "notes": "Large process inlet nozzle"
+    },
+    {
+      "tag": "N18A",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N18A', 2\" – upper gauge nozzle",
+      "connections": ["HV0024", "LG-0001", "HV0026"],
+      "position_hint": "left vessel wall, upper",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "N18B",
+      "type": "nozzle",
+      "symbol_description": "Vessel nozzle 'N18B', 2\" – lower gauge nozzle",
+      "connections": ["HV0025", "LG-0001", "HV0027"],
+      "position_hint": "left vessel wall, lower",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "362-V001",
+      "type": "vessel",
+      "symbol_description": "Fuel Gas Knock-Out Drum – vertical vessel with multiple nozzle connections; vessel boundary indicated by dashed outline (NOTE-9)",
+      "connections": ["N1","N2","N3","N5","N6A","N6B","N7A","N7B","N8","N10A","N10B","N11A","N11B","N12A","N12B","N13","N14","N15","N16","N17","N18A","N18B"],
+      "position_hint": "center of tile, spanning full height",
+      "confidence": "high",
+      "notes": "Tag 362-V001 with NOTE-9; vessel not drawn as full cylinder here — boundary implied by nozzle layout and dashed box"
+    },
+    {
+      "tag": "HHLL/HLL/NLL/LLL/LLLL annotation",
+      "type": "annotation",
+      "symbol_description": "Level set-point table: HHLL=1300mm, HLL=1150mm, NLL=800mm, LLL=450mm, LLLL=300mm",
+      "connections": ["LIC-0001", "362-V001"],
+      "position_hint": "upper-center, inside vessel boundary note box",
+      "confidence": "high",
+      "notes": "Instrument alarm/trip level reference tied to 362-V001"
+    },
+    {
+      "tag": "GWR",
+      "type": "annotation",
+      "symbol_description": "Text label 'GWR' – Guided Wave Radar reference for LZT instruments",
+      "connections": ["LZT-0002A", "LZT-0002B"],
+      "position_hint": "upper-right area",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "MW 24\"",
+      "type": "annotation",
+      "symbol_description": "Manway annotation 'MW 24\"' on vessel shell, right side",
+      "connections": ["362-V001"],
+      "position_hint": "center-right vessel wall",
+      "confidence": "high",
+      "notes": "24-inch manway opening"
+    },
+    {
+      "tag": "FC TSO TYPE-C 300# NOTE-12",
+      "type": "annotation",
+      "symbol_description": "Valve specification annotation: Fail-Close, Tight Shut-Off, Type-C, 300 lb class, see NOTE-12",
+      "connections": ["EZV-0001"],
+      "position_hint": "lower-center, adjacent to EZV-0001",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "FC TSO TYPE-M",
+      "type": "annotation",
+      "symbol_description": "Valve specification: Fail-Close, Tight Shut-Off, Type-M",
+      "connections": [],
+      "position_hint": "top-right edge",
+      "confidence": "high",
+      "notes": "Cut off at top-right; associated with a valve in adjacent tile"
+    },
+    {
+      "tag": "WO",
+      "type": "annotation",
+      "symbol_description": "Drain destination label 'WO' (Waste Oil / Waste Out) – in a box",
+      "connections": ["HV0065"],
+      "position_hint": "lower-left, below HV0065",
+      "confidence": "high",
+      "notes": "Terminal drain point"
+    },
+    {
+      "tag": "NOTE-2 (N5)",
+      "type": "annotation",
+      "symbol_description": "Hatched symbol at N5 with NOTE-2 reference – spectacle blind or blanked nozzle",
+      "connections": ["N5"],
+      "position_hint": "top-left edge",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "1\"-PP01-512-PK0076-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "1\" process line, pipe class B03F9, project PP01, system 512",
+      "connections": ["HV0049", "HV0053"],
+      "position_hint": "lower-left, runs vertically on left side",
+      "confidence": "high",
+      "notes": "Spec break to B01M8 at arrow"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0077-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "1\" process line, pipe class B03F9",
+      "connections": ["HV0050", "HV0054"],
+      "position_hint": "lower-left, second line parallel to PK0076",
+      "confidence": "high",
+      "notes": "Spec break to B01M8"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0078-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "1\" process line, pipe class B03F9",
+      "connections": ["HV0055", "HV0051"],
+      "position_hint": "lower-center, horizontal run",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "1\"-PP01-512-PK0079-B03F9-PP",
+      "type": "line_number",
+      "symbol_description": "1\" process line, pipe class B03F9",
+      "connections": ["HV0055", "HV0056"],
+      "position_hint": "lower-center-right, horizontal",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "4\"-PP01-512-PK0005-C01N8-PP",
+      "type": "line_number",
+      "symbol_description": "4\" process line, pipe class C01N8 – main liquid drain/condensate line",
+      "connections": ["HV0002", "LV-0001", "HV0028 lower", "HV0031"],
+      "position_hint": "center, vertical main drain header",
+      "confidence": "high",
+      "notes": "Major liquid outlet line from vessel bottom"
+    },
+    {
+      "tag": "1\"-PP01-512-PK0054-B01M8-PP",
+      "type": "line_number",
+      "symbol_description": "1\" process line, pipe class B01M8 – connects lower drain headers",
+      "connections": ["HV0052", "HV0056", "HV0004"],
+      "position_hint": "lower-center to lower-right horizontal run",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "B01E9/C01N9 spec break",
+      "type": "annotation",
+      "symbol_description": "Pipe specification break marker between B01E9 and C01N9 on vent line",
+      "connections": ["HV0002", "N3"],
+      "position_hint": "center, above HV0002 on vertical line",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "1:120 ratio label",
+      "type": "annotation",
+      "symbol_description": "Slope or ratio annotation '1:120' on drain leg",
+      "connections": ["HV0023"],
+      "position_hint": "upper-left, near HV0023",
+      "confidence": "medium",
+      "notes": "Likely pipe slope or bypass ratio"
+    },
+    {
+      "tag": "1:250 ratio label",
+      "type": "annotation",
+      "symbol_description": "Slope annotation '1:250' on lower drain line",
+      "connections": ["4\"-PP01-511..."],
+      "position_hint": "lower-right, near 4\" outlet",
+      "confidence": "medium",
+      "notes": "Pipe gradient specification"
+    },
+    {
+      "tag": "NOTE-5",
+      "type": "annotation",
+      "symbol_description": "Note reference 'NOTE-5' on bottom drain sample point",
+      "connections": ["HV0004", "HV0029 lower"],
+      "position_hint": "bottom-center",
+      "confidence": "high",
+      "notes": "Referenced twice in lower drain area; likely a drain/sample station note"
+    },
+    {
+      "tag": "FC 300# NOTE-5",
+      "type": "annotation",
+      "symbol_description": "Valve spec annotation on lower drain valve – Fail-Close, 300 lb, see NOTE-5",
+      "connections": ["HV0029 lower area"],
+      "position_hint": "lower-center, on 4\" drain control assembly",
+      "confidence": "high",
+      "notes": ""
+    },
+    {
+      "tag": "TWO P... (partial)",
+      "type": "annotation",
+      "symbol_description": "Partial annotation at right edge, likely 'TWO PHASE' or similar",
+      "connections": [],
+      "position_hint": "lower-right edge",
+      "confidence": "low",
+      "notes": "Cut off; continues into right tile r2c3"
+    }
+  ],
+  "pipes": [
+    {
+      "from": "N17 (12\" inlet nozzle top-left)",
+      "to": "vessel 362-V001 interior",
+      "line_spec": "unreadable from this tile – continues from top tile",
+      "notes": "12\" process gas inlet"
+    },
+    {
+      "from": "N1 (14\" nozzle)",
+      "to": "upper tile (top edge)",
+      "line_spec": "14\" – continues into r1c2",
+      "notes": ""
+    },
+    {
+      "from": "N2 / N6A (16\" nozzle)",
+      "to": "HV0034",
+      "line_spec": "2\" LO instrument line",
+      "notes": "Level transmitter tapping"
+    },
+    {
+      "from": "N3 (3\" drain nozzle)",
+      "to": "HV0002 → 4\"-PP01-512-PK0005-C01N8-PP",
+      "line_spec": "3\" reducing to 4\" header – B01E9/C01N9 spec break",
+      "notes": ""
+    },
+    {
+      "from": "LIT-0001 (N7A/N7B tappings)",
+      "to": "LIC-0001",
+      "line_spec": "dashed signal line (electrical/pneumatic)",
+      "notes": ""
+    },
+    {
+      "from": "LIC-0001",
+      "to": "EZV-0001",
+      "line_spec": "dashed control signal",
+      "notes": ""
+    },
+    {
+      "from": "LIC-0001",
+      "to": "LV-0001",
+      "line_spec": "dashed control signal",
+      "notes": ""
+    },
+    {
+      "from": "4\"-PP01-512-PK0005-C01N8-PP (main header)",
+      "to": "right edge (continues to r2c3)",
+      "line_spec": "4\"-PP01-512-PK0005-C01N8-PP",
+      "notes": "Main condensate/liquid drain outlet"
+    },
+    {
+      "from": "1\"-PP01-512-PK0076-B03F9-PP",
+      "to": "left edge (continues to r2c1)",
+      "line_spec": "1\"-PP01-512-PK0076-B03F9-PP",
+      "notes": "Sample/drain line"
+    },
+    {
+      "from": "1\"-PP01-512-PK0077-B03F9-PP",
+      "to": "left edge (continues to r2c1)",
+      "line_spec": "1\"-PP01-512-PK0077-B03F9-PP",
+      "notes": "Sample/drain line"
+    },
+    {
+      "from": "1\"-PP01-512-PK0078-B03F9-PP (lower center)",
+      "to": "4\"-PP01-512-PK0005-C01N8-PP header",
+      "line_spec": "1\"-PP01-512-PK0078-B03F9-PP",
+      "notes": "Ties into main drain header"
+    },
+    {
+      "from": "1\"-PP01-512-PK0079-B03F9-PP",
+      "to": "right edge (continues to r2c3)",
+      "line_spec": "1\"-PP01-512-PK0079-B03F9-PP",
+      "notes": ""
+    },
+    {
+      "from": "HV0004 (bottom drain)",
+      "to": "bottom edge",
+      "line_spec": "1\"-PP01-512-PK0054-B01M8-PP",
+      "notes": "Sample/drain to flare or sump; NOTE-5"
+    },
+    {
+      "from": "HV0065 (NC drain)",
+      "to": "WO terminal",
+      "line_spec": "small bore drain",
+      "notes": "Normally closed waste drain"
+    },
+    {
+      "from": "N5 (top-left)",
+      "to": "top edge",
+      "line_spec": "spectacle-blinded nozzle NOTE-2",
+      "notes": "Blanked or normally isolated"
+    },
+    {
+      "from": "LZT-0002A / LZT-0002B (GWR)",
+      "to": "vessel N6A/N6B nozzles",
+      "line_spec": "2\" 1\" instrument tubing",
+      "notes": "Guided wave radar flanged connections"
+    },
+    {
+      "from": "4\" drain header lower section",
+      "to": "4\"-PP01-511... (right edge)",
+      "line_spec": "4\"-PP01-511... partial",
+      "notes": "Continues into r2c3; 1:250 slope marked"
+    }
+  ],
+  "edge_components": [
+    "PZT-0001A", "PZT-0001B", "PZT-0001C", "PIT-0002",
+    "N1", "N2", "N5", "N17",
+    "LZT-0002A", "LZT-0002B",
+    "HV0040", "HV0041", "HV0042", "HV0043",
+    "FC TSO TYPE-M",
+    "1\"-PP01-512-PK0076-B03F9-PP (left exit)",
+    "1\"-PP01-512-PK0077-B03F9-PP (left exit)",
+    "1\"-PP01-512-PK0079-B03F9-PP (right exit)",
+    "4\"-PP01-512-PK0005-C01N8-PP (right exit)",
+    "4\"-PP01-511... (right bottom edge, partial)",
+    "TWO P... annotation (right edge)",
+    "HV0004 bottom drain line (bottom edge)"
+  ]
+}

@@ -1,0 +1,337 @@
+{
+  "tile": "r1c3",
+  "coord_range": "x:750-1191, y:0-455 pts",
+  "components": [
+    {
+      "tag": "16\"-PP01-500-VK0066-B01B8",
+      "type": "line_number",
+      "symbol_description": "Pipe line label with 1:500 slope arrow, routed upward-right to HP Flare Header boundary",
+      "connections": ["N-PG-PP01-PR-PID-0021-001"],
+      "position_hint": "upper left, first line from top",
+      "confidence": "high",
+      "notes": "Slope 1:500 indicated. NO POCKETS annotation present."
+    },
+    {
+      "tag": "16\"-PP01-500-VK0008-B01B8",
+      "type": "line_number",
+      "symbol_description": "Pipe line label with 1:500 slope arrow, routed to HP Flare Header boundary",
+      "connections": ["N-PG-PP01-PR-PID-0021-001"],
+      "position_hint": "upper left, second line from top",
+      "confidence": "high",
+      "notes": "Slope 1:500 indicated. NO POCKETS annotation present."
+    },
+    {
+      "tag": "8\"-PP01-500-VK0026-B01B8",
+      "type": "line_number",
+      "symbol_description": "Pipe line label with 1:500 slope arrow, routed to HP Flare Header boundary",
+      "connections": ["N-PG-PP01-PR-PID-0021-001"],
+      "position_hint": "upper left, third line from top",
+      "confidence": "high",
+      "notes": "Slope 1:500 indicated. NO POCKETS annotation present."
+    },
+    {
+      "tag": "10\"-PP01-500-VK0010-B01B8",
+      "type": "line_number",
+      "symbol_description": "Pipe line label with 1:500 slope arrow, routed vertically to HP Flare Header boundary",
+      "connections": ["N-PG-PP01-PR-PID-0021-001"],
+      "position_hint": "upper center, fourth flare line",
+      "confidence": "high",
+      "notes": "NO POCKETS annotation. Runs vertically upward center of tile."
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0021-001",
+      "type": "annotation",
+      "symbol_description": "Drawing reference arrow label box — TO HP FLARE HEADER destination",
+      "connections": [
+        "16\"-PP01-500-VK0066-B01B8",
+        "16\"-PP01-500-VK0008-B01B8",
+        "8\"-PP01-500-VK0026-B01B8",
+        "10\"-PP01-500-VK0010-B01B8"
+      ],
+      "position_hint": "upper right, repeated four times for each flare header connection",
+      "confidence": "high",
+      "notes": "Continuation reference to HP Flare Header drawing."
+    },
+    {
+      "tag": "HV0092",
+      "type": "valve",
+      "symbol_description": "Hand valve symbol (gate/globe style) on 8\" line, with spec break B01B8/B01E9",
+      "connections": ["FO-0002 area", "8\"x6\" reducer"],
+      "position_hint": "left-center, upper instrument cluster",
+      "confidence": "high",
+      "notes": "Adjacent to 8\"x6\" reducer notation and spec change B01B8 to B01E9."
+    },
+    {
+      "tag": "8\"x6\"",
+      "type": "reducer",
+      "symbol_description": "Concentric or eccentric reducer annotation, 8\" reducing to 6\"",
+      "connections": ["HV0092", "FO0002"],
+      "position_hint": "left-center, near HV0092",
+      "confidence": "high",
+      "notes": "Reducer between 8\" and 6\" lines."
+    },
+    {
+      "tag": "FO0002",
+      "type": "instrument",
+      "symbol_description": "Flow orifice symbol (circle on pipe line)",
+      "connections": ["HV0092", "BDZV0001"],
+      "position_hint": "left-center, below HV0092",
+      "confidence": "high",
+      "notes": "FO = Flush Orifice or Fixed Orifice. Tag reads FO / 0002."
+    },
+    {
+      "tag": "BDZV0001",
+      "type": "valve",
+      "symbol_description": "Blowdown or depressurization valve symbol (circle with valve internals)",
+      "connections": ["FO0002", "TSB"],
+      "position_hint": "left-center, below FO0002",
+      "confidence": "medium",
+      "notes": "Tag partially reads BDZV 0001. Could be a blowdown zero-velocity valve. Confirm full tag."
+    },
+    {
+      "tag": "TSB",
+      "type": "instrument",
+      "symbol_description": "Temperature switch/element block label — TYPE-E, 300# rating",
+      "connections": ["BDZV0001"],
+      "position_hint": "left-center, adjacent to BDZV0001",
+      "confidence": "medium",
+      "notes": "Reads TSB TYPE-E 300#. May be thermowell spec or temperature switch block."
+    },
+    {
+      "tag": "ZI0002",
+      "type": "instrument",
+      "symbol_description": "Position indicator instrument bubble (circle), in a dashed box referencing NOTE-11",
+      "connections": ["ZT0002"],
+      "position_hint": "center, mid-height of tile",
+      "confidence": "high",
+      "notes": "NOTE-11 box drawn around ZI0002. Position indicator likely for a valve or actuator."
+    },
+    {
+      "tag": "ZT0002",
+      "type": "instrument",
+      "symbol_description": "Position transmitter instrument bubble (circle)",
+      "connections": ["ZI0002", "PV0002"],
+      "position_hint": "center, just below ZI0002",
+      "confidence": "high",
+      "notes": "Position transmitter for valve PV0002 per NOTE-11 reference."
+    },
+    {
+      "tag": "PV0002",
+      "type": "valve",
+      "symbol_description": "Control valve (globe style) with actuator, labeled PV0002",
+      "connections": ["ZT0002", "HV0017", "HV0020", "8\"x10\" reducer"],
+      "position_hint": "center, lower-mid tile",
+      "confidence": "high",
+      "notes": "Pressure control valve. Spec B01E9/B01B8 change noted adjacent."
+    },
+    {
+      "tag": "HV0017",
+      "type": "valve",
+      "symbol_description": "Hand valve (gate/globe) on 8\" line, upstream of PV0002",
+      "connections": ["PV0002", "HV0016"],
+      "position_hint": "center-left, lower mid-tile",
+      "confidence": "high",
+      "notes": "8\" hand valve with LO (Locked Open) indicator."
+    },
+    {
+      "tag": "HV0020",
+      "type": "valve",
+      "symbol_description": "Hand valve (gate/globe) on 10\" line, downstream of PV0002",
+      "connections": ["PV0002", "HV0021"],
+      "position_hint": "center-right, lower mid-tile",
+      "confidence": "high",
+      "notes": "10\" hand valve. Spec B01E9/B01B8 noted."
+    },
+    {
+      "tag": "HV0016",
+      "type": "valve",
+      "symbol_description": "Hand valve with LO (Locked Open) designation, on 8\" line",
+      "connections": ["HV0017"],
+      "position_hint": "left, lower-center area",
+      "confidence": "high",
+      "notes": "LO = Locked Open. Part of bypass/isolation arrangement around PV0002."
+    },
+    {
+      "tag": "HV0021",
+      "type": "valve",
+      "symbol_description": "Hand valve with LO (Locked Open) designation, on 10\" line",
+      "connections": ["HV0020"],
+      "position_hint": "right-center, lower area",
+      "confidence": "high",
+      "notes": "LO = Locked Open. Downstream of PV0002."
+    },
+    {
+      "tag": "8\"x10\"",
+      "type": "reducer",
+      "symbol_description": "Reducer annotation, 8\" expanding to 10\"",
+      "connections": ["PV0002", "HV0020"],
+      "position_hint": "center, between PV0002 and HV0020",
+      "confidence": "high",
+      "notes": "Expander/reducer between PV0002 outlet (8\") and downstream 10\" line."
+    },
+    {
+      "tag": "FO-300#",
+      "type": "instrument",
+      "symbol_description": "Flow orifice annotation with 300# class rating",
+      "connections": ["PV0002 bypass area"],
+      "position_hint": "center, lower mid-tile near 8\"x10\"",
+      "confidence": "medium",
+      "notes": "FO 300# label — may be orifice spec or flange rating annotation. Verify if instrument tag or annotation."
+    },
+    {
+      "tag": "HV0018",
+      "type": "valve",
+      "symbol_description": "Hand valve with LC (Locked Closed) designation on 4\" line",
+      "connections": ["HV0019", "16\"-PP01-362-GF0002-B01E9-PP"],
+      "position_hint": "lower left, near fuel gas outlet header",
+      "confidence": "high",
+      "notes": "LC = Locked Closed. Spec B01E9/B01B8 change noted."
+    },
+    {
+      "tag": "HV0019",
+      "type": "valve",
+      "symbol_description": "Hand valve on 4\" line adjacent to HV0018",
+      "connections": ["HV0018"],
+      "position_hint": "lower left, paired with HV0018",
+      "confidence": "high",
+      "notes": "4\" valve. Part of drain/sample connection arrangement."
+    },
+    {
+      "tag": "16\"-PP01-362-GF0002-B01E9-PP",
+      "type": "line_number",
+      "symbol_description": "Pipe line label routing to Fuel Gas Treatment Package",
+      "connections": ["N-PG-PP01-PR-PID-0009-001", "HV0018"],
+      "position_hint": "lower center, near bottom of tile",
+      "confidence": "high",
+      "notes": "TO FUEL GAS TREATMENT PACKAGE destination noted."
+    },
+    {
+      "tag": "N-PG-PP01-PR-PID-0009-001",
+      "type": "annotation",
+      "symbol_description": "Drawing reference arrow label — TO FUEL GAS TREATMENT PACKAGE",
+      "connections": ["16\"-PP01-362-GF0002-B01E9-PP"],
+      "position_hint": "lower center, continuation arrow",
+      "confidence": "high",
+      "notes": "Destination reference to Fuel Gas Treatment Package P&ID."
+    },
+    {
+      "tag": "LZT0002B",
+      "type": "instrument",
+      "symbol_description": "Level transmitter instrument bubble, GWR (Guided Wave Radar) type",
+      "connections": ["LZT0002C"],
+      "position_hint": "lower left, bottom of tile",
+      "confidence": "high",
+      "notes": "GWR label above bubble. Part of level measurement cluster on drum."
+    },
+    {
+      "tag": "LZT0002C",
+      "type": "instrument",
+      "symbol_description": "Level transmitter instrument bubble, GWR (Guided Wave Radar) type",
+      "connections": ["LZT0002B", "HV0044"],
+      "position_hint": "lower center, bottom of tile",
+      "confidence": "high",
+      "notes": "GWR label above bubble. Dashed outline box suggests local panel or enclosure grouping."
+    },
+    {
+      "tag": "HV0044",
+      "type": "valve",
+      "symbol_description": "Hand valve (globe/needle) on 2\"×1\" connection, associated with LZT0002C",
+      "connections": ["LZT0002C"],
+      "position_hint": "lower center, bottom of tile, below LZT0002C",
+      "confidence": "high",
+      "notes": "2\" reducing to 1\" noted adjacent. Likely instrument isolation valve."
+    },
+    {
+      "tag": "NOTE-11",
+      "type": "annotation",
+      "symbol_description": "Dashed rectangle box referencing general note 11 regarding discrepancy alarm on ZI0002",
+      "connections": ["ZI0002"],
+      "position_hint": "center, mid-tile, around ZI0002",
+      "confidence": "high",
+      "notes": "Note 11 text: discrepancy alarm raised when valve position feedback and controller output differ by more than 10%."
+    },
+    {
+      "tag": "B01B8",
+      "type": "annotation",
+      "symbol_description": "Pipe specification break label",
+      "connections": [],
+      "position_hint": "multiple locations across tile",
+      "confidence": "high",
+      "notes": "Spec break markers B01B8 and B01E9 appear repeatedly at valve/instrument boundaries."
+    },
+    {
+      "tag": "B01E9",
+      "type": "annotation",
+      "symbol_description": "Pipe specification break label",
+      "connections": [],
+      "position_hint": "multiple locations across tile",
+      "confidence": "high",
+      "notes": "Paired with B01B8 at spec change points."
+    },
+    {
+      "tag": "600mm MIN.",
+      "type": "annotation",
+      "symbol_description": "Minimum distance/spacing annotation on pipe",
+      "connections": [],
+      "position_hint": "left-center, near HV0092 cluster",
+      "confidence": "high",
+      "notes": "Dimensional requirement annotation — 600mm minimum spacing."
+    },
+    {
+      "tag": "LOW TEMP.",
+      "type": "annotation",
+      "symbol_description": "Low temperature warning annotation on pipe segment",
+      "connections": [],
+      "position_hint": "left-center, vertical pipe near flare lines",
+      "confidence": "high",
+      "notes": "Indicates low temperature service on this line. Relates to Note 7 (adiabatic depressurization)."
+    }
+  ],
+  "pipes": [
+    {
+      "from": "HV0092",
+      "to": "HP Flare Header boundary (N-PG-PP01-PR-PID-0021-001)",
+      "line_spec": "10\"-PP01-500-VK0010-B01B8",
+      "notes": "Vertical run with 1:500 slope to flare. NO POCKETS noted."
+    },
+    {
+      "from": "Left tile edge (vessel area)",
+      "to": "PV0002",
+      "line_spec": "8\" unnamed segment",
+      "notes": "8\" line from vessel/drum continuing from left tile, through HV0016/HV0017 to PV0002."
+    },
+    {
+      "from": "PV0002",
+      "to": "Right tile edge or HV0021",
+      "line_spec": "10\" unnamed segment via 8\"x10\" reducer",
+      "notes": "Downstream of PV0002, expands to 10\" via reducer to HV0020/HV0021."
+    },
+    {
+      "from": "Lower vessel nozzle area (left edge)",
+      "to": "16\"-PP01-362-GF0002-B01E9-PP",
+      "line_spec": "16\"-PP01-362-GF0002-B01E9-PP",
+      "notes": "16\" line to Fuel Gas Treatment Package, with 4\" branch via HV0018/HV0019."
+    },
+    {
+      "from": "LZT0002B",
+      "to": "Left tile edge (vessel)",
+      "line_spec": "unreadable",
+      "notes": "GWR level transmitter connection running toward vessel left edge, cut off."
+    },
+    {
+      "from": "LZT0002C",
+      "to": "HV0044",
+      "line_spec": "2\"→1\"",
+      "notes": "Small bore instrument connection, 2\" reducing to 1\" at HV0044."
+    }
+  ],
+  "edge_components": [
+    "HV0092 — left edge, continues to adjacent tile r1c2",
+    "FO0002 — left edge, continues to adjacent tile r1c2",
+    "BDZV0001 — left edge, partially cut off",
+    "HV0016 — left edge, partially cut off",
+    "LZT0002B — left edge and bottom edge, continues to adjacent tiles",
+    "HV0018/HV0019 — lower left, connections continue to adjacent tile",
+    "16\"-PP01-362-GF0002 — bottom center, continues downward"
+  ]
+}
