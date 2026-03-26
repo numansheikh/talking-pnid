@@ -1,15 +1,16 @@
 """
 tile.py — Step 1 of the ingestion pipeline.
 
-PDF (page 2 raster) → 3×2 grid of PNG tiles with 15% overlap.
-Also extracts embedded text from page 1 (PyMuPDF).
+PDF → 3×2 grid of PNG tiles with 15% overlap.
+Extracts the native embedded raster image (full resolution) rather than
+re-rendering through PyMuPDF, giving Claude Vision the highest quality input.
+Also attempts embedded text extraction from every page (0 chars is normal for pure rasters).
 
 All outputs are written to data/outputs/ingestion/<pid_id>/tiles/.
 Resume: skips if tile_metadata.json already exists.
 """
 
 import json
-import math
 from pathlib import Path
 
 import fitz  # PyMuPDF
@@ -39,30 +40,55 @@ def tile_pdf(pdf_path: Path, pid_id: str, force: bool = False) -> dict:
     print(f"[tile] Processing {pdf_path.name} → {tiles_dir}")
     doc = fitz.open(str(pdf_path))
 
-    # ── Extract embedded text from page 1 (original PDF layer) ──────────────
-    if doc.page_count >= 1:
-        page0 = doc[0]
-        embedded_text = page0.get_text("text")
-        save_json(tiles_dir / "embedded_text.json", {"text": embedded_text})
-        print(f"[tile] Extracted {len(embedded_text)} chars of embedded text from page 1")
+    # ── Extract embedded text from all pages (0 chars = pure raster, normal) ─
+    all_text = []
+    for i in range(doc.page_count):
+        t = doc[i].get_text("text").strip()
+        if t:
+            all_text.append(t)
+    embedded_text = "\n".join(all_text)
+    save_json(tiles_dir / "embedded_text.json", {"text": embedded_text, "pages": doc.page_count})
+    print(f"[tile] Embedded text: {len(embedded_text)} chars across {doc.page_count} pages")
+
+    # ── Extract the native raster image (highest quality, no re-rendering) ───
+    # Find the page with an embedded image and extract it at native resolution.
+    # If both pages have images (common: identical scan on both pages), use page 1.
+    native_pix = None
+    native_page_idx = None
+    best_pixels = 0
+
+    for i in range(doc.page_count):
+        page = doc[i]
+        imgs = page.get_images(full=True)
+        if imgs:
+            xref = imgs[0][0]
+            pix = fitz.Pixmap(doc, xref)
+            # Convert to RGB if needed (e.g. CMYK or grayscale)
+            if pix.colorspace and pix.colorspace.n > 3:
+                pix = fitz.Pixmap(fitz.csRGB, pix)
+            total_px = pix.width * pix.height
+            if total_px > best_pixels:
+                best_pixels = total_px
+                native_pix = pix
+                native_page_idx = i
+
+    if native_pix is None:
+        # No embedded image — fall back to rendering at TILE_DPI
+        print(f"[tile] WARNING: no embedded image found, rendering page 1 at {TILE_DPI} DPI")
+        page = doc[0]
+        mat = fitz.Matrix(TILE_DPI / 72, TILE_DPI / 72)
+        native_pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB)
+        native_page_idx = 0
     else:
-        save_json(tiles_dir / "embedded_text.json", {"text": ""})
-
-    # ── Select the raster page (page 2 if available, else page 1) ───────────
-    raster_page_idx = 1 if doc.page_count >= 2 else 0
-    page = doc[raster_page_idx]
-
-    # Render at full TILE_DPI resolution
-    mat = fitz.Matrix(TILE_DPI / 72, TILE_DPI / 72)
-    pix = page.get_pixmap(matrix=mat, colorspace=fitz.csRGB)
+        print(f"[tile] Native image from page {native_page_idx + 1}: {native_pix.width}×{native_pix.height}px")
 
     # Save full-resolution image for reference
     full_path = tiles_dir / "full_page.png"
-    pix.save(str(full_path))
-    print(f"[tile] Full page rendered: {pix.width}×{pix.height}px → {full_path.name}")
+    native_pix.save(str(full_path))
+    print(f"[tile] Full page saved: {native_pix.width}×{native_pix.height}px → {full_path.name}")
 
     # ── Convert to PIL for cropping ──────────────────────────────────────────
-    full_img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+    full_img = Image.frombytes("RGB", [native_pix.width, native_pix.height], native_pix.samples)
     W, H = full_img.size
 
     # ── Compute tile boundaries with overlap ─────────────────────────────────
@@ -116,9 +142,10 @@ def tile_pdf(pdf_path: Path, pid_id: str, force: bool = False) -> dict:
     metadata = {
         "pid_id": pid_id,
         "pdf": str(pdf_path),
-        "raster_page_index": raster_page_idx,
+        "source": "native_embedded_image",
+        "native_page_index": native_page_idx,
         "full_image_size": {"width": W, "height": H},
-        "tile_dpi": TILE_DPI,
+        "tile_dpi": "native",
         "tile_rows": TILE_ROWS,
         "tile_cols": TILE_COLS,
         "overlap_fraction": TILE_OVERLAP,
