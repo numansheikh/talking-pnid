@@ -175,14 +175,17 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
         strategy_version=STRATEGY_VERSION,
     )
 
-    print(f"[schema] Calling {MODEL_SCHEMA} for schema conversion...")
+    print(f"[schema] Calling {MODEL_SCHEMA} for schema conversion (streaming)...")
     t0 = time.time()
-    msg = client.messages.create(
+    # Use streaming — large graphs can exceed the SDK's non-streaming 10-min timeout
+    with client.messages.stream(
         model=MODEL_SCHEMA,
         max_tokens=MAX_TOKENS_SCHEMA,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
-    )
+    ) as stream:
+        raw_streamed = stream.get_final_text()
+        msg = stream.get_final_message()
     elapsed = time.time() - t0
 
     schema_in  = msg.usage.input_tokens
@@ -198,7 +201,7 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
             f"increase MAX_TOKENS_SCHEMA (currently {MAX_TOKENS_SCHEMA}) or split the graph."
         )
 
-    raw = msg.content[0].text.strip()
+    raw = raw_streamed.strip()
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
 
