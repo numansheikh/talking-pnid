@@ -41,8 +41,8 @@
       }
     },
     "pid-008": {
-      "node_count": 169,
-      "edge_count": 100,
+      "node_count": 160,
+      "edge_count": 141,
       "metadata": {
         "doc_id": "pid-008",
         "plant": "PP01",
@@ -59,7 +59,7 @@
     {
       "id": "inter_pid-007_pid-008_TOCONDENSATESTORAGEVESSEL_0",
       "from": "pid-007::term_condensate_storage",
-      "to": "pid-008::term_CONDENSATE",
+      "to": "pid-008::term_CONDENSATE_STORAGE",
       "kind": "process",
       "props": {
         "off_page_ref": "TO CONDENSATE STORAGE VESSEL",
@@ -68,41 +68,36 @@
     }
   ],
   "connectivity_summary": {
-    "process_flow_description": "These three P&IDs represent a pipeline receiving and gas handling system. PID-006 contains the scraper launcher/receiver vessel (PP01-361-V003) receiving feed from an upstream DS-3 PCV station, with outputs routed toward the scraper receiver and fuel gas systems. PID-007 contains a downstream scraper receiver (361-V004) that accepts flow from the DS-3 scraper launcher (V003 referenced in PID-006) and routes condensate forward to PID-008's condensate storage vessel. PID-008 handles fuel gas knock-out and condensate storage (PP01-362-V001, 512-V001), receiving fuel gas from both DS-1 and DS-3 scraper receivers and routing products to HP flare headers and fuel gas treatment.",
+    "process_flow_description": "These three P&IDs cover a pipeline receiving and scraper/slug catcher system originating at DS-3. PID-006 handles the inlet section including a pressure control station and slug catcher vessel (361-V003), feeding into PID-007 which processes the scraper receiver outlet through a knock-out drum (361-V004) and routes condensate and gas onward. PID-007 connects downstream to PID-008, which consolidates fuel gas streams from multiple scraper receivers (DS-1 and DS-3) into vessel 512-V001 for treatment, with condensate routed to storage.",
     "key_connections": [
       {
         "from_pid": "pid-007",
         "to_pid": "pid-008",
-        "description": "Condensate from the scraper receiver vessel (361-V004) in PID-007 is routed to the Condensate Storage Vessel in PID-008 (512-V001 area)."
-      },
-      {
-        "from_pid": "pid-006",
-        "to_pid": "pid-007",
-        "description": "Inferred connection: PID-007 references 'FROM SCRAPER LAUNCHER (DS-3) V003', which corresponds to vessel PP01-361-V003 located in PID-006, indicating main pipeline gas/liquid flow passes from PID-006 into PID-007."
+        "description": "Condensate from the DS-3 scraper receiver knock-out drum (361-V004) in PID-007 is routed to the Condensate Storage Vessel, which is received in PID-008 alongside streams from DS-1."
       }
     ],
     "isolated_terminators": [
-      "pid-006: FUEL GAS N-PG-PP01-PR-PID-0049 (references external P&ID not in set)",
-      "pid-006: FROM DS-3 NEW PCV STATION N-PG-PP01-PR-PID-0003 (references external P&ID not in set)",
-      "pid-006: TO SAFE LOCATION (no matching destination in P&ID set)",
-      "pid-006: TO CORROSION INHIBITOR INJECTION PUMP (no matching destination in P&ID set)",
-      "pid-006: 2\"-IA-DS03-20-0800-S01N1B / FROM DS-3 STATION DISTRIBUTION HEADER (no matching source in P&ID set)",
-      "pid-006: DS-3 NEW KOD AREA (no matching P&ID in set)",
-      "pid-006: TO LAUNCHER AND CI SKID AREA (no matching destination in P&ID set)",
-      "pid-006: TO SCRAPER RECEIVER (DS-3) (potentially resolved by pid-007 but not explicitly tagged)",
-      "pid-006: TO DS-3 CLOSED DRAIN SYSTEM (no matching destination in P&ID set)",
-      "pid-006: Main pipeline continues downward (continuation reference, no matching P&ID in set)",
-      "pid-007: TO FUEL GAS KNOCK OUT DRUM (no explicit match in P&ID set; possibly pid-008 but unconfirmed)",
-      "pid-007: TO FLARE HEADER (x2, no matching destination in P&ID set)",
-      "pid-007: TO UNDERGROUND OILY WATER COLLECTION SYSTEM BY CIVIL (civil scope, outside P&ID set)",
-      "pid-007: OSBL EPP FACILITY (outside battery limit, no match in P&ID set)",
-      "pid-007: 20\"-PP01-361-G... (continues right) (truncated continuation, no match in P&ID set)",
-      "pid-008: WASTE OIL (no matching source in P&ID set)",
-      "pid-008: FUEL GAS FROM DS-1 SCRAPPER RECEIVER (DS-1 not represented in P&ID set)",
-      "pid-008: FUEL GAS FROM DS-3 SCRAPPER RECEIVER (pid-007 is a candidate source but connection not formally mapped)",
-      "pid-008: TO HP FLARE HEADER (x3, no matching destination in P&ID set)",
-      "pid-008: TO FUEL GAS TREATMENT PACKAGE (no matching destination in P&ID set)",
-      "pid-008: null reference (unnamed/untagged terminator with no ref)"
+      "pid-006: FUEL GAS N-PG-PP01-PR-PID-0049 (references PID-0049, not present in this set)",
+      "pid-006: FROM DS-3 NEW PCV STATION N-PG-PP01-PR-PID-0003 (references PID-0003, not present in this set)",
+      "pid-006: TO SAFE LOCATION (external/utility destination, no matching P&ID)",
+      "pid-006: TO CORROSION INHIBITOR INJECTION PUMP (external skid, no matching P&ID)",
+      "pid-006: 2\"-IA-DS03-20-0800-S01N1B / FROM DS-3 STATION DISTRIBUTION HEADER (instrument air source, no matching P&ID)",
+      "pid-006: DS-3 NEW KOD AREA (area reference, no matching P&ID)",
+      "pid-006: TO LAUNCHER AND CI SKID AREA (external skid, no matching P&ID)",
+      "pid-006: TO SCRAPER RECEIVER (DS-3) (likely connects to PID-007 but no explicit inter-P&ID connection recorded)",
+      "pid-006: TO DS-3 CLOSED DRAIN SYSTEM (external system, no matching P&ID)",
+      "pid-006: Main pipeline continues downward (continuation ref, no matching P&ID)",
+      "pid-007: TO FUEL GAS KNOCK OUT DRUM (external destination, no matching P&ID in this set)",
+      "pid-007: TO FLARE HEADER (x2) (utility destination, no matching P&ID)",
+      "pid-007: FROM SCRAPER LAUNCHER (DS-3) V003 (likely originates from PID-006 but no explicit inter-P&ID connection recorded)",
+      "pid-007: TO UNDERGROUND OILY WATER COLLECTION SYSTEM BY CIVIL (civil/external system, no matching P&ID)",
+      "pid-007: OSBL EPP FACILITY (outside battery limits, no matching P&ID)",
+      "pid-007: 20\"-PP01-361-G... (continues right) (continuation ref, no matching P&ID)",
+      "pid-008: FUEL GAS FROM DS-1 SCRAPPER RECEIVER (DS-1 source, no matching P&ID in this set)",
+      "pid-008: FUEL GAS FROM DS-3 SCRAPPER RECEIVER (DS-3 source, likely from PID-006/007 but no explicit inter-P&ID connection recorded)",
+      "pid-008: TO HP FLARE HEADER (x3) (utility destination, no matching P&ID)",
+      "pid-008: TO FUEL GAS TREATMENT PACKAGE (downstream package, no matching P&ID)",
+      "pid-008: TO CONDENSATE STORAGE VESSEL (downstream destination beyond PID-008, no matching P&ID)"
     ]
   }
 }

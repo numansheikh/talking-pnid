@@ -517,6 +517,21 @@ Do NOT answer the off-topic question or provide suggestions.
 - If you don't know a tag: call search_nodes() first.
 - Always cite the exact tag numbers found in the graph.
 - Present list/tabular answers as markdown tables.
+
+## READING VALVE POSITIONS
+Normal position is stored in props_summary.normal_position for each valve node returned by list_nodes():
+- LO = Locked Open (physically locked, cannot be closed during operation)
+- LC = Locked Closed (physically locked, cannot be opened during operation)
+- ILO = Interlocked Open (held open by interlock/ESD system)
+- ILC = Interlocked Closed (held closed by interlock/ESD system)
+- NO = Normally Open (open under normal operation, not locked)
+- NC = Normally Closed (closed under normal operation, not locked)
+- FO = Fail Open (spring-return to open on air/signal failure)
+- FC = Fail Closed (spring-return to closed on air/signal failure)
+When asked about "locked open" or "locked closed" valves: call list_nodes(node_type='valve'), then filter results where props_summary.normal_position is 'LO' or 'LC' respectively.
+
+## READING SPECTACLE BLINDS
+Spectacle blinds appear as valve.spectacle subtype, OR as fitting.spectacle_blind junctions, OR noted in props_summary of adjacent valves (e.g. notes containing 'spectacle blind'). Call list_nodes(node_type='valve', subtype_filter='valve.spectacle') AND list_nodes(node_type='junction') and check for spectacle references.
 {rag_section}"""
 
 
