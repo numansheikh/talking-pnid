@@ -28,7 +28,7 @@ ingest.py      → CLI orchestrator for all steps
 cd src/ingestion
 
 # Full pipeline on one P&ID
-python ingest.py --pdf ../../data/pdfs/100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf
+python ingest.py --pdf ../../data/datasets/rumaila-pp01/pdfs/100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf
 
 # All three POC P&IDs
 python ingest.py --all
@@ -46,9 +46,9 @@ python ingest.py --supergraph
 ## Key Inputs
 | Input | Location |
 |-------|----------|
-| P&ID PDFs | `data/pdfs/` |
-| Legend Sheet 1 (abbreviations) | `data/Legends/Format Specific/*-0001-001*.pdf` |
-| Legend Sheet 2 (piping symbols) | `data/Legends/Format Specific/*-0001-002*.pdf` |
+| P&ID PDFs | `data/datasets/rumaila-pp01/pdfs/` |
+| Legend Sheet 1 (abbreviations) | `data/datasets/rumaila-pp01/legends/format-specific/` |
+| Legend Sheet 2 (piping symbols) | `data/datasets/rumaila-pp01/legends/format-specific/` |
 | OCR tag lists | `data/outputs/ocr/*_tags.json` |
 | pid.graph.v0.1.1 schema | `data/archive/extra/prompt.txt` |
 

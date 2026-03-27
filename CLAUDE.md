@@ -52,7 +52,7 @@ Three Rumaila Oil Field P&IDs (scanned raster PDFs):
 | PID-0007 | `100478CP-N-PG-PP01-PR-PID-0007-001-C02.pdf` | System 361 related |
 | PID-0008 | `100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf` | Fuel Gas KO Drum PP01-362-V001 |
 
-PDFs live in `data/sources/pdf/` (for extractor) and `src/talking-pnids-py/data/pdfs/` (for web app).
+PDFs live in `data/datasets/rumaila-pp01/pdfs/` (A3 originals with title block). Web app has its own copy at `src/talking-pnids-py/data/pdfs/`.
 A fourth PDF (`PID-0005`) exists in `data/Talking PNID Extra/Tech Ventures/` but is not yet processed.
 
 ---

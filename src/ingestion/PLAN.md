@@ -10,9 +10,9 @@ that the chatbot can query reliably — replacing the current markdown-based con
 ## Input
 | Input | Location | Notes |
 |-------|----------|-------|
-| P&ID PDFs | `data/pdfs/` | Scanned rasters, 2-page (original + raster) |
-| Legend Sheet 1 | `data/Legends/Format Specific/...-0001-001...pdf` | Abbreviations |
-| Legend Sheet 2 | `data/Legends/Format Specific/...-0001-002...pdf` | Piping symbols |
+| P&ID PDFs | `data/datasets/rumaila-pp01/pdfs/` | Scanned A3 originals — 2 pages: p1=raster P&ID, p2=title block |
+| Legend Sheet 1 | `data/datasets/rumaila-pp01/legends/format-specific/` | Abbreviations |
+| Legend Sheet 2 | `data/datasets/rumaila-pp01/legends/format-specific/` | Piping symbols |
 | OCR tag list | `data/outputs/ocr/*_tags.json` | Cross-validation source |
 
 ## Output
@@ -81,7 +81,7 @@ Step 6 — supergraph.py
 
 ```bash
 # Single P&ID — full pipeline
-python ingest.py --pdf data/pdfs/100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf
+python ingest.py --pdf data/datasets/rumaila-pp01/pdfs/100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf
 
 # All three POC P&IDs
 python ingest.py --all
