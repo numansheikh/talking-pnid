@@ -1,0 +1,73 @@
+Experimental Approaches
+======
+
+Version 1
+March 27, 2026 11:27 AM
+--- 
+Prompts 
+ 
+ System prompt (sent with every call)
+ 
+ ▎ "You are a senior process engineer and P&ID expert. You extract structured data from Piping & Instrumentation Diagrams. You have been  given two legend sheets as reference context: Sheet 1 (abbreviations, valve state codes: LO/LC/NO/NC/FO/FC/FL/ILO, alarm levels HH/H/L/LL...), Sheet 2 (piping symbols, valve types, line types, off-drawing connectors). Use the legend definitions to correctly interpret every symbol, abbreviation, and state code. Return ONLY valid JSON."
+
+ Pass 1 — Full extraction 
+ 
+ Extract everything visible: every component (type, subtype, tag, label, normal_position, fail_position, size), every connection (line_tag, pipe_class, diameter, fluid_code), off-page references, spec breaks. EDGE_LEFT/RIGHT/TOP/BOTTOM mark lines that continue into adjacent tiles. 
+ 
+ Pass 2 — Targeted hunt (commonly missed items) 
+ 
+ Re-examines same tile for: setpoints (HH/H/L/LL with numeric values), locked positions (LO/LC/ILO), spec breaks, vessel internals, note references, design/operating conditions, small-bore instrument take-offs, IS loop designations, utility connections.
+ 
+ Pass 3 — Self-verification (Sonnet, not Opus) 
+ 
+ Model receives its own Pass 1+2 JSON + the tile image again. Asks: what's in the image but missing from the JSON? Any misread tags? Wrong connections? Wrong pipe specs? Returns corrections + additions + quality flags.
+ 
+ --- 
+ High-Level Approach
+
+ PDF (A3 scanned raster, ~3300×2330px native)
+ │ 
+ ▼ tile.py
+ Extract native embedded image (not re-rendered — 4× better resolution) 
+ Split into 3×2 grid with 15% overlap → 6 PNG tiles (~1400×1340px each) 
+ Extract title block text (drawing title, system name) from page 2 
+ │ 
+ ▼ extract.py ← you're here 
+ For each of 6 tiles (sequential): 
+ Legend sheets (4 pages, grayscale JPEG, cached + prompt-cached) sent with every call
+ Pass 1 → Claude Opus 4.6 vision → components + connections JSON 
+ Pass 2 → Claude Opus 4.6 vision → setpoints, locked positions, conditions 
+ Pass 3 → Claude Sonnet 4.6 vision → self-verify, corrections, quality flags 
+ Each pass saved individually → resumable if interrupted 
+ │ 
+ ▼ stitch.py
+ Merge 6 tile JSONs → apply Pass 3 corrections to Pass 1 data 
+ Deduplicate components by normalized tag (overlap regions) 
+ Resolve EDGE_* cross-tile connections into real connections 
+ → unified_extraction.json 
+ │ 
+ ▼ schema.py 
+ Claude Sonnet 4.6 converts unified extraction → pid.graph.v0.1.1 JSON 
+ Nodes: equipment, valve, instrument, junction, terminator, annotation 
+ Edges: process, signal, impulse, association, containment 
+ Embeds strategy_version in metadata for test tracking 
+ → pid-008.graph.json 
+ │ 
+ ▼ validate.py 
+ Source 1: Excel ground truth (PID Data.xlsx — 11 reference tags for V001 control loop) 
+ Source 2: OCR tag list (36 tags extracted from scanned image) 
+ Source 3: Completeness rules (every vessel has design P/T, every PSV has set pressure, etc.) 
+ → confidence score % + validation_report.json 
+ │ 
+ ▼ supergraph.py (after all 3 P&IDs) 
+ Match off_page_ref nodes across PID-006, 007, 008 
+ Wire inter-P&ID edges → supergraph.json 
+ 
+ Cost estimates per P&ID: 
+ - Pass 1+2: 12 Opus calls ~$5-6 
+ - Pass 3: 6 Sonnet calls ~$0.10 
+ - Schema: 1 Sonnet call ~$0.09 
+ - With prompt caching on legend: saves ~$1-2 after first call 
+ 
+ Total for 3 P&IDs: ~$15-18 
+ 

@@ -1,0 +1,105 @@
+{
+  "schema_version": "pid.supergraph.v0.1.0",
+  "metadata": {
+    "pid_ids": [
+      "pid-006",
+      "pid-007",
+      "pid-008"
+    ],
+    "description": "Cross-P&ID super graph for POC P&IDs 006, 007, 008"
+  },
+  "pid_graphs": {
+    "pid-006": {
+      "node_count": 113,
+      "edge_count": 83,
+      "metadata": {
+        "doc_id": "pid-006",
+        "rev": null,
+        "plant": "PP01",
+        "unit": "361",
+        "area": "DS-3 Scraper Launcher",
+        "units": {
+          "pressure": "barg",
+          "temperature": "degC"
+        }
+      }
+    },
+    "pid-007": {
+      "node_count": 109,
+      "edge_count": 69,
+      "metadata": {
+        "doc_id": "pid-007",
+        "rev": null,
+        "plant": "PP01",
+        "unit": "361",
+        "area": null,
+        "units": {
+          "pressure": "barg",
+          "temperature": "degC"
+        },
+        "strategy_version": "v0.1.0"
+      }
+    },
+    "pid-008": {
+      "node_count": 144,
+      "edge_count": 96,
+      "metadata": {
+        "doc_id": "pid-008",
+        "rev": "",
+        "plant": "PP01",
+        "unit": "362",
+        "area": "",
+        "units": {
+          "pressure": "barg",
+          "temperature": "degC",
+          "strategy_version": "v0.1.0"
+        }
+      }
+    }
+  },
+  "inter_pid_edges": [
+    {
+      "id": "inter_pid-007_pid-008_TOCONDENSATESTORAGEVESSEL_0",
+      "from": "pid-007::term_condensate_storage",
+      "to": "pid-008::TERM_CONDENSATE",
+      "kind": "process",
+      "props": {
+        "off_page_ref": "TO CONDENSATE STORAGE VESSEL",
+        "cross_pid": true
+      }
+    }
+  ],
+  "connectivity_summary": {
+    "process_flow_description": "These three P&IDs cover a pipeline receiving and knock-out system associated with DS-3 and related scraper/launcher infrastructure. pid-006 handles the incoming pipeline and pressure control from DS-3, feeding into scraper and KOD areas, while pid-007 represents the scraper receiver (V004) accepting flow from the DS-3 scraper launcher (V003 referenced in pid-006). pid-008 consolidates fuel gas streams from multiple scraper receivers (DS-1 and DS-3) into a Fuel Gas KOD/treatment package, with a confirmed condensate liquid pathway linking pid-007 to pid-008.",
+    "key_connections": [
+      {
+        "from_pid": "pid-007",
+        "to_pid": "pid-008",
+        "description": "Condensate from the scraper receiver KOD drum (361-V004) in pid-007 is routed to the Condensate Storage Vessel, which is also referenced as a destination in pid-008, confirming a liquid carryover/condensate transfer path between these two drawings."
+      },
+      {
+        "from_pid": "pid-006",
+        "to_pid": "pid-007",
+        "description": "Inferred connection: pid-006 references 'TO SCRAPER RECEIVER (DS-3)', and pid-007 references 'FROM SCRAPER LAUNCHER (DS-3) V003', strongly indicating pid-006 feeds the scraper receiver system shown in pid-007, though no explicit inter-P&ID connection record was provided for this link."
+      }
+    ],
+    "isolated_terminators": [
+      "FUEL GAS N-PG-PP01-PR-PID-0049 (pid-006) \u2014 references another P&ID not in this set",
+      "FROM DS-3 NEW PCV STATION N-PG-PP01-PR-PID-0003 (pid-006) \u2014 references another P&ID not in this set",
+      "TO SAFE LOCATION (pid-006) \u2014 utility/vent destination, no matching P&ID",
+      "TO CORROSION INHIBITOR INJECTION PUMP (pid-006) \u2014 no matching P&ID in this set",
+      "2\"-IA-DS03-20-0800-S01N1B / FROM DS-3 STATION DISTRIBUTION HEADER (pid-006) \u2014 instrument air source, no matching P&ID",
+      "DS-3 NEW KOD AREA (pid-006) \u2014 area reference, no matching P&ID",
+      "TO LAUNCHER AND CI SKID AREA (pid-006) \u2014 no matching P&ID in this set",
+      "TO DS-3 CLOSED DRAIN SYSTEM (pid-006) \u2014 utility destination, no matching P&ID",
+      "Main pipeline continues downward (pid-006) \u2014 continuation, no matching P&ID",
+      "TO FUEL GAS KNOCK OUT DRUM (pid-007) \u2014 no matching P&ID in this set",
+      "TO FLARE HEADER (pid-007, x2) \u2014 utility destination, no matching P&ID",
+      "TO UNDERGROUND OILY WATER COLLECTION SYSTEM BY CIVIL (pid-007) \u2014 civil scope, no matching P&ID",
+      "FUEL GAS FROM DS-1 SCRAPPER RECEIVER (pid-008) \u2014 source from DS-1, no matching P&ID in this set",
+      "FUEL GAS FROM DS-3 SCRAPPER RECEIVER (pid-008) \u2014 source from DS-3, no explicit matching P&ID connection record",
+      "TO HP FLARE HEADER (pid-008, x3) \u2014 utility destination, no matching P&ID",
+      "TO FUEL GAS TREATMENT PACKAGE (pid-008) \u2014 downstream package, no matching P&ID in this set"
+    ]
+  }
+}
