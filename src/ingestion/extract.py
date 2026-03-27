@@ -350,17 +350,32 @@ def extract_tile(
         tile_tokens["calls"] += 1
 
     # Pass 1
-    if p1_path.exists() and not force:
-        print(f"[extract]   Pass 1 resume: {p1_path.name}")
-        p1 = json.loads(p1_path.read_text())
-    else:
+    _p1_needs_run = force or not p1_path.exists()
+    if not _p1_needs_run:
+        _p1_candidate = json.loads(p1_path.read_text())
+        if _p1_candidate.get("parse_error") and not _p1_candidate.get("_retry_attempted"):
+            # Retry once — but only once (guard against infinite retry loop)
+            print(f"[extract]   Pass 1 RETRY: {p1_path.name} had parse_error — re-running once")
+            _p1_needs_run = True
+        else:
+            if _p1_candidate.get("parse_error"):
+                print(f"[extract]   Pass 1 resume (parse_error, already retried): {p1_path.name}")
+            else:
+                print(f"[extract]   Pass 1 resume: {p1_path.name}")
+            p1 = _p1_candidate
+
+    if _p1_needs_run:
         t0 = time.time()
         content = legend_blocks + [tile_block]
         p1, u1 = _call_claude(client, content, PASS1_PROMPT)
         _accum(u1)
         p1.setdefault("tile", tile_name)
+        p1["_retry_attempted"] = True  # mark so we never retry this more than once
         save_json(p1_path, p1)
-        print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]")
+        if p1.get("parse_error"):
+            print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]  ⚠ parse_error after retry")
+        else:
+            print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]")
 
     # Pass 2
     if p2_path.exists() and not force:

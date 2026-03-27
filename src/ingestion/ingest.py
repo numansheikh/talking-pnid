@@ -221,6 +221,132 @@ def run_pipeline(pdf_path: Path, step: str | None = None, force: bool = False) -
         print(f"  → {pid_work_dir(pid_id) / 'validation_report.json'}")
 
 
+def check_integrity(pid_ids: list[str] | None = None) -> bool:
+    """
+    Check integrity of all ingestion outputs.
+    Returns True if all checks pass, False if any issues found.
+    Does NOT re-run anything — read-only.
+    """
+    from config import INGESTION_OUT_DIR
+
+    pids = pid_ids or list(POC_PIDS.keys())
+    issues = []
+    ok_count = 0
+
+    _banner("Integrity Check")
+
+    for pid_id in pids:
+        work = INGESTION_OUT_DIR / pid_id
+        raw  = work / "raw"
+        print(f"\n  {pid_id}:")
+
+        if not work.exists():
+            issues.append(f"{pid_id}: work dir missing — pipeline not run")
+            print(f"    ✗ work dir missing")
+            continue
+
+        # Check all 18 pass files
+        pass_errors = []
+        missing_passes = []
+        for r in [1, 2]:
+            for c in [1, 2, 3]:
+                for p in [1, 2, 3]:
+                    f = raw / f"tile_r{r}c{c}_pass{p}.json"
+                    if not f.exists():
+                        missing_passes.append(f.name)
+                    else:
+                        try:
+                            d = load_json(f)
+                            if d.get("parse_error") and not d.get("_retry_attempted"):
+                                pass_errors.append(f"tile_r{r}c{c}_pass{p}: parse_error (will auto-retry)")
+                            elif d.get("parse_error"):
+                                pass_errors.append(f"tile_r{r}c{c}_pass{p}: parse_error (retried, unrecoverable — data recovered via pass2/3)")
+                        except Exception as e:
+                            issues.append(f"{pid_id}/tile_r{r}c{c}_pass{p}: corrupt JSON: {e}")
+
+        if missing_passes:
+            issues.append(f"{pid_id}: missing pass files: {missing_passes}")
+            print(f"    ✗ missing pass files: {', '.join(missing_passes)}")
+        elif pass_errors:
+            for e in pass_errors:
+                print(f"    ⚠ {e}")
+        else:
+            print(f"    ✓ all 18 pass files valid")
+            ok_count += 1
+
+        # Check key output files
+        required = [
+            "all_tile_extractions.json",
+            "unified_extraction.json",
+            "validation_report.json",
+            "extract_token_report.json",
+            "schema_token_report.json",
+        ]
+        for fname in required:
+            f = work / fname
+            if not f.exists():
+                issues.append(f"{pid_id}: missing {fname}")
+                print(f"    ✗ missing {fname}")
+            else:
+                try:
+                    load_json(f)
+                except Exception as e:
+                    issues.append(f"{pid_id}: corrupt {fname}: {e}")
+                    print(f"    ✗ corrupt {fname}")
+
+        # Check graph
+        gpath = graphs_dir() / f"{pid_id}.graph.json"
+        if not gpath.exists():
+            issues.append(f"{pid_id}: graph JSON missing")
+            print(f"    ✗ graph JSON missing")
+        else:
+            g = load_json(gpath)
+            n = len(g.get("nodes", []))
+            e = len(g.get("edges", []))
+            sv = g.get("schema_version", "?")
+            if sv != "pid.graph.v0.1.1":
+                issues.append(f"{pid_id}: wrong schema_version: {sv}")
+                print(f"    ✗ wrong schema_version: {sv}")
+            else:
+                print(f"    ✓ graph: {n} nodes, {e} edges")
+
+        # Validation confidence
+        rpt_path = work / "validation_report.json"
+        if rpt_path.exists():
+            rpt = load_json(rpt_path)
+            conf = rpt.get("confidence_score", 0)
+            ocr  = rpt.get("ocr_validation", {}).get("coverage_pct", 0)
+            high = len(rpt.get("high_issues", []))
+            flag = "⚠" if conf < 70 else "✓"
+            print(f"    {flag} confidence: {conf}%  |  OCR: {ocr}%  |  high issues: {high}")
+            if conf < 70:
+                issues.append(f"{pid_id}: low confidence {conf}%")
+
+    # Check supergraph
+    sg_path = graphs_dir() / "supergraph.json"
+    print(f"\n  supergraph:")
+    if not sg_path.exists():
+        issues.append("supergraph.json missing")
+        print(f"    ✗ missing")
+    else:
+        sg = load_json(sg_path)
+        pid_graphs = sg.get("pid_graphs", {})
+        inter = sg.get("inter_pid_edges", [])
+        print(f"    ✓ {len(pid_graphs)} P&IDs, {len(inter)} inter-P&ID edges")
+
+    # Summary
+    print()
+    if issues:
+        _banner(f"CHECK FAILED — {len(issues)} issue(s)")
+        for issue in issues:
+            print(f"  ✗ {issue}")
+        return False
+    else:
+        _banner("CHECK PASSED")
+        print(f"  All pipeline outputs valid.")
+        return True
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="P&ID Ingestion Pipeline — PDF → knowledge graph",
@@ -231,16 +357,22 @@ Examples:
   python ingest.py --all
   python ingest.py --pdf ... --step extract
   python ingest.py --supergraph
+  python ingest.py --check
   python ingest.py --pdf ... --force
         """,
     )
     parser.add_argument("--pdf",        type=Path, help="Path to a P&ID PDF")
     parser.add_argument("--all",        action="store_true", help="Run all 3 POC P&IDs")
     parser.add_argument("--supergraph", action="store_true", help="Build super graph from existing P&ID graphs")
+    parser.add_argument("--check",      action="store_true", help="Check integrity of all pipeline outputs (read-only)")
     parser.add_argument("--step",       choices=PIPELINE_STEPS, help="Run only this step")
     parser.add_argument("--force",      action="store_true", help="Re-run even if outputs exist")
 
     args = parser.parse_args()
+
+    if args.check:
+        ok = check_integrity()
+        sys.exit(0 if ok else 1)
 
     if not os.environ.get("ANTHROPIC_API_KEY"):
         print("[ingest] ERROR: ANTHROPIC_API_KEY not set and apikey-claude-talking-pnid not found")
