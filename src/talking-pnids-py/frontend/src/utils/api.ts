@@ -73,11 +73,12 @@ export async function startSession(): Promise<SessionResponse> {
   return response.json()
 }
 
-export async function sendQuery(request: QueryRequest): Promise<QueryResponse> {
+export async function sendQuery(request: QueryRequest, signal?: AbortSignal): Promise<QueryResponse> {
   const response = await fetch(`${API_BASE_URL}/query`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(request),
+    signal,
   })
   if (!response.ok) {
     const data = await response.json().catch(() => ({ error: 'Failed to process query' }))

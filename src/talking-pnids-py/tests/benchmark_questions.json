@@ -1,0 +1,192 @@
+[
+  {
+    "id": "Q1",
+    "question": "What are the design and operating ranges for pressure and temperature for the equipment 362-V001?",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "ok",
+    "evaluation_criteria": {
+      "must_contain": [
+        "design pressure",
+        "operating pressure",
+        "design temperature",
+        "operating temperature",
+        "362-V001"
+      ],
+      "must_not_contain": [],
+      "notes": "Answer was acceptable in prior evaluation. Should provide numeric values for pressure and temperature ranges."
+    }
+  },
+  {
+    "id": "Q2",
+    "question": "List down all valves that need to be closed to isolate the equipment 362-V001. If possible, highlight all these valves on the P&ID with yellow colour. Mention any piping connections where there is no valve found for isolation purposes.",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "partial",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HV0004",
+        "HV0006",
+        "HV0016",
+        "HV0091",
+        "HV0092"
+      ],
+      "must_not_contain": [
+        "HV0061",
+        "HV0029",
+        "BDV001",
+        "PV0002"
+      ],
+      "notes": "HV0004, HV0006, HV0016 correctly identified before. HV0091 and HV0092 were missed. HV0061 and HV0029 do not exist on this P&ID — hallucinated. BDV001 and PV0002 are not isolation valves and should not be listed."
+    }
+  },
+  {
+    "id": "Q3",
+    "question": "When the valve EZV-002 closes suddenly during normal operation, which equipment upstream or downstream will see an increase in pressure. Additionally, is there a security, like a pressure safety valve or a high pressure alarm/trip for that high pressure to safeguard the equipment and piping from the high pressure?",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "partial",
+    "evaluation_criteria": {
+      "must_contain": [
+        "EZV-0002",
+        "pressure",
+        "upstream"
+      ],
+      "must_not_contain": [],
+      "tag_resolution_check": {
+        "question_tag": "EZV-002",
+        "correct_tag": "EZV-0002",
+        "wrong_redirect": "EZV-0001",
+        "notes": "Earlier version said EZV-0002 does not exist and answered for EZV-0001 instead. The system must correctly resolve EZV-002 to EZV-0002 (zero-padded) and answer about that valve, not redirect to EZV-0001."
+      },
+      "notes": "Tag normalisation bug: EZV-002 should resolve to EZV-0002. Answer should not substitute EZV-0001."
+    }
+  },
+  {
+    "id": "Q4",
+    "question": "If the hand valve HV0027 on equipment 362-V001 is inadvertently closed, which instrumentation is critical to give alarms or trip the process before the liquid enters the piping going to the fuel gas treatment package?",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "partial",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HV0027",
+        "liquid",
+        "fuel gas"
+      ],
+      "must_not_contain": [
+        "EZV-0001"
+      ],
+      "notes": "Core answer was correct. However earlier version incorrectly mentioned EZV-0001 in additional commentary — it should reference EZV-0002 if any EZV is mentioned at all."
+    }
+  },
+  {
+    "id": "Q5",
+    "question": "List down all instrumentation on P&ID 100478CP-N-PG-PP01-PR-PID-0008-001 in a tabular form that have a HH, H, L or LL function.",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "ok",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HH",
+        "LL",
+        "tabular"
+      ],
+      "must_not_contain": [],
+      "notes": "Examiner spot-checked and found this acceptable. Should present results as a table with tag, function type (HH/H/L/LL) and service."
+    }
+  },
+  {
+    "id": "Q6",
+    "question": "Are there any locked closed or locked open valves on this P&ID? If yes, list them down and mention locked open and locked closed against each.",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "partial",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HV0011",
+        "HV0012",
+        "HV0013",
+        "HV0018",
+        "locked open",
+        "locked closed"
+      ],
+      "must_not_contain": [],
+      "known_locked_open": ["HV0011", "HV0012", "HV0013"],
+      "known_locked_closed": ["HV0018"],
+      "notes": "Earlier answer was very incomplete. Must include HV0011 (LO), HV0012 (LO), HV0013 (LO), HV0018 (LC) at minimum. Full list should be verified against graph normal_position field."
+    }
+  },
+  {
+    "id": "Q7",
+    "question": "What is the purpose of BDZV0001? What happens if this is stuck open or stuck closed?",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "ok",
+    "evaluation_criteria": {
+      "must_contain": [
+        "BDZV0001",
+        "stuck open",
+        "stuck closed"
+      ],
+      "must_not_contain": [],
+      "notes": "Answer was acceptable in prior evaluation."
+    }
+  },
+  {
+    "id": "Q8",
+    "question": "Give me the list of spectacle blinds along with size of each.",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "incorrect",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HV0027",
+        "HV0050",
+        "spectacle blind"
+      ],
+      "must_not_contain": [],
+      "notes": "Earlier answer was incorrect. Spectacle blinds exist on at least HV0027 and HV0050. Answer must list blinds with their sizes."
+    }
+  },
+  {
+    "id": "Q9",
+    "question": "Note 10 is applicable on which Line#?",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "ok",
+    "evaluation_criteria": {
+      "must_contain": [
+        "Note 10",
+        "line"
+      ],
+      "must_not_contain": [],
+      "notes": "Answer was acceptable in prior evaluation. Should identify the specific line number(s) where Note 10 applies."
+    }
+  },
+  {
+    "id": "Q10",
+    "question": "How many spec breaks exist on this P&ID? List them down along with the equipment acting as the boundary of the spec.",
+    "pid_id": "pid-008",
+    "sources": ["graph", "rag"],
+    "examiner_verdict": "partial",
+    "evaluation_criteria": {
+      "must_contain": [
+        "HV0004",
+        "HV0031",
+        "CO1N9",
+        "B01M8",
+        "spec break"
+      ],
+      "must_not_contain": [],
+      "known_spec_breaks": [
+        {
+          "from_spec": "CO1N9",
+          "to_spec": "B01M8",
+          "boundary_equipment": ["HV0004", "HV0031"]
+        }
+      ],
+      "notes": "Earlier answer was incomplete. Must include spec break from CO1N9 to B01M8 at boundary of HV0004 and HV0031."
+    }
+  }
+]

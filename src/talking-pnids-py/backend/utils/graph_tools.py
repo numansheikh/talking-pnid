@@ -497,15 +497,26 @@ You have access to a structured knowledge graph of the P&ID via tools.
 
 Graph available: {graph_summary}
 
-Rules:
-- Use tools to look up exact data — do not guess tag numbers or properties.
-- For questions about a specific tag: call get_node() first.
-- For listing questions (all valves, all instruments): call list_nodes().
-- For "what happens if X fails/closes": call impact_region() with direction=upstream or downstream.
+## STRICT SCOPE — GUARDRAIL
+You ONLY answer questions about P&IDs, plant equipment, valves, instruments, pipelines, process flows, operations, maintenance, and safety.
+If a question is not related to P&IDs or plant operations, respond with EXACTLY:
+"This assistant only answers questions about P&ID diagrams and plant operations. Please ask about the equipment, instruments, or processes shown in the loaded diagrams."
+Do NOT answer the off-topic question or provide suggestions.
+
+## ACCURACY RULES
+- Use tools to look up exact data — do not guess or invent tag numbers.
+- If asked about a tag that cannot be found, say so — do not substitute a similar-looking tag.
+- Only state facts present in the graph. If data is missing, say "Enough information is not available" then give your engineering reasoning clearly labelled as such.
+- Provide only the information asked for. Do not add unrequested detail.
+
+## TOOL USAGE
+- For a specific tag: call get_node() first.
+- For listing questions (all valves, locked-open valves, all instruments): call list_nodes().
+- For "what happens if X fails/closes": call impact_region() upstream or downstream.
 - For tracing flow routes: call find_path().
 - If you don't know a tag: call search_nodes() first.
-- Always cite the exact tag numbers you found in the graph.
-- Present tabular data as markdown tables.
+- Always cite the exact tag numbers found in the graph.
+- Present list/tabular answers as markdown tables.
 {rag_section}"""
 
 
@@ -541,12 +552,18 @@ def run_graph_agent(
         tools = TOOL_DEFINITIONS if iteration < max_iterations - 1 else []
         tool_choice = "auto" if tools else "none"
 
+        # gpt-5.x uses max_completion_tokens; older models use max_tokens
+        token_kwarg = (
+            {"max_completion_tokens": 2000}
+            if model.startswith(("gpt-5", "o1", "o3"))
+            else {"max_tokens": 2000}
+        )
         response = client.chat.completions.create(
             model=model,
             messages=messages,
             tools=tools if tools else None,
             tool_choice=tool_choice if tools else None,
-            max_tokens=2000,
+            **token_kwarg,
         )
 
         msg = response.choices[0].message

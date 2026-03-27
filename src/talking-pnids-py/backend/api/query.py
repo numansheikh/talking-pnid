@@ -44,8 +44,11 @@ async def process_query(request: QueryRequest):
         # For supergraph queries, RAG should search all chunks (no pid filter)
         rag_pid_filter = None if pid_id == "supergraph" else pid_id
 
-        # ── Graph agent path (standard models only) ───────────────────────────
-        is_reasoning = model_name.startswith(("o1", "o3", "gpt-5"))
+        # ── Graph agent path (standard models, or any supergraph query) ──────
+        # Supergraph has 366 nodes — the compact JSON reasoning path only passes
+        # the first 100 nodes, which cuts off pid-008 entirely. Always use the
+        # tool_use agent for supergraph so it can query all P&IDs iteratively.
+        is_reasoning = model_name.startswith(("o1", "o3", "gpt-5")) and pid_id != "supergraph"
 
         if graph and not is_reasoning:
             # RAG retrieval (silently skipped if index not built yet)

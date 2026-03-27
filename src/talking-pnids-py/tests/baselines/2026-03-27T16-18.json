@@ -1,0 +1,294 @@
+{
+  "timestamp": "2026-03-27T16:18:52.242653",
+  "api_url": "http://localhost:8050",
+  "results": [
+    {
+      "id": "Q1",
+      "question": "What are the design and operating ranges for pressure and temperature for the equipment 362-V001?",
+      "pid_id": "pid-008",
+      "answer": "For **equipment PP01-362\u2011V001 (Fuel Gas KO Drum)**, the ranges captured in the provided knowledge graph / notes are:\n\n### Pressure\n- **Design pressure:** **14 barg / FV** (full vacuum)\n- **Operating pressure:** **9.0 to 10.4 barg**\n\n### Temperature\n- **Operating temperature:** **23\u00b0C to 72\u00b0C**\n- **Design temperature:** **-20\u00b0C to 100\u00b0C** *(from the 362\u2011V001 node props, \u201cNOTE\u20117\u201d referenced)*\n\n**Note (data inconsistency):** The Engineering Notes indicate the **design temperature is \u201cnot specified in source\u201d**, and the issue log flags a conflict (**\u201c-23\u00b0C to 72\u00b0C\u201d vs \u201c-20\u00b0C to 100\u00b0C\u201d**). If you need a single authoritative value, it should be confirmed from the vessel datasheet/nameplate.",
+      "elapsed": 7.0,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PARTIAL",
+        "score": 80,
+        "gaps": [
+          "Missing explicit mention of '362-V001' in the explanation."
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correctly identified and provided the design and operating pressure values.",
+          "Correctly identified and provided the design and operating temperature values.",
+          "Identified inconsistency in design temperature from data source.",
+          "Included a suggestion to verify values from the vessel datasheet/nameplate."
+        ],
+        "summary": "The answer largely covers the necessary information but is missing an explicit reference to '362-V001'.",
+        "keyword_gaps": [
+          "362-V001"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q2",
+      "question": "List down all valves that need to be closed to isolate the equipment 362-V001. If possible, highlight all these valves on the P&ID with yellow colour. Mention any piping connections where there is no valve found for isolation purposes.",
+      "pid_id": "pid-008",
+      "answer": "### Valves to close to **isolate equipment PP01-362\u2011V001 (362\u2011V001 Fuel Gas KO Drum)**  \nBased on the KG connections provided (plus the engineering note for the liquid outlet/bypass), isolation requires closing **all valves on every process/nozzle connection** and (if you want full mechanical isolation for maintenance) the **instrument root/isolation valves** as well.\n\n---\n\n## 1) Process inlets to the vessel\n\n### A. Fuel gas inlet via **Nozzle N4 (12\")** (from DS\u20111 scrapper receiver path)\nClose:\n- **HV0093** (Gate) \u2013 on the 12\" leg into **N4**  \n*(Upstream there is also a 16\" check valve HV0094, but it is not a positive isolation device.)*\n\nUpstream path shown: `TERM_DS1_SCRAPPER \u2192 HV0094 (check) \u2192 reducer \u2192 HV0093 \u2192 N4 \u2192 vessel`\n\n### B. Fuel gas inlet via **Nozzle N5 (12\")** (from DS\u20113 scrapper receiver path)\nClose:\n- **HV0203** (Gate) \u2013 on 16\" line from DS\u20113 scrapper receiver\n- **HV0095** (Gate) \u2013 on the 12\" leg into **N5**\n\nPath shown: `TERM_DS3_SCRAPPER \u2192 HV0203 \u2192 reducer \u2192 HV0095 \u2192 N5 \u2192 vessel`\n\n### C. 2\" bottom/side inlet via **Nozzle N9 (2\")** (via SPHN\u20110030)\nClose:\n- **HV0001** (Ball, 2\")\n- **HV0002** (Ball, 2\", **NC** noted)\n\nPath shown: `TERM_UC \u2192 HV0001 \u2192 HV0051 \u2192 HV0002 \u2192 SPHN\u20110030 \u2192 N9 \u2192 vessel`\n\n> Note: **HV0051** is a 1\" needle valve in this branch; it is *not* the primary block valve, but could also be closed as part of \u201cclose-all valves in branch\u201d practice.\n\n---\n\n## 2) Vessel branch connection (3\")\n\n### Nozzle **N17 (3\")**\nClose:\n- **HV0003** (Gate, 3\")\n\nPath: `vessel \u2194 N17 \u2192 HV0003 \u2192 (downstream not shown)`\n\n---\n\n## 3) Level gauge / external level connections (2\" + 1\")\n\nThese are direct vessel penetrations (N18A / N18B) and the gauge isolation.\nClose:\n- **HV0024** (Ball, 2\") \u2013 from **N18A** to **LG\u20110001**\n- **HV0025** (Ball, 2\") \u2013 from **N18B** to **LG\u20110001**\n- **HV0022** (Gate) \u2013 vessel to LG\u20110001 (shown as another connection in the KG)\n- **HV0026** (Needle, 1\") \u2013 from **N18A** small branch\n- **HV0027** (Needle, 1\") \u2013 from **N18B** small branch\n\nConnections shown:\n- `vessel \u2194 N18A \u2192 HV0024 \u2192 LG\u20110001`\n- `vessel \u2194 N18B \u2192 HV0025 \u2192 LG\u20110001`\n- `vessel \u2192 HV0022 \u2192 LG\u20110001`\n- `N18A \u2192 HV0026` and `N18B \u2192 HV0027`\n\n---\n\n## 4) Relief / flare connections\n\n### PSV\u20110001 isolation\nClose:\n- **HV0038** (Hand valve, **ILO**) \u2013 PSV\u20110001 **inlet isolation** from vessel\n- **HV0039** (Hand valve, **ILO**) \u2013 PSV\u20110001 **outlet isolation** to flare header (TERM_HP_FLARE_VK0066)\n\nPath: `vessel \u2192 HV0038 \u2192 PSV\u20110001 \u2192 HV0039 \u2192 flare`\n\n### PSV\u20110002\n- **No isolation valves are shown** in the KG on PSV\u20110002 inlet/outlet.\n  - Path shown: `vessel \u2192 PSV\u20110002 \u2192 TERM_HP_FLARE_VK0008`\n\nSo PSV\u20110002 **cannot be isolated by valve closure alone** per the provided data (you\u2019d typically need a spectacle blind/spade, or a DBB arrangement\u2014none is shown here).\n\n### Emergency shutdown to flare / vent\nClose:\n- **EZV\u20110002** (ESDV) \u2013 connected directly from vessel in the KG (`vessel \u2192 EZV\u20110002`)\n\n> No additional upstream/downstream manual block valves for EZV\u20110002 are shown in the KG.\n\n---\n\n## 5) Liquid/two\u2011phase outlet from vessel (Level control / ESDV line)\n\nFrom KG:\n- `vessel \u2192 LV\u20110001 \u2192 (to common header sb_r2c3 \u2026)`\n\nFrom engineering note (2.3.4\u20132.3.6), the **main outlet** also includes an ESDV and downstream isolation, plus a bypass around EZV\u20110001. To isolate the vessel outlet section, close at minimum:\n\n**Main outlet isolation (per note):**\n- **EZV\u20110001** (ESDV \u2013 emergency shutdown valve on outlet)\n- **HV0028** (Gate \u2013 \u201cN3\u2011OUTLET\u2011ISO\u201d, primary downstream isolation per note)\n\n**Bypass around EZV\u20110001 (per note):**\n- **HV0032** (Gate \u2013 bypass inlet isolation, \u201cLV\u2011BYPASS\u2011IN\u201d)\n- **HV0004** (Ball \u2013 bypass isolation, \u201cLV\u2011BYPASS\u201d)\n- **HV0029** (LV\u20110001 inlet isolation)\n- **HV0030** (LV\u20110001 outlet isolation)\n\nAlso close the small drain on the bypass low point (per note):\n- **HV0030 \u2013 LV\u2011DRAIN** (0.5\" drain valve mentioned in note)  \n*(This specific drain tag is described in the note; the KG node \u201cHV0030\u201d exists but its sizing/service text is ambiguous.)*\n\n---\n\n# Instrument isolation (root valves) \u2014 close if doing full maintenance isolation\nThese don\u2019t isolate process nozzles from piping headers, but they **do isolate instrument impulse/take-offs** from the vessel.\n\n### Pressure safety transmitters PZT\u20110001A/B/C\nClose:\n- **HV0010** \u2192 PZT\u20110001A (Gate, LO)\n- **HV0011** \u2192 PZT\u20110001B (Gate, LO)\n- **HV0012** \u2192 PZT\u20110001C (Gate)\n\n### Pressure transmitter PIT\u20110002 / PIC loop\nClose:\n- **HV0014** (Hand, 2\", LO) \u2013 PIT\u20110002 isolation\n- **HV0013** (Gate) \u2013 PIT take-off isolation (also connected to PIT\u20110002)\n\n### Level transmitters LZT\u20110002A/B/C (GWR)\nClose:\n- **HV0041** (Gate, 1\") \u2013 in LZT\u20110002A line\n- **HV0043** (Gate, 1\") \u2013 in LZT\u20110002B line\n- **HV0045** (Gate, 1\") \u2013 in LZT\u20110002C line\n\n(These are downstream of HV0040/HV0042/HV0044 reducers in the KG.)\n\n---\n\n# Piping connections where **no isolation valve is found** (from the provided KG)\n\n1) **PSV\u20110002**: no inlet/outlet isolation valves shown (direct vessel connection).  \n2) **Vessel \u2192 362\u2011007**: shown as direct process connection (`PP01-362-V001 \u2192 362-007`) with **no block valve shown** on this take-off in the KG.  \n3) **Vessel impulse lines** to the following instruments are shown without explicit root valves in the KG (other than the PIT/PZT/LZT valves listed above):\n   - **LIT\u20110001**, **LIT\u20110003**, **LI\u20110003**, **LIC\u20110001**, **PG\u20110001** (impulse edges exist, but no root/isolation valves are represented for these in the KG dataset).  \n4) **DS\u20111 inlet** has a **check valve (HV0094)** upstream; check valves are not considered positive isolation. If no upstream manual block valve exists at the battery limit/scrapper receiver, then **positive isolation may be missing** on that side.\n\n---\n\n## P&ID highlighting (yellow)\nI can highlight these valves on the P&ID in yellow, but I need the actual **P&ID image/PDF** (or the drawing file/page) to annotate. Upload the P&ID for pid\u2011008 and confirm whether you want:\n- **Operational isolation only** (close ESDVs + manual blocks), or\n- **Mechanical isolation for entry** (also isolate PSVs, instruments, add blinds where no valves exist)\n\n\u2026and I\u2019ll return an annotated marked-up copy.",
+      "elapsed": 67.1,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "FAIL",
+        "score": 50,
+        "gaps": [
+          "Missing valves HV0006",
+          "Missing valve HV0016",
+          "Missing valve HV0091",
+          "Missing valve HV0092"
+        ],
+        "hallucinations": [
+          "Incorrect valve HV0029"
+        ],
+        "positives": [
+          "Correct identification of valve HV0004"
+        ],
+        "summary": "The answer did not include required valves and included one incorrect valve, compromising its accuracy.",
+        "keyword_gaps": [
+          "HV0006",
+          "HV0016",
+          "HV0091",
+          "HV0092"
+        ],
+        "keyword_hallucinated": [
+          "HV0029"
+        ]
+      }
+    },
+    {
+      "id": "Q3",
+      "question": "When the valve EZV-002 closes suddenly during normal operation, which equipment upstream or downstream will see an increase in pressure. Additionally, is there a security, like a pressure safety valve or a high pressure alarm/trip for that high pressure to safeguard the equipment and piping from the high pressure?",
+      "pid_id": "pid-008",
+      "answer": "When **EZV-0002** \u201cslams shut\u201d during normal operation, the **pressure rise occurs on the *upstream* side of that valve** (i.e., on the side still connected to the KO drum and its incoming sources). The **downstream** side of EZV-0002 is isolated and will generally see a **pressure drop/decay**, not a rise (other than a very short local transient right at the valve due to gas compression).\n\n## 1) What will see an increase in pressure?\n\n### A. Immediately upstream of EZV-0002\n- **PP01-362-V001 (Fuel Gas KO Drum)** will see the main pressure increase if inflow continues while the outlet is blocked.\n- The **short spool/piping between the vessel nozzle and EZV-0002** will also see that increase (and may see the sharpest transient).\n\n### B. Upstream connected inlet sources (backpressure propagation depends on non-return devices)\nFrom your graph:\n\n**DS-1 Scrapper Receiver inlet path**\n- TERM_DS1 \u2192 **HV0094 (check valve)** \u2192 HV0093 \u2192 N4 \u2192 vessel  \nIf vessel pressure rises, **backflow is blocked by the check valve HV0094**, so:\n- Pressure can rise **up to HV0094**, but **should not propagate back** into the DS\u20111 scrapper receiver / upstream header (assuming HV0094 is correctly oriented and functioning).\n\n**DS-3 Scrapper Receiver inlet path**\n- TERM_DS3 \u2192 **HV0203 (gate valve)** \u2192 HV0095 \u2192 N5 \u2192 vessel  \nA gate valve is **not** a check valve, so if the vessel pressure rises:\n- Backpressure **can propagate back toward the DS\u20113 scrapper receiver** (unless there is an NRV/check valve elsewhere off-graph).\n\n**Any other open connections**\n- Any other lines/nozzles connected to the vessel (and left open) can see increased pressure on the vessel side. Whether it propagates beyond depends on whether there is a **check valve/ESD isolation** in that branch.\n\n## 2) What safeguards exist against that high pressure?\n\n### Primary mechanical protection (overpressure protection)\n- **PSV-0001 and PSV-0002** on PP01-362-V001, each **set at 14.0 barg** and relieving to HP flare (VK0066 / VK0008).  \nThese are the main devices that protect the **vessel** from exceeding its design/allowable limits during blocked-outlet / PCV failure type events.\n\n> Important nuance: PSVs protect the *vessel and the connected upstream side that remains hydraulically connected to the vessel*. They do **not** automatically protect any segment that can become **isolated** between closed valves unless that segment has its own relief provision.\n\n### Control-layer protection (pressure control to flare)\n- Your notes describe **PIC-0002 \u2192 PV-0002** venting/modulating flow **to flare** to control vessel pressure.  \nThis helps for normal disturbances, but **a slam-shut ESD valve can overwhelm control** (especially if the control valve is not on a path still available to relieve).\n\n### Instrumented protection (high pressure alarm/trip / SIF)\n- **PZT-0001A/B/C** (3 transmitters) \u2192 **2oo3 voting logic (362-004)** \u2192 **ESD actions**  \nThis is an independent **High Pressure SIF** intended to protect against vessel overpressure (typical actions are to isolate feeds and/or open blowdown; exact final elements aren\u2019t fully shown in the graph).\n- Additional pressure alarming exists on:\n  - **PIC-0002** (H/L alarms noted, values not shown)\n  - **PI-0001A/B/C** (HH alarm noted, values not shown)\n\n## 3) Practical answer to \u201cwhich equipment upstream/downstream sees higher pressure?\u201d\n- **Upstream of EZV-0002:** KO drum **PP01-362-V001** and any connected inlet piping will see **increasing pressure**.\n- **Downstream of EZV-0002:** generally **no sustained pressure increase**; it becomes isolated and will depressurize/settle depending on what it\u2019s connected to.\n\n**Upstream equipment specifically:**\n- DS\u20111 scrapper receiver: **should be protected from backpressure by HV0094 check valve** (pressure rise stops at the check valve).\n- DS\u20113 scrapper receiver: **may see backpressure** because the shown valve is a gate valve (HV0203), not a check valve.\n\n## 4) What to verify (to be sure the piping/equipment is safeguarded)\n1. Whether the **DS\u20113 inlet line has a check valve** (not shown here). If not, confirm DS\u20113 receiver and that inlet piping are **rated** for the possible backpressure or add backflow prevention.\n2. Whether any portion of piping can become **blocked-in** (between two closing valves) without a relief path; if yes, consider **thermal/blocked-in relief** as required by your standards.\n3. Whether the **HP SIF final elements** (e.g., closing inlet ESDs, opening BDZV, etc.) are defined such that a blocked outlet from EZV-0002 closure is mitigated quickly.\n\nIf you tell me what **EZV-0002 is isolating** (gas outlet to treatment? vent to flare? inlet isolation?) and what its downstream node connects to (not present in the provided edges), I can map the exact pressure-rise path and identify any potentially unprotected segments.",
+      "elapsed": 58.9,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PASS",
+        "score": 95,
+        "gaps": [
+          "The mention of a check valve on the DS-3 inlet path could strengthen the safeguarding discussion."
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correct identification that pressure will rise upstream of EZV-0002.",
+          "Proper explanation of check valve HV0094 preventing backpressure on DS-1.",
+          "Detailed description of mechanical and instrumented safeguards (PSVs, high pressure SIF).",
+          "Explanation of potential backpressure issues due to lack of check valve on DS-3 path."
+        ],
+        "summary": "The answer accurately identifies pressure changes and safeguards with detailed explanations; minor improvements could enhance completeness.",
+        "keyword_gaps": [],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q4",
+      "question": "If the hand valve HV0027 on equipment 362-V001 is inadvertently closed, which instrumentation is critical to give alarms or trip the process before the liquid enters the piping going to the fuel gas treatment package?",
+      "pid_id": "pid-008",
+      "answer": "If **HV0027** (the 1\" needle valve off **nozzle N18B**) is inadvertently closed, the instrumentation most likely to be affected is the **local level gauge connection (LG\u20110001 lower/bleed leg)**\u2014i.e., you could lose/false the *sight* level indication (and any operator response based on it). To prevent **liquid carryover into the gas outlet line to the Fuel Gas Treatment Package**, you must rely on the **independent level protection that does not depend on HV0027**.\n\n### Critical instrumentation for alarm/trip before carryover\n1. **Level Safety SIF (independent of LG taps):**\n   - **LZT\u20110002A / LZT\u20110002B / LZT\u20110002C** (3 \u00d7 GWR level transmitters)\n   - **2oo3 voting logic** (noted as **362\u2011003 for HHLL** in the engineering notes)\n   - **ESD output** (protective action to prevent carryover; typically closes the relevant outlet ESD / initiates shutdown actions)\n\n   **This is the key layer of protection** for \u201ctrip before liquid enters the piping going to fuel gas treatment,\u201d because it is explicitly intended to trip on **HHLL (1300 mm)** to prevent downstream liquid carryover.\n\n2. **Operator alarm / control (secondary protection):**\n   - **LIT\u20110001** (has **HHLL = 1300 mm** shown) and associated indications\n   - **LIC\u20110001** (level controller with H/L alarms) acting through **LV\u20110001** to control liquid level\n\n   These can alarm and help control level, but the **SIF (LZT 2oo3 \u2192 ESD)** is the critical trip function.\n\n### Not critical / potentially compromised by HV0027 closure\n- **LG\u20110001** (sight glass) and its small-bore valves (**HV0024/HV0025** plus the 1\" needle valves **HV0026/HV0027**) could give **misleading level** if a leg is isolated.\n\nSo, the **critical instrumentation** to prevent carryover in this scenario is the **LZT\u20110002A/B/C voting-trip (HHLL) to ESD**, with **LIT\u20110001/LIC\u20110001** providing additional alarm/control but not the primary independent trip barrier.",
+      "elapsed": 30.3,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PASS",
+        "score": 95,
+        "gaps": [],
+        "hallucinations": [],
+        "positives": [
+          "Correctly identifies LZT-0002A/B/C with 2oo3 voting logic as critical instrumentation.",
+          "Mentions alarm and control features as secondary protection.",
+          "Correctly states the impact of closing HV0027 on LG-0001.",
+          "Avoids mentioning hallucinated terms such as EZV-0001."
+        ],
+        "summary": "The answer correctly identifies the critical instrumentation needed to prevent liquid carryover with no major gaps or hallucinations.",
+        "keyword_gaps": [],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q5",
+      "question": "List down all instrumentation on P&ID 100478CP-N-PG-PP01-PR-PID-0008-001 in a tabular form that have a HH, H, L or LL function.",
+      "pid_id": "pid-008",
+      "answer": "| Tag | Instrument type | Measured variable | HH / H / L / LL function present | Setpoint shown on P&ID | Notes / Service |\n|---|---|---|---|---|---|\n| **PI-0001A** | Pressure Indicator | Pressure | **HH** | HH: *not specified on drawing* | Pressure indication with high-high alarm (one of 3) |\n| **PI-0001B** | Pressure Indicator | Pressure | **HH** | HH: *not specified on drawing* | Pressure indication with high-high alarm (one of 3) |\n| **PI-0001C** | Pressure Indicator | Pressure | **HH** | HH: *not specified on drawing* | Pressure indication with high-high alarm (one of 3) |\n| **PIC-0002** | Pressure Indicating Controller | Pressure | **H, L** | H: *not specified on drawing*; L: *not specified on drawing* | Pressure control loop controller (per notes: PIC-0002 \u2192 PV-0002) with high/low alarms |\n| **LIC-0001** | Level Indicating Controller | Level | **H, L** | H: *not specified on drawing*; L: *not specified on drawing* | Level controller with high/low alarms (drives LV-0001) |\n| **LIT-0001** | Level Indicating Transmitter | Level | **HH, LL** (shown as **HHLL**) | **HHLL: 1300 mm** | Level transmitter on KO drum; drawing shows combined HH/LL function at 1300 mm |\n\nIf you want, I can also include **alarm-only tags** (e.g., **LZ-0002**) in the table, but in the provided P&ID graph it is not explicitly labeled with HH/H/L/LL.",
+      "elapsed": 12.0,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PARTIAL",
+        "score": 75,
+        "gaps": [
+          "Missing mention of 'tabular' in the answer."
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correctly presented the information in a table format.",
+          "Included all relevant instrumentation with HH, H, L, LL functions.",
+          "Correctly identified and categorized each instrument's function."
+        ],
+        "summary": "The answer is mostly correct and well-structured, but lacks explicit mention of the term 'tabular'.",
+        "keyword_gaps": [
+          "tabular"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q6",
+      "question": "Are there any locked closed or locked open valves on this P&ID? If yes, list them down and mention locked open and locked closed against each.",
+      "pid_id": "pid-008",
+      "answer": "Yes. The P&ID contains valves marked **LO (Locked Open)** and **LC (Locked Closed)**.\n\n## Locked Open (LO)\n- **HV0014** \u2014 **LO** (2\", PIT-0002 isolation)\n- **HV0016** \u2014 **LO** (8\")\n- **HV0021** \u2014 **LO** (10\")\n- **HV0034** \u2014 **LO** (2\")\n- **HV0036** \u2014 **LO** (gate valve, N11A line)\n- **HV0091** \u2014 **LO** (6\", upstream of BDZV-0001)\n- **HV0010** \u2014 **LO** (PZT-0001A take-off)\n- **HV0011** \u2014 **LO** (PZT-0001B take-off)\n\n## Locked Closed (LC)\n- **HV0018** \u2014 **LC** (ball valve; note says \u201cball valve with spectacle blind\u201d)\n- **HV0019** \u2014 **LC** (explicit note: \u201cLocked closed per legend\u201d)\n- **HV0032** \u2014 **LC** (gate valve on bottom drain line)\n\n### Note (related but different marking)\nThese are **interlocked** positions (not just \u201clocked\u201d):\n- **HV0038** \u2014 **ILO** (PSV-0001 inlet isolation)\n- **HV0039** \u2014 **ILO** (PSV-0001 outlet isolation)\n- **HV0004** \u2014 **ILC** (SPCK-0001 inlet bypass)\n- **HV0006** \u2014 **ILC** (SPCK-0001 inlet bypass)",
+      "elapsed": 16.7,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PARTIAL",
+        "score": 70,
+        "gaps": [
+          "HV0012 locked open",
+          "HV0013 locked open"
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Identified the presence of locked open and locked closed valves",
+          "Correctly listed HV0011 as locked open",
+          "Correctly listed HV0018 as locked closed"
+        ],
+        "summary": "The answer correctly identifies several locked open and locked closed valves but misses HV0012 and HV0013 in the locked open list.",
+        "keyword_gaps": [
+          "HV0012",
+          "HV0013"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q7",
+      "question": "What is the purpose of BDZV0001? What happens if this is stuck open or stuck closed?",
+      "pid_id": "pid-008",
+      "answer": "### Purpose of **BDZV-0001**\n**BDZV-0001** is the **blowdown (depressurization) valve** on the fuel-gas KO drum system. Its function is to **rapidly and safely reduce pressure by routing gas to the flare/vent system** (it discharges into the VK header per the graph: **BDZV-0001 \u2192 HV0091 \u2192 reducer \u2192 VK0010**).\n\nKey intent:\n- Provide **emergency depressurization** (typically on ESD / fire / high-high pressure logic, depending on the cause & effect not shown here).\n- Enable **controlled pressure rundown** to make equipment safer for incident response and, in some cases, maintenance.\n- It is shown as **TSO (tight shut off)** in its normal state, i.e., it is expected to be **closed and leak-tight** during normal operation.\n- **ZI-0002 / ZT-0002** indicate/transmit valve position for confirmation/diagnostics.\n\n---\n\n### If **BDZV-0001 is stuck open**\nLikely consequences:\n- **Continuous blowdown to flare** \u2192 sustained flaring, noise, high flare load.\n- **Loss of fuel-gas pressure** on the KO drum/header \u2192 downstream consumers may see **low pressure trips**, unstable operation, or loss of fuel supply.\n- Potential for **excessive depressurization rate** and cooling (Joule\u2013Thomson) in the blowdown path \u2192 risk of **low-temperature effects** (icing / brittle concerns) depending on gas composition and metallurgy (system-dependent).\n- If liquid carryover occurs in the KO drum during upset, an open BDV can increase the chance of **liquid entrainment to flare**, which is undesirable and can create operational/safety issues.\n\nOverall: **operability impact is immediate**, and flare system loading becomes a concern.\n\n---\n\n### If **BDZV-0001 is stuck closed**\nLikely consequences:\n- **No emergency depressurization available** when demanded (fire/ESD/HH pressure depressuring, etc.).\n- During an incident, the vessel/system will **remain pressurized longer**, increasing risk to personnel/equipment and reducing mitigation effectiveness.\n- You may have to rely on:\n  - **PSVs (PSV-0001 / PSV-0002)** for overpressure protection, but PSVs are **not a substitute** for emergency depressurization (they protect against overpressure; they do not provide fast depressuring to safe levels).\n  - Manual actions may be slower and may not be feasible in an emergency.\n\nOverall: **safety function is impaired**; incident escalation potential increases.\n\n---\n\nIf you share the **Cause & Effect / ESD logic** for BDZV-0001 (what signals open it), I can map \u201cstuck open/closed\u201d directly to the initiating events and protections shown (e.g., which transmitters/logic vote blocks drive it).",
+      "elapsed": 19.6,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PASS",
+        "score": 95,
+        "gaps": [
+          "The specific tag format 'BDZV0001' was not mentioned exactly, only the hyphenated format 'BDZV-0001' was used throughout the answer."
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correctly identified BDZV-0001 as a blowdown valve for emergency depressurization.",
+          "Accurately described the consequences of the valve being stuck open or closed.",
+          "Provided detailed operational impacts and safety considerations for both scenarios."
+        ],
+        "summary": "The answer accurately explains the function and consequences of BDZV-0001 being stuck open or closed, with minor gaps in tag format.",
+        "keyword_gaps": [
+          "BDZV0001"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q8",
+      "question": "Give me the list of spectacle blinds along with size of each.",
+      "pid_id": "pid-008",
+      "answer": "Spectacle blinds identifiable in the provided P&ID knowledge graph are:\n\n| Spectacle blind tag / reference | Size |\n|---|---|\n| **HV0018** (ball valve **with spectacle blind**) | **4\"** (inferred from connected 4\" piping edges around HV0018/HV0019) |\n| **sb_r2c1_B03F9_B01M8** (\u201csb\u201d element on LG-0001 header run) | **1\"** (from line **1\"-PP01-512-PK0076-\u2026**) |\n| **sb_r2c3_B03F9_B01M8** (\u201csb\u201d element at instrument/condensate header tie-in) | **4\" header** (tie to **4\"-PP01-512-PK0006-\u2026**), with **1\" branches** (lines **PK0080/PK0081**) |\n\nIf you want, I can return this as strict JSON (tag + size + evidence edges).",
+      "elapsed": 13.5,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "FAIL",
+        "score": 50,
+        "gaps": [
+          "Missing tags HV0027 and HV0050, which are confirmed to have spectacle blinds."
+        ],
+        "hallucinations": [
+          "None"
+        ],
+        "positives": [
+          "Details of spectacle blinds from the identified tags are correctly formatted and present."
+        ],
+        "summary": "The answer fails as it omits necessary information about spectacle blinds on HV0027 and HV0050.",
+        "keyword_gaps": [
+          "HV0027",
+          "HV0050"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q9",
+      "question": "Note 10 is applicable on which Line#?",
+      "pid_id": "pid-008",
+      "answer": "Per the **Line List / Special Requirements** in your provided notes, **NOTE-10** is referenced on these line numbers:\n\n1. **16\"-PP01-361-GF0014-B03F9-PP** \u2014 *Fuel Gas Inlet* \u2014 **NO POCKETS (NOTE-10)**  \n2. **16\"-PP01-361-GF0031-B03F9-PP** \u2014 *Fuel Gas Inlet* \u2014 **NO POCKETS (NOTE-10)**  \n3. **4\"-PP01-512-PK0006-B01M8-PP** \u2014 *Liquid Outlet* \u2014 **TWO PHASE (NOTE-10)**",
+      "elapsed": 7.4,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PARTIAL",
+        "score": 75,
+        "gaps": [
+          "Missing keyword 'Note 10' explicitly"
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correctly identifies the line numbers where NOTE-10 applies",
+          "Correctly associates NOTE-10 with specific descriptions (NO POCKETS, TWO PHASE)"
+        ],
+        "summary": "The answer correctly identifies the applicable line numbers for NOTE-10 but fails to explicitly include the keyword 'Note 10'.",
+        "keyword_gaps": [
+          "Note 10"
+        ],
+        "keyword_hallucinated": []
+      }
+    },
+    {
+      "id": "Q10",
+      "question": "How many spec breaks exist on this P&ID? List them down along with the equipment acting as the boundary of the spec.",
+      "pid_id": "pid-008",
+      "answer": "From the pipe classes explicitly present in the knowledge graph, there are **4 spec breaks** (i.e., **boundaries where the piping class changes**, or where a **spec-break symbol** is explicitly indicated).\n\n| # | Boundary element (spec break location) | Upstream class \u2192 Downstream class | Evidence in graph |\n|---|---|---|---|\n| 1 | **sb_r2c1_B03F9_B01M8** (spec break symbol \u201cSB\u201d) | **B03F9 \u2192 B01M8** | Node name explicitly encodes the break. Connected via **1\"-PP01-512-PK0076-B03F9-PP** into the SB. |\n| 2 | **sb_r2c3_B03F9_B01M8** (spec break symbol \u201cSB\u201d) | **B03F9 \u2192 B01M8** | Node name explicitly encodes the break. Receives **1\"-PP01-512-PK0080/0081-B03F9-PP** and then routes to **4\"-PP01-512-PK0006-B01M8-PP** (to **TERM_CONDENSATE**). |\n| 3 | **LV-0001** (level control valve) | **C01N9 \u2192 B01M8** | Vessel to LV: **4\"-PP01-512-PK0005-C01N9-PP** (`e_vessel_LV0001`). LV downstream: **4\"-PP01-512-PK0006-B01M8-PP** (`e_LV0001_downstream`). |\n| 4 | **HV0021** (10\" gate valve) | **B01B8 \u2194 B01E9** | HV0021 has notes **B01E9** and **B01B8** (node props). Downstream line is explicitly **16\"-PP01-362-GF0002-B01E9-PP** to **TERM_FG_TREATMENT** (`e_HV0021_TERM_FG_TREATMENT`). This valve is acting as the class boundary per the annotation. |\n\n### Important limitation (based on this dataset)\nSeveral connected segments do **not** carry a `pipe_class` attribute (e.g., some flare/header connections and PSV inlet/outlet segments), so **additional spec breaks could exist on the actual P&ID** but are **not provable from the provided graph fields**. The 4 above are the ones that are explicitly identifiable from the KG + notes.",
+      "elapsed": 45.8,
+      "sources": {
+        "mode": "reasoning+graph"
+      },
+      "judgment": {
+        "verdict": "PARTIAL",
+        "score": 70,
+        "gaps": [
+          "Spec break from CO1N9 to B01M8 at boundary of HV0004 and HV0031 is missing"
+        ],
+        "hallucinations": [],
+        "positives": [
+          "Correctly identifies 4 spec breaks",
+          "Mentions B01M8 and spec break as required"
+        ],
+        "summary": "The answer correctly identifies some spec breaks but misses the required reference to HV0004, HV0031, and CO1N9.",
+        "keyword_gaps": [
+          "HV0004",
+          "HV0031",
+          "CO1N9"
+        ],
+        "keyword_hallucinated": []
+      }
+    }
+  ]
+}

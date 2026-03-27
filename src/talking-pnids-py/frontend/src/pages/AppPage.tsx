@@ -21,6 +21,9 @@ export default function AppPage() {
   const [selectedMapping, setSelectedMapping] = useState<FileMapping | null>(null)
   const [sourceMode, setSourceMode] = useState<SourceMode>('both')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const abortRef = useRef<AbortController | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   // Load files and auto-start session on mount
   useEffect(() => {
@@ -80,7 +83,7 @@ export default function AppPage() {
     return () => document.removeEventListener('click', handleClick, true)
   }, [mappings])
 
-  const extractPidNumber = (str: string) => str.match(/PID-(\d{3,4})/)?.[1] ?? null
+  const extractPidNumber = (str: string | null | undefined) => str?.match(/PID-(\d{3,4})/)?.[1] ?? null
 
   const processMessageContent = (content: string): string => {
     const seen = new Set<string>()
@@ -129,24 +132,63 @@ export default function AppPage() {
 
     try {
       const sourcesParam = sourceMode === 'graph' ? ['graph'] : sourceMode === 'rag' ? ['rag'] : ['graph', 'rag']
+      abortRef.current = new AbortController()
       const data = await sendQuery({
         query,
         sessionStarted,
         selectedMapping: selectedMapping ? { id: selectedMapping.id, pdf: selectedMapping.pdf, md: selectedMapping.md } : null,
         sessionId,
         sources: sourcesParam,
-      })
+      }, abortRef.current.signal)
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: data.answer || data.error || 'No answer received',
         sources: data.sources,
       }])
     } catch (error: any) {
+      if (error.name === 'AbortError') return
       setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }])
     } finally {
+      abortRef.current = null
       setLoading(false)
     }
   }
+
+  const handleStop = () => {
+    abortRef.current?.abort()
+    abortRef.current = null
+    setLoading(false)
+  }
+
+  const handleCopy = useCallback((content: string, index: number) => {
+    const done = () => { setCopiedIndex(index); setTimeout(() => setCopiedIndex(null), 2000) }
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(content).then(done).catch(() => {
+        // Fallback for non-secure contexts
+        const el = document.createElement('textarea')
+        el.value = content
+        document.body.appendChild(el)
+        el.select()
+        document.execCommand('copy')
+        document.body.removeChild(el)
+        done()
+      })
+    } else {
+      const el = document.createElement('textarea')
+      el.value = content
+      document.body.appendChild(el)
+      el.select()
+      document.execCommand('copy')
+      document.body.removeChild(el)
+      done()
+    }
+  }, [])
+
+  const handleEdit = useCallback((content: string, index: number) => {
+    setQuery(content)
+    setMessages(prev => prev.slice(0, index))
+    setTimeout(() => textareaRef.current?.focus(), 50)
+  }, [])
 
   const sourceModeLabel = (mode: SourceMode) => ({ graph: 'Diagram Analysis', rag: 'Engineering Notes', both: 'Full Picture' }[mode])
 
@@ -266,9 +308,28 @@ export default function AppPage() {
                     <div className="message-content">
                       {message.role === 'assistant' ? (
                         <>
+                          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '4px' }}>
+                            <button
+                              onClick={() => handleCopy(message.content, index)}
+                              title="Copy to clipboard"
+                              style={{
+                                background: 'none', border: 'none', cursor: 'pointer',
+                                fontSize: '11px', color: copiedIndex === index ? '#16a34a' : '#9ca3af',
+                                padding: '2px 6px', borderRadius: '4px',
+                                transition: 'color 0.2s',
+                              }}
+                            >
+                              {copiedIndex === index ? '✓ copied' : '⎘ copy'}
+                            </button>
+                          </div>
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
+                              table: ({ children }) => (
+                                <div className="table-wrap">
+                                  <table>{children}</table>
+                                </div>
+                              ),
                               a: ({ href, children, ...props }) => {
                                 if (href?.startsWith('#pid-')) {
                                   const id = href.replace('#pid-', '')
@@ -324,7 +385,22 @@ export default function AppPage() {
                           )}
                         </>
                       ) : (
-                        message.content
+                        <>
+                          {message.content}
+                          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
+                            <button
+                              onClick={() => handleEdit(message.content, index)}
+                              title="Edit message"
+                              style={{
+                                background: 'none', border: 'none', cursor: 'pointer',
+                                fontSize: '11px', color: 'rgba(255,255,255,0.75)',
+                                padding: '2px 6px', borderRadius: '4px',
+                              }}
+                            >
+                              ✎ edit
+                            </button>
+                          </div>
+                        </>
                       )}
                     </div>
                   </div>
@@ -341,6 +417,7 @@ export default function AppPage() {
             <div className="chat-input-container">
               <form onSubmit={handleSubmit} className="chat-input-form">
                 <textarea
+                  ref={textareaRef}
                   className="chat-input"
                   value={query}
                   onChange={e => setQuery(e.target.value)}
@@ -351,9 +428,20 @@ export default function AppPage() {
                     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(e) }
                   }}
                 />
-                <button type="submit" className="send-button" disabled={loading || !query.trim() || !sessionStarted}>
-                  {loading ? '…' : '→'}
-                </button>
+                {loading ? (
+                  <button
+                    type="button"
+                    onClick={handleStop}
+                    className="send-button"
+                    style={{ background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', boxShadow: '0 4px 6px -1px rgba(239,68,68,0.25)' }}
+                  >
+                    ■
+                  </button>
+                ) : (
+                  <button type="submit" className="send-button" disabled={!query.trim() || !sessionStarted}>
+                    →
+                  </button>
+                )}
               </form>
               <div style={{ textAlign: 'right', fontSize: '10px', color: '#9ca3af', padding: '2px 4px 0' }}>
                 {sourceModeLabel(sourceMode)}
