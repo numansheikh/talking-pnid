@@ -12,6 +12,22 @@ import fitz  # PyMuPDF
 # ── Repo layout ─────────────────────────────────────────────────────────────
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
+def _load_key(filename: str, env_var: str) -> str | None:
+    """Load API key from repo-root key file if env var not already set."""
+    if os.environ.get(env_var):
+        return os.environ[env_var]
+    key_file = REPO_ROOT / filename
+    if key_file.exists():
+        key = key_file.read_text().strip()
+        if key:
+            os.environ[env_var] = key
+            return key
+    return None
+
+# Auto-load keys from repo-root files (gitignored)
+_load_key("apikey-claude-talking-pnid", "ANTHROPIC_API_KEY")
+_load_key("apikey-openai-talking-pnid",  "OPENAI_API_KEY")
+
 DATA_DIR          = REPO_ROOT / "data"
 DATASET_DIR       = DATA_DIR / "datasets" / "rumaila-pp01"   # canonical dataset
 PDFS_DIR          = DATASET_DIR / "pdfs"                      # A3 originals with title block

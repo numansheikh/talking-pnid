@@ -52,3 +52,6 @@ src/extractor/.claude/
 
 # Cleanup staging area
 data/old--can-be-deleted/
+
+# API key files
+apikey-*
