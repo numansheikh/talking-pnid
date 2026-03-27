@@ -2,15 +2,13 @@
   "schema_version": "pid.graph.v0.1.1",
   "metadata": {
     "doc_id": "pid-008",
-    "rev": "",
     "plant": "PP01",
     "unit": "362",
-    "area": "",
     "units": {
       "pressure": "barg",
-      "temperature": "degC"
-    },
-    "strategy_version": "v0.1.0"
+      "temperature": "degC",
+      "length": "mm"
+    }
   },
   "nodes": [
     {
@@ -21,15 +19,24 @@
       "layer": "process",
       "service": "FUEL GAS KO DRUM",
       "props": {
-        "label": "FUEL GAS KO DRUM",
         "size": "2200 mm (I.D.) x 5500 mm (L)",
         "design_pressure": "14 barg/FV",
-        "design_temperature": "-20~100\u00b0C (NOTE-7)",
+        "design_temperature": "-20~100 degC",
         "operating_pressure": "9.0~10.4 barg",
-        "operating_temperature": "23~72\u00b0C",
+        "operating_temperature": "23~72 degC",
         "material": "CARBON STEEL (CS) + 3 mm CA (INTERNAL)",
         "insulation": "NO",
-        "trim_number": "PP01-362-V001-TX0001-B03F9"
+        "trim_number": "PP01-362-V001-TX0001-B03F9",
+        "level_setpoints": {
+          "HHLL": "1300 mm",
+          "HLL": "1150 mm",
+          "NLL": "800 mm",
+          "LLL": "450 mm",
+          "LLLL": "300 mm"
+        },
+        "notes": [
+          "NOTE-9"
+        ]
       }
     },
     {
@@ -85,10 +92,7 @@
       "tag": "HV0026",
       "layer": "process",
       "props": {
-        "size": "1\"",
-        "notes": [
-          "Located on right edge, partially visible"
-        ]
+        "size": "1\""
       }
     },
     {
@@ -139,7 +143,7 @@
       "props": {
         "size": "3\"",
         "notes": [
-          "Nozzle N17 confirmed at upper right of vessel shell"
+          "Nozzle N17 at upper right of vessel shell"
         ]
       }
     },
@@ -159,97 +163,211 @@
     {
       "id": "PSV-0001",
       "type": "valve",
-      "subtype": "valve.pressure_safety",
+      "subtype": "valve.relief",
       "tag": "PSV-0001",
       "layer": "process",
       "props": {
-        "description": "PSV on fuel gas KO drum",
-        "setpoints": [
-          {
-            "SET": "14.0 barg"
-          },
-          {
-            "CASE": "DS-3 PCV FAILURE"
-          },
-          {
-            "SIZE": "8T10"
-          }
-        ]
+        "set_pressure": "14.0 barg",
+        "case": "DS-3 PCV FAILURE",
+        "size": "8T10",
+        "inlet": "14\"x8\"",
+        "outlet": "16\"x10\""
       }
     },
     {
       "id": "PSV-0002",
       "type": "valve",
-      "subtype": "valve.pressure_safety",
+      "subtype": "valve.relief",
       "tag": "PSV-0002",
       "layer": "process",
       "props": {
-        "description": "PSV on fuel gas KO drum",
-        "setpoints": [
-          {
-            "SET": "14.0 barg"
-          },
-          {
-            "CASE": "DS-3 PCV FAILURE"
-          },
-          {
-            "SIZE": "8T10"
-          }
-        ]
+        "set_pressure": "14.0 barg",
+        "case": "DS-3 PCV FAILURE",
+        "size": "8T10",
+        "inlet": "14\"x8\"",
+        "outlet": "16\"x10\""
+      }
+    },
+    {
+      "id": "HV0038",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0038",
+      "layer": "process",
+      "props": {
+        "size": "1\"",
+        "normal_position": "ILO",
+        "interlock_ref": "PSV-0001 inlet isolation"
+      }
+    },
+    {
+      "id": "HV0039",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0039",
+      "layer": "process",
+      "props": {
+        "size": "1\"",
+        "normal_position": "ILO",
+        "interlock_ref": "PSV-0001 outlet isolation"
+      }
+    },
+    {
+      "id": "HV0040",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0040",
+      "layer": "process",
+      "props": {
+        "size": "2\" x 1\""
+      }
+    },
+    {
+      "id": "HV0005",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0005",
+      "layer": "process",
+      "props": {
+        "size": "1\""
+      }
+    },
+    {
+      "id": "HV0007",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0007",
+      "layer": "process",
+      "props": {
+        "size": "1\""
+      }
+    },
+    {
+      "id": "HV0004",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0004",
+      "layer": "process",
+      "props": {
+        "size": "14\"",
+        "normal_position": "ILC",
+        "interlock_ref": "SPCK-0001 inlet bypass"
+      }
+    },
+    {
+      "id": "HV0006",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0006",
+      "layer": "process",
+      "props": {
+        "size": "14\"",
+        "normal_position": "ILC",
+        "interlock_ref": "SPCK-0001 inlet bypass"
+      }
+    },
+    {
+      "id": "HV0011",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0011",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "normal_position": "LO",
+        "interlock_ref": "PZT transmitter isolation"
+      }
+    },
+    {
+      "id": "HV0012",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0012",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "normal_position": "LO",
+        "interlock_ref": "PZT transmitter isolation"
+      }
+    },
+    {
+      "id": "HV0013",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0013",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "normal_position": "LO",
+        "interlock_ref": "PZT transmitter isolation"
       }
     },
     {
       "id": "HV0014",
       "type": "valve",
-      "subtype": "valve.hand",
+      "subtype": "valve.gate",
       "tag": "HV0014",
       "layer": "process",
       "props": {
-        "size": "2\"",
-        "normal_position": "LO",
-        "description": "Isolation valve for PIT-0002"
+        "size": "2\""
       }
     },
     {
-      "id": "HV0015",
+      "id": "HV0028",
       "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0015",
+      "subtype": "valve.gate",
+      "tag": "HV0028",
       "layer": "process",
       "props": {
-        "size": "2\"",
-        "description": "On 8 inch line near PG-0001"
+        "size": "1\""
       }
     },
     {
-      "id": "362-004",
-      "type": "instrument",
-      "subtype": "instrument.logic_function",
-      "tag": "362-004",
-      "layer": "instrument",
-      "props": {
-        "description": "Voting logic block 2oo3 associated with PIC-0002 and PZT-0001A/B/C"
-      }
-    },
-    {
-      "id": "HV0002R",
+      "id": "HV0030",
       "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0002R",
+      "subtype": "valve.gate",
+      "tag": "HV0030",
       "layer": "process",
       "props": {
-        "size": "2\"",
-        "description": "Hand valve at nozzle N7A area on vessel bottom"
+        "size": "1\""
       }
     },
     {
-      "id": "PG-0001",
+      "id": "SPKY-0001",
       "type": "instrument",
-      "subtype": "instrument.pressure_gauge",
-      "tag": "PG-0001",
+      "subtype": "instrument.spray_nozzle",
+      "tag": "SPKY-0001",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "PI-0001A",
+      "type": "instrument",
+      "subtype": "instrument.pressure_indicator",
+      "tag": "PI-0001A",
       "layer": "instrument",
       "props": {
-        "description": "Pressure gauge on fuel gas KO drum line"
+        "alarm": "HH"
+      }
+    },
+    {
+      "id": "PI-0001B",
+      "type": "instrument",
+      "subtype": "instrument.pressure_indicator",
+      "tag": "PI-0001B",
+      "layer": "instrument",
+      "props": {
+        "alarm": "HH"
+      }
+    },
+    {
+      "id": "PI-0001C",
+      "type": "instrument",
+      "subtype": "instrument.pressure_indicator",
+      "tag": "PI-0001C",
+      "layer": "instrument",
+      "props": {
+        "alarm": "HH"
       }
     },
     {
@@ -258,34 +376,260 @@
       "subtype": "instrument.pressure_indicating_controller",
       "tag": "PIC-0002",
       "layer": "instrument",
-      "loop_id": "PIC-0002",
       "props": {
-        "setpoints": [
-          {
-            "H": "not specified on drawing"
-          },
-          {
-            "L": "not specified on drawing"
-          }
-        ]
+        "label": "PRESSURE INDICATING CONTROLLER"
       }
     },
     {
       "id": "PIT-0002",
       "type": "instrument",
-      "subtype": "instrument.pressure_indicating_transmitter",
+      "subtype": "instrument.pressure_transmitter",
       "tag": "PIT-0002",
       "layer": "instrument",
       "props": {}
     },
     {
-      "id": "EZV-0002",
+      "id": "PZT-0001A",
+      "type": "instrument",
+      "subtype": "instrument.pressure_transmitter",
+      "tag": "PZT-0001A",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "PZT-0001B",
+      "type": "instrument",
+      "subtype": "instrument.pressure_transmitter",
+      "tag": "PZT-0001B",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "PZT-0001C",
+      "type": "instrument",
+      "subtype": "instrument.pressure_transmitter",
+      "tag": "PZT-0001C",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "UT-0001",
+      "type": "instrument",
+      "subtype": "instrument.transmitter",
+      "tag": "UT-0001",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "LI-0003",
+      "type": "instrument",
+      "subtype": "instrument.level_indicator",
+      "tag": "LI-0003",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "UT-0003",
+      "type": "instrument",
+      "subtype": "instrument.transmitter",
+      "tag": "UT-0003",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "N1",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N1",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N13",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N13",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N14",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N14",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N15",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N15",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N16",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N16",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N7A",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N7A",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N10A",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N10A",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "HV0041",
       "type": "valve",
-      "subtype": "valve.emergency_shutdown",
-      "tag": "EZV-0002",
+      "subtype": "valve.gate",
+      "tag": "HV0041",
       "layer": "process",
       "props": {
-        "description": "Emergency shutdown valve, FC, TSO, TYPE-M",
+        "size": "1\""
+      }
+    },
+    {
+      "id": "HV0092",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0092",
+      "layer": "process",
+      "props": {
+        "size": "8\""
+      }
+    },
+    {
+      "id": "HV0091",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0091",
+      "layer": "process",
+      "props": {
+        "size": "6\"",
+        "normal_position": "LO",
+        "fail_position": "FB",
+        "notes": [
+          "connected upstream of BDZV-0001 on the 8x6 reduced line"
+        ]
+      }
+    },
+    {
+      "id": "HV0016",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0016",
+      "layer": "process",
+      "props": {
+        "size": "8\"",
+        "normal_position": "LO"
+      }
+    },
+    {
+      "id": "HV0019",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0019",
+      "layer": "process",
+      "props": {
+        "normal_position": "LC",
+        "notes": [
+          "Locked closed per legend"
+        ]
+      }
+    },
+    {
+      "id": "HV0018",
+      "type": "valve",
+      "subtype": "valve.ball",
+      "tag": "HV0018",
+      "layer": "process",
+      "props": {
+        "normal_position": "LC",
+        "notes": [
+          "spectacle blind associated"
+        ]
+      }
+    },
+    {
+      "id": "HV0015",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0015",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "HV0020",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0020",
+      "layer": "process",
+      "props": {
+        "size": "8\""
+      }
+    },
+    {
+      "id": "HV0034",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0034",
+      "layer": "process",
+      "props": {
+        "normal_position": "LO"
+      }
+    },
+    {
+      "id": "HV0036",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0036",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "normal_position": "LO"
+      }
+    },
+    {
+      "id": "HV0042",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0042",
+      "layer": "process",
+      "props": {
+        "size": "2\" x 1\""
+      }
+    },
+    {
+      "id": "HV0017",
+      "type": "valve",
+      "subtype": "valve.hand",
+      "tag": "HV0017",
+      "layer": "process",
+      "props": {
+        "size": "1\""
+      }
+    },
+    {
+      "id": "EZV0002",
+      "type": "valve",
+      "subtype": "valve.control",
+      "tag": "EZV0002",
+      "layer": "process",
+      "props": {
         "fail_position": "FC",
         "normal_position": "TSO"
       }
@@ -307,6 +651,33 @@
       }
     },
     {
+      "id": "PG0001",
+      "type": "instrument",
+      "subtype": "instrument.pressure_gauge",
+      "tag": "PG0001",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "PV0002",
+      "type": "instrument",
+      "subtype": "instrument.pressure_controller",
+      "tag": "PV 0002",
+      "layer": "instrument",
+      "props": {}
+    },
+    {
+      "id": "FO0002",
+      "type": "valve",
+      "subtype": "valve.globe",
+      "tag": "FO 0002",
+      "layer": "process",
+      "props": {
+        "size": "6\"",
+        "normal_position": "FO"
+      }
+    },
+    {
       "id": "ZI-0002",
       "type": "instrument",
       "subtype": "instrument.position_indicator",
@@ -320,7 +691,7 @@
       }
     },
     {
-      "id": "ZT-0002",
+      "id": "ZT0002",
       "type": "instrument",
       "subtype": "instrument.position_transmitter",
       "tag": "ZT 0002",
@@ -328,51 +699,10 @@
       "props": {}
     },
     {
-      "id": "PV-0002",
+      "id": "LIT0003",
       "type": "instrument",
-      "subtype": "instrument.pressure_controller",
-      "tag": "PV 0002",
-      "layer": "instrument",
-      "props": {}
-    },
-    {
-      "id": "FO-0002",
-      "type": "valve",
-      "subtype": "valve.globe",
-      "tag": "FO 0002",
-      "layer": "process",
-      "props": {
-        "size": "6\"",
-        "normal_position": "FO"
-      }
-    },
-    {
-      "id": "LIT-0001",
-      "type": "instrument",
-      "subtype": "instrument.level_indicating_transmitter",
-      "tag": "LIT-0001",
-      "layer": "instrument",
-      "props": {
-        "setpoints": [
-          {
-            "HHLL": "1300 mm"
-          }
-        ]
-      }
-    },
-    {
-      "id": "LI-0003",
-      "type": "instrument",
-      "subtype": "instrument.level_indicator",
-      "tag": "LI-0003",
-      "layer": "instrument",
-      "props": {}
-    },
-    {
-      "id": "LIT-0003",
-      "type": "instrument",
-      "subtype": "instrument.level_indicating_transmitter",
-      "tag": "LIT-0003",
+      "subtype": "instrument.level_transmitter",
+      "tag": "LIT0003",
       "layer": "instrument",
       "props": {}
     },
@@ -416,288 +746,65 @@
       }
     },
     {
+      "id": "N2",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N2",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N6A",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N6A",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N11A",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N11A",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "HV0002R",
+      "type": "valve",
+      "subtype": "valve.hand",
+      "tag": "HV0002R",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "notes": [
+          "Hand valve at nozzle N7A area on vessel bottom"
+        ]
+      }
+    },
+    {
+      "id": "LIT-0001",
+      "type": "instrument",
+      "subtype": "instrument.level_transmitter",
+      "tag": "LIT-0001",
+      "layer": "instrument",
+      "props": {
+        "setpoints": [
+          {
+            "HHLL": "1300 mm"
+          }
+        ]
+      }
+    },
+    {
       "id": "SPCK-0001",
       "type": "instrument",
-      "subtype": "instrument.spark_plug",
+      "subtype": "instrument.spark_arrestor",
       "tag": "SPCK-0001",
       "layer": "process",
       "props": {
         "normal_position": "ILC",
         "interlock_ref": "Spark arrestor interlocked closed, NOTE-8"
-      }
-    },
-    {
-      "id": "PI-0001A",
-      "type": "instrument",
-      "subtype": "instrument.pressure_indicator",
-      "tag": "PI-0001A",
-      "layer": "instrument",
-      "props": {
-        "setpoints": [
-          {
-            "HH": "not specified on tile"
-          }
-        ]
-      }
-    },
-    {
-      "id": "PI-0001B",
-      "type": "instrument",
-      "subtype": "instrument.pressure_indicator",
-      "tag": "PI-0001B",
-      "layer": "instrument",
-      "props": {
-        "setpoints": [
-          {
-            "HH": "not specified on tile"
-          }
-        ]
-      }
-    },
-    {
-      "id": "PI-0001C",
-      "type": "instrument",
-      "subtype": "instrument.pressure_indicator",
-      "tag": "PI-0001C",
-      "layer": "instrument",
-      "props": {
-        "setpoints": [
-          {
-            "HH": "not specified on tile"
-          }
-        ]
-      }
-    },
-    {
-      "id": "PZT-0001A",
-      "type": "instrument",
-      "subtype": "instrument.pressure_transmitter",
-      "tag": "PZT-0001A",
-      "layer": "instrument",
-      "props": {}
-    },
-    {
-      "id": "PZT-0001B",
-      "type": "instrument",
-      "subtype": "instrument.pressure_transmitter",
-      "tag": "PZT-0001B",
-      "layer": "instrument",
-      "props": {}
-    },
-    {
-      "id": "PZT-0001C",
-      "type": "instrument",
-      "subtype": "instrument.pressure_transmitter",
-      "tag": "PZT-0001C",
-      "layer": "instrument",
-      "props": {}
-    },
-    {
-      "id": "HV0019",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0019",
-      "layer": "process",
-      "props": {
-        "normal_position": "LC",
-        "notes": [
-          "Locked closed per legend"
-        ]
-      }
-    },
-    {
-      "id": "HV0018",
-      "type": "valve",
-      "subtype": "valve.ball",
-      "tag": "HV0018",
-      "layer": "process",
-      "props": {
-        "normal_position": "LC"
-      }
-    },
-    {
-      "id": "HV0016",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0016",
-      "layer": "process",
-      "props": {
-        "size": "8\"",
-        "normal_position": "LO"
-      }
-    },
-    {
-      "id": "HV0017",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0017",
-      "layer": "process",
-      "props": {
-        "size": "1\""
-      }
-    },
-    {
-      "id": "HV0020",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0020",
-      "layer": "process",
-      "props": {
-        "size": "8\""
-      }
-    },
-    {
-      "id": "HV0038",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0038",
-      "layer": "process",
-      "props": {
-        "normal_position": "ILO",
-        "interlock_ref": "PSV-0001 inlet isolation"
-      }
-    },
-    {
-      "id": "HV0039",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0039",
-      "layer": "process",
-      "props": {
-        "normal_position": "ILO",
-        "interlock_ref": "PSV-0001 outlet isolation"
-      }
-    },
-    {
-      "id": "HV0040",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0040",
-      "layer": "process",
-      "props": {
-        "size": "2\" x 1\""
-      }
-    },
-    {
-      "id": "HV0041",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0041",
-      "layer": "process",
-      "props": {
-        "size": "1\""
-      }
-    },
-    {
-      "id": "HV0004",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0004",
-      "layer": "process",
-      "props": {
-        "size": "14\"",
-        "normal_position": "ILC",
-        "interlock_ref": "SPCK-0001 inlet bypass"
-      }
-    },
-    {
-      "id": "HV0005",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0005",
-      "layer": "process",
-      "props": {
-        "size": "1\""
-      }
-    },
-    {
-      "id": "HV0006",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0006",
-      "layer": "process",
-      "props": {
-        "size": "14\"",
-        "normal_position": "ILC",
-        "interlock_ref": "SPCK-0001 inlet bypass"
-      }
-    },
-    {
-      "id": "HV0007",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0007",
-      "layer": "process",
-      "props": {
-        "size": "1\""
-      }
-    },
-    {
-      "id": "HV0091",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0091",
-      "layer": "process",
-      "props": {
-        "size": "6\"",
-        "normal_position": "LO",
-        "notes": [
-          "FB",
-          "connected upstream of BDZV-0001 on the 8x6 reduced line"
-        ]
-      }
-    },
-    {
-      "id": "HV0092",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0092",
-      "layer": "process",
-      "props": {
-        "size": "8\""
-      }
-    },
-    {
-      "id": "HV0034",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0034",
-      "layer": "process",
-      "props": {
-        "size": "2\"",
-        "normal_position": "LO"
-      }
-    },
-    {
-      "id": "HV0036",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0036",
-      "layer": "process",
-      "props": {
-        "size": "2\"",
-        "normal_position": "LO",
-        "description": "Gate valve on N11A"
-      }
-    },
-    {
-      "id": "HV0028",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0028",
-      "layer": "process",
-      "props": {
-        "size": "2\""
-      }
-    },
-    {
-      "id": "HV0030",
-      "type": "valve",
-      "subtype": "valve.hand",
-      "tag": "HV0030",
-      "layer": "process",
-      "props": {
-        "size": "2\""
       }
     },
     {
@@ -707,28 +814,65 @@
       "tag": "HV0032",
       "layer": "process",
       "props": {
-        "size": "2\"",
-        "normal_position": "LC",
-        "description": "Gate valve on bottom drain line"
+        "size": "1\"",
+        "normal_position": "LC"
       }
     },
     {
-      "id": "HV0042",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0042",
-      "layer": "process",
+      "id": "line_tag_VK0066",
+      "type": "annotation",
+      "subtype": "line_tag",
+      "tag": "16\"-PP01-500-VK0066-B01B8",
+      "layer": "annotation",
       "props": {
-        "size": "2\" x 1\""
+        "size": "16\"",
+        "pipe_class": "B01B8",
+        "notes": [
+          "NO POCKETS",
+          "1:500 slope"
+        ]
       }
     },
     {
-      "id": "LZ-0002",
-      "type": "instrument",
-      "subtype": "instrument.level_alarm",
-      "tag": "LZ-0002",
-      "layer": "instrument",
-      "props": {}
+      "id": "line_tag_VK0008",
+      "type": "annotation",
+      "subtype": "line_tag",
+      "tag": "16\"-PP01-500-VK0008-B01B8",
+      "layer": "annotation",
+      "props": {
+        "size": "16\"",
+        "pipe_class": "B01B8",
+        "notes": [
+          "NO POCKETS",
+          "1:500 slope"
+        ]
+      }
+    },
+    {
+      "id": "line_tag_VK0026",
+      "type": "annotation",
+      "subtype": "line_tag",
+      "tag": "8\"-PP01-500-VK0026-B01B8",
+      "layer": "annotation",
+      "props": {
+        "size": "8\"",
+        "pipe_class": "B01B8",
+        "notes": [
+          "NO POCKETS",
+          "1:500 slope"
+        ]
+      }
+    },
+    {
+      "id": "line_tag_GF0002",
+      "type": "annotation",
+      "subtype": "line_tag",
+      "tag": "16\"-PP01-362-GF0002-B01E9-PP",
+      "layer": "annotation",
+      "props": {
+        "size": "16\"",
+        "pipe_class": "B01E9"
+      }
     },
     {
       "id": "HV0021",
@@ -756,6 +900,22 @@
         "normal_position": "FO",
         "notes": [
           "300#"
+        ]
+      }
+    },
+    {
+      "id": "line_tag_VK0010",
+      "type": "annotation",
+      "subtype": "line_tag",
+      "tag": "10\"-PP01-500-VK0010-B01B8",
+      "layer": "annotation",
+      "props": {
+        "size": "10\"",
+        "pipe_class": "B01B8",
+        "notes": [
+          "NO POCKETS",
+          "1:500 slope",
+          "LOW TEMP."
         ]
       }
     },
@@ -838,14 +998,10 @@
       "subtype": "valve.needle",
       "tag": "HV0027",
       "layer": "process",
-      "props": {
-        "notes": [
-          "Located on right edge, partially visible"
-        ]
-      }
+      "props": {}
     },
     {
-      "id": "LG-0001",
+      "id": "LG0001",
       "type": "instrument",
       "subtype": "instrument.level_gauge",
       "tag": "LG 0001",
@@ -879,25 +1035,13 @@
       }
     },
     {
-      "id": "HV0085",
-      "type": "valve",
-      "subtype": "valve.needle",
-      "tag": "HV0085",
-      "layer": "process",
+      "id": "LI",
+      "type": "instrument",
+      "subtype": "instrument.level_indicator",
+      "tag": "LI",
+      "layer": "instrument",
       "props": {
-        "notes": [
-          "Small needle valve visible at top right edge near 16\"x12\" reducer area, partially cut off"
-        ]
-      }
-    },
-    {
-      "id": "HV0031",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0031",
-      "layer": "process",
-      "props": {
-        "description": "Gate valve 4-inch x 1/2-inch on LV-0001 outlet piping"
+        "label": "LEVEL INDICATOR"
       }
     },
     {
@@ -906,91 +1050,28 @@
       "subtype": "instrument.level_indicating_controller",
       "tag": "LIC-0001",
       "layer": "instrument",
-      "loop_id": "LIC-0001",
       "props": {
-        "setpoints": [
-          {
-            "H": "not specified on drawing"
-          },
-          {
-            "L": "not specified on drawing"
-          }
-        ]
-      }
-    },
-    {
-      "id": "LV-0001",
-      "type": "valve",
-      "subtype": "valve.level_control",
-      "tag": "LV-0001",
-      "layer": "process",
-      "props": {
-        "description": "Level control valve"
-      }
-    },
-    {
-      "id": "EZV-0001",
-      "type": "valve",
-      "subtype": "valve.emergency_shutdown",
-      "tag": "EZV-0001",
-      "layer": "process",
-      "props": {
-        "description": "Emergency shutdown valve to waste oil"
+        "label": "LEVEL INDICATING CONTROLLER"
       }
     },
     {
       "id": "362-007",
-      "type": "valve",
-      "subtype": "valve.control",
+      "type": "instrument",
+      "subtype": "instrument.flow_element",
       "tag": "362-007",
-      "layer": "process",
+      "layer": "instrument",
       "props": {
-        "fail_position": "FC",
-        "normal_position": "TSO",
-        "notes": [
-          "TYPE-C",
-          "NOTE-12"
-        ]
+        "label": "FLOW ELEMENT"
       }
     },
     {
-      "id": "HV0010",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0010",
-      "layer": "process",
+      "id": "EZV-0001",
+      "type": "instrument",
+      "subtype": "instrument.emergency_shutdown_valve",
+      "tag": "EZV-0001",
+      "layer": "instrument",
       "props": {
-        "normal_position": "LO"
-      }
-    },
-    {
-      "id": "HV0011",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0011",
-      "layer": "process",
-      "props": {
-        "normal_position": "LO"
-      }
-    },
-    {
-      "id": "HV0012",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0012",
-      "layer": "process",
-      "props": {
-        "size": "2\""
-      }
-    },
-    {
-      "id": "HV0013",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0013",
-      "layer": "process",
-      "props": {
-        "size": "2\""
+        "label": "EMERGENCY SHUTDOWN VALVE"
       }
     },
     {
@@ -1000,7 +1081,17 @@
       "tag": "HV0022",
       "layer": "process",
       "props": {
-        "description": "Gate valve on LG-0001"
+        "size": "2\""
+      }
+    },
+    {
+      "id": "HV0023",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0023",
+      "layer": "process",
+      "props": {
+        "size": "1\""
       }
     },
     {
@@ -1010,7 +1101,17 @@
       "tag": "HV0029",
       "layer": "process",
       "props": {
-        "description": "Gate valve on nozzle N10B connection"
+        "size": "2\""
+      }
+    },
+    {
+      "id": "HV0031",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0031",
+      "layer": "process",
+      "props": {
+        "size": "2\""
       }
     },
     {
@@ -1019,18 +1120,100 @@
       "subtype": "valve.gate",
       "tag": "HV0033",
       "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "HV0053",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0053",
+      "layer": "process",
       "props": {
-        "description": "Gate valve on nozzle N12A"
+        "size": "1\""
       }
     },
     {
-      "id": "HV0035",
+      "id": "HV0049",
       "type": "valve",
       "subtype": "valve.gate",
-      "tag": "HV0035",
+      "tag": "HV0049",
       "layer": "process",
       "props": {
-        "description": "Gate valve on N6B"
+        "size": "1\""
+      }
+    },
+    {
+      "id": "HV0054",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0054",
+      "layer": "process",
+      "props": {
+        "size": "1\""
+      }
+    },
+    {
+      "id": "HV0050",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0050",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "HV0065",
+      "type": "valve",
+      "subtype": "valve.control",
+      "tag": "HV0065",
+      "layer": "process",
+      "props": {
+        "normal_position": "NC"
+      }
+    },
+    {
+      "id": "N7B",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N7B",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N10B",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N10B",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N3",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N3",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "term_WASTE_OIL",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "WASTE OIL",
+      "props": {
+        "label": "WASTE OIL"
+      }
+    },
+    {
+      "id": "LV-0001",
+      "type": "valve",
+      "subtype": "valve.control",
+      "tag": "LV-0001",
+      "layer": "process",
+      "props": {
+        "notes": [
+          "FC 300# NOTE-5"
+        ]
       }
     },
     {
@@ -1040,7 +1223,19 @@
       "tag": "HV0037",
       "layer": "process",
       "props": {
-        "description": "Gate valve on N11B"
+        "size": "2\"",
+        "normal_position": "LO"
+      }
+    },
+    {
+      "id": "HV0035",
+      "type": "valve",
+      "subtype": "valve.gate",
+      "tag": "HV0035",
+      "layer": "process",
+      "props": {
+        "size": "2\"",
+        "normal_position": "LO"
       }
     },
     {
@@ -1054,43 +1249,14 @@
       }
     },
     {
-      "id": "HV0049",
+      "id": "HV0064",
       "type": "valve",
       "subtype": "valve.gate",
-      "tag": "HV0049",
+      "tag": "HV0064",
       "layer": "process",
       "props": {
-        "size": "1\"",
-        "description": "Gate valve on chemical injection"
+        "size": "3\""
       }
-    },
-    {
-      "id": "HV0050",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0050",
-      "layer": "process",
-      "props": {
-        "description": "Gate valve on chemical injection"
-      }
-    },
-    {
-      "id": "HV0053",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0053",
-      "layer": "process",
-      "props": {
-        "size": "1\""
-      }
-    },
-    {
-      "id": "HV0054",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0054",
-      "layer": "process",
-      "props": {}
     },
     {
       "id": "HV0055",
@@ -1099,7 +1265,7 @@
       "tag": "HV0055",
       "layer": "process",
       "props": {
-        "size": "3\""
+        "size": "1\""
       }
     },
     {
@@ -1111,25 +1277,77 @@
       "props": {}
     },
     {
-      "id": "HV0064",
+      "id": "HV0052",
       "type": "valve",
       "subtype": "valve.gate",
-      "tag": "HV0064",
+      "tag": "HV0052",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N6B",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N6B",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N8",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N8",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N11B",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N11B",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N12A",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N12A",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "N12B",
+      "type": "nozzle",
+      "subtype": "nozzle",
+      "tag": "N12B",
+      "layer": "process",
+      "props": {}
+    },
+    {
+      "id": "512-V001",
+      "type": "equipment",
+      "subtype": "equipment.vessel",
+      "tag": "512-V001",
       "layer": "process",
       "props": {
-        "description": "Gate valve on nozzle N8"
+        "notes": [
+          "NOTE-9"
+        ],
+        "level_setpoints": "HHLL:1300mm, HLL:1150mm, NLL:800mm, LLL:450mm, LLLL:300mm"
       }
     },
     {
-      "id": "HV0065",
+      "id": "HV0010",
       "type": "valve",
       "subtype": "valve.gate",
-      "tag": "HV0065",
+      "tag": "HV0010",
       "layer": "process",
       "props": {
-        "size": "2\"",
-        "normal_position": "NC",
-        "description": "Gate valve on drain to WO"
+        "normal_position": "LO",
+        "notes": [
+          "Gate valve LO on PZT take-off"
+        ]
       }
     },
     {
@@ -1143,27 +1361,15 @@
       }
     },
     {
-      "id": "HV0052",
-      "type": "valve",
-      "subtype": "valve.gate",
-      "tag": "HV0052",
-      "layer": "process",
-      "props": {}
-    },
-    {
       "id": "U-0002A",
       "type": "instrument",
       "subtype": "instrument.level_switch_alarm",
       "tag": "U-0002A",
       "layer": "instrument",
       "props": {
-        "setpoints": [
-          {
-            "HH": "not shown"
-          },
-          {
-            "LL": "not shown"
-          }
+        "alarms": [
+          "HH",
+          "LL"
         ]
       }
     },
@@ -1174,13 +1380,9 @@
       "tag": "U-0002B",
       "layer": "instrument",
       "props": {
-        "setpoints": [
-          {
-            "HH": "not shown"
-          },
-          {
-            "LL": "not shown"
-          }
+        "alarms": [
+          "HH",
+          "LL"
         ]
       }
     },
@@ -1191,13 +1393,9 @@
       "tag": "U-0002C",
       "layer": "instrument",
       "props": {
-        "setpoints": [
-          {
-            "HH": "not shown"
-          },
-          {
-            "LL": "not shown"
-          }
+        "alarms": [
+          "HH",
+          "LL"
         ]
       }
     },
@@ -1207,7 +1405,11 @@
       "subtype": "instrument.current_indicator",
       "tag": "I-2003",
       "layer": "instrument",
-      "props": {}
+      "props": {
+        "notes": [
+          "362/003/007 reference numbers visible"
+        ]
+      }
     },
     {
       "id": "CI-0001",
@@ -1234,104 +1436,7 @@
       "props": {}
     },
     {
-      "id": "terminator_OPR-001",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "FUEL GAS FROM DS-1 SCRAPPER RECEIVER",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0005-001",
-      "props": {
-        "service": "FUEL GAS",
-        "direction": "in"
-      }
-    },
-    {
-      "id": "terminator_OPR-002",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "FUEL GAS FROM DS-3 SCRAPPER RECEIVER",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0007-001",
-      "props": {
-        "service": "FUEL GAS",
-        "direction": "in"
-      }
-    },
-    {
-      "id": "terminator_OPC-HP-FLARE-VK0066",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "TO HP FLARE HEADER",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
-      "props": {
-        "size": "16\"",
-        "line_tag": "16\"-PP01-500-VK0066-B01B8",
-        "direction": "out"
-      }
-    },
-    {
-      "id": "terminator_OPC-HP-FLARE-VK0008",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "TO HP FLARE HEADER",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
-      "props": {
-        "size": "16\"",
-        "line_tag": "16\"-PP01-500-VK0008-B01B8",
-        "direction": "out"
-      }
-    },
-    {
-      "id": "terminator_OPC-HP-FLARE-VK0026",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "TO HP FLARE HEADER",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
-      "props": {
-        "size": "8\"",
-        "line_tag": "8\"-PP01-500-VK0026-B01B8",
-        "direction": "out"
-      }
-    },
-    {
-      "id": "terminator_OPC-FUEL-GAS-TREATMENT",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "TO FUEL GAS TREATMENT PACKAGE",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0009-001",
-      "props": {
-        "size": "16\"",
-        "line_tag": "16\"-PP01-362-GF0002-B01E9-PP",
-        "direction": "out"
-      }
-    },
-    {
-      "id": "terminator_OPC-CONDENSATE",
-      "type": "terminator",
-      "subtype": "off_page_connector",
-      "layer": "process",
-      "off_page_ref": "TO CONDENSATE STORAGE VESSEL",
-      "off_page_doc_id": "N-PG-PP01-PR-PID-0024-001",
-      "props": {
-        "size": "4\"",
-        "direction": "out"
-      }
-    },
-    {
-      "id": "terminator_UC",
-      "type": "terminator",
-      "subtype": "utility_connection",
-      "layer": "utility",
-      "props": {
-        "service": "Utility Connection"
-      }
-    },
-    {
-      "id": "junction_eccred_r1c1_001",
+      "id": "reducer_r1c1_001",
       "type": "junction",
       "subtype": "fitting.eccentric_reducer",
       "layer": "process",
@@ -1343,7 +1448,7 @@
       }
     },
     {
-      "id": "junction_eccred_r1c1_002",
+      "id": "reducer_r1c1_002",
       "type": "junction",
       "subtype": "fitting.eccentric_reducer",
       "layer": "process",
@@ -1355,7 +1460,188 @@
       }
     },
     {
-      "id": "junction_eccred_r2c1_001",
+      "id": "term_DS1_FUEL_GAS",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "FUEL GAS FROM DS-1 SCRAPPER RECEIVER",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0005-001",
+      "props": {
+        "service": "FUEL GAS",
+        "direction": "in"
+      }
+    },
+    {
+      "id": "term_DS3_FUEL_GAS",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "FUEL GAS FROM DS-3 SCRAPPER RECEIVER",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0007-001",
+      "props": {
+        "service": "FUEL GAS",
+        "direction": "in"
+      }
+    },
+    {
+      "id": "term_HP_FLARE_001",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "TO HP FLARE HEADER",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
+      "props": {
+        "size": "16\"",
+        "direction": "out",
+        "line_tag": "16\"-PP01-500-VK0066-B01B8"
+      }
+    },
+    {
+      "id": "term_HP_FLARE_002",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "TO HP FLARE HEADER",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
+      "props": {
+        "size": "16\"",
+        "direction": "out",
+        "line_tag": "16\"-PP01-500-VK0008-B01B8"
+      }
+    },
+    {
+      "id": "term_HP_FLARE_003",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "TO HP FLARE HEADER",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0021-001",
+      "props": {
+        "size": "8\"",
+        "direction": "out",
+        "line_tag": "8\"-PP01-500-VK0026-B01B8"
+      }
+    },
+    {
+      "id": "term_FGTREAT",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "TO FUEL GAS TREATMENT PACKAGE",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0009-001",
+      "props": {
+        "size": "16\"",
+        "direction": "out",
+        "line_tag": "16\"-PP01-362-GF0002-B01E9-PP"
+      }
+    },
+    {
+      "id": "term_CONDENSATE",
+      "type": "terminator",
+      "subtype": "off_page_connector",
+      "layer": "process",
+      "off_page_ref": "TO CONDENSATE STORAGE VESSEL",
+      "off_page_doc_id": "N-PG-PP01-PR-PID-0024-001",
+      "props": {
+        "size": "4\"",
+        "direction": "out"
+      }
+    },
+    {
+      "id": "term_UC",
+      "type": "terminator",
+      "subtype": "utility_connection",
+      "layer": "utility",
+      "props": {
+        "service": "Utility Connection"
+      }
+    },
+    {
+      "id": "sb_B01E9_B01B8_HV0021",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B01B8",
+        "to_spec": "B01E9",
+        "location": "At valve HV0021, 10\" line"
+      }
+    },
+    {
+      "id": "sb_B01E9_B01B8_HV0019",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B01B8",
+        "to_spec": "B01E9",
+        "location": "At valve HV0019, 4\" bypass line"
+      }
+    },
+    {
+      "id": "sb_B03F9_B01M8_vessel",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B03F9",
+        "to_spec": "B01M8",
+        "location": "On 1\" line near bottom of vessel"
+      }
+    },
+    {
+      "id": "sb_B01E9_C01N9_N3",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B01E9",
+        "to_spec": "C01N9",
+        "location": "Near N3 nozzle bottom area"
+      }
+    },
+    {
+      "id": "sb_C01N9_B01M8_LV0001",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "C01N9",
+        "to_spec": "B01M8",
+        "location": "Downstream of LV-0001, 4\" line"
+      }
+    },
+    {
+      "id": "sb_B03F9_B01M8_condensate",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B03F9",
+        "to_spec": "B01M8",
+        "location": "Condensate drain line near equipment"
+      }
+    },
+    {
+      "id": "sb_B01E9_B01B8_HV0092",
+      "type": "junction",
+      "subtype": "spec_break",
+      "layer": "process",
+      "props": {
+        "spec_change": true,
+        "from_spec": "B01E9",
+        "to_spec": "B01B8",
+        "location": "8\" line at HV0092 area to flare header"
+      }
+    },
+    {
+      "id": "reducer_r2c1_001",
       "type": "junction",
       "subtype": "fitting.eccentric_reducer",
       "layer": "process",
@@ -1367,7 +1653,7 @@
       }
     },
     {
-      "id": "junction_eccred_r2c1_002",
+      "id": "reducer_r2c1_002",
       "type": "junction",
       "subtype": "fitting.eccentric_reducer",
       "layer": "process",
@@ -1379,7 +1665,7 @@
       }
     },
     {
-      "id": "junction_red_r2c1_003",
+      "id": "reducer_r2c1_003",
       "type": "junction",
       "subtype": "fitting.reducer",
       "layer": "process",
@@ -1391,25 +1677,7 @@
       }
     },
     {
-      "id": "junction_tee_r1c3_003",
-      "type": "junction",
-      "subtype": "tee",
-      "layer": "process",
-      "props": {
-        "label": "003"
-      }
-    },
-    {
-      "id": "junction_tee_r1c3_004",
-      "type": "junction",
-      "subtype": "tee",
-      "layer": "process",
-      "props": {
-        "label": "004"
-      }
-    },
-    {
-      "id": "junction_eccred_r1c3_001",
+      "id": "reducer_r1c3_eccentric",
       "type": "junction",
       "subtype": "fitting.eccentric_reducer",
       "layer": "process",
@@ -1422,31 +1690,125 @@
       }
     },
     {
-      "id": "junction_specbreak_r2c1_001",
+      "id": "junction_r1c3_003",
       "type": "junction",
-      "subtype": "spec_break",
+      "subtype": "tee",
       "layer": "process",
       "props": {
-        "spec_change": true,
-        "from_spec": "B03F9",
-        "to_spec": "B01M8",
-        "location_description": "On 1\" line near bottom of vessel, lower right area"
+        "label": "003"
       }
     },
     {
-      "id": "junction_specbreak_r2c3_001",
+      "id": "junction_r1c3_004",
       "type": "junction",
-      "subtype": "spec_break",
+      "subtype": "tee",
       "layer": "process",
       "props": {
-        "spec_change": true,
-        "from_spec": "B03F9",
-        "to_spec": "B01M8",
-        "location_description": "Spec break on condensate drain line"
+        "label": "004"
       }
     },
     {
-      "id": "junction_red_r2c3_001",
+      "id": "spectacle_blind_HV0018_HV0019",
+      "type": "junction",
+      "subtype": "fitting.spectacle_blind",
+      "layer": "process",
+      "props": {
+        "normal_position": "closed",
+        "notes": [
+          "Located between HV0018 and HV0019 on the fuel gas line to treatment package"
+        ]
+      }
+    },
+    {
+      "id": "check_valve_C02_LZT0002A",
+      "type": "valve",
+      "subtype": "valve.check",
+      "layer": "process",
+      "props": {
+        "notes": [
+          "Check valve on LZT-0002A branch"
+        ]
+      }
+    },
+    {
+      "id": "check_valve_C02_lower",
+      "type": "valve",
+      "subtype": "valve.check",
+      "layer": "process",
+      "props": {
+        "notes": [
+          "Check valve on lower branch"
+        ]
+      }
+    },
+    {
+      "id": "check_valve_C02_HV0056",
+      "type": "valve",
+      "subtype": "valve.check",
+      "layer": "process",
+      "props": {
+        "notes": [
+          "Check valve near HV0056"
+        ]
+      }
+    },
+    {
+      "id": "check_valve_C02_B03F9",
+      "type": "valve",
+      "subtype": "valve.check",
+      "layer": "process",
+      "props": {
+        "notes": [
+          "Check valve near B03F9/B01M8"
+        ]
+      }
+    },
+    {
+      "id": "IG_LZT0002A",
+      "type": "instrument",
+      "subtype": "instrument.isolation_gauge",
+      "layer": "instrument",
+      "props": {
+        "notes": [
+          "Isolation gauge near LZT-0002A"
+        ]
+      }
+    },
+    {
+      "id": "IG_HV0043",
+      "type": "instrument",
+      "subtype": "instrument.isolation_gauge",
+      "layer": "instrument",
+      "props": {
+        "notes": [
+          "Isolation gauge near HV0043"
+        ]
+      }
+    },
+    {
+      "id": "IG_HV0056",
+      "type": "instrument",
+      "subtype": "instrument.isolation_gauge",
+      "layer": "instrument",
+      "props": {
+        "notes": [
+          "Isolation gauge near HV0056"
+        ]
+      }
+    },
+    {
+      "id": "IG_B03F9",
+      "type": "instrument",
+      "subtype": "instrument.isolation_gauge",
+      "layer": "instrument",
+      "props": {
+        "notes": [
+          "Isolation gauge near B03F9/B01M8"
+        ]
+      }
+    },
+    {
+      "id": "reducer_r2c3_001",
       "type": "junction",
       "subtype": "fitting.reducer",
       "layer": "process",
@@ -1458,7 +1820,7 @@
       }
     },
     {
-      "id": "junction_red_r2c3_002",
+      "id": "reducer_r2c3_002",
       "type": "junction",
       "subtype": "fitting.reducer",
       "layer": "process",
@@ -1470,7 +1832,7 @@
       }
     },
     {
-      "id": "junction_red_r2c3_003",
+      "id": "reducer_r2c3_003",
       "type": "junction",
       "subtype": "fitting.reducer",
       "layer": "process",
@@ -1480,117 +1842,12 @@
           "Reducer before HV0040"
         ]
       }
-    },
-    {
-      "id": "annotation_line_VK0066",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "16\"-PP01-500-VK0066-B01B8",
-      "layer": "annotation",
-      "props": {
-        "size": "16\"",
-        "pipe_class": "B01B8",
-        "notes": [
-          "NO POCKETS",
-          "1:500 slope"
-        ]
-      }
-    },
-    {
-      "id": "annotation_line_VK0008",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "16\"-PP01-500-VK0008-B01B8",
-      "layer": "annotation",
-      "props": {
-        "size": "16\"",
-        "pipe_class": "B01B8",
-        "notes": [
-          "NO POCKETS",
-          "1:500 slope"
-        ]
-      }
-    },
-    {
-      "id": "annotation_line_VK0026",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "8\"-PP01-500-VK0026-B01B8",
-      "layer": "annotation",
-      "props": {
-        "size": "8\"",
-        "pipe_class": "B01B8",
-        "notes": [
-          "NO POCKETS",
-          "1:500 slope"
-        ]
-      }
-    },
-    {
-      "id": "annotation_line_GF0002",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "16\"-PP01-362-GF0002-B01E9-PP",
-      "layer": "annotation",
-      "props": {
-        "size": "16\"",
-        "pipe_class": "B01E9"
-      }
-    },
-    {
-      "id": "annotation_line_VK0010",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "10\"-PP01-500-VK0010-B01B8",
-      "layer": "annotation",
-      "props": {
-        "size": "10\"",
-        "pipe_class": "B01B8",
-        "notes": [
-          "NO POCKETS",
-          "1:500 slope",
-          "LOW TEMP."
-        ]
-      }
-    },
-    {
-      "id": "annotation_line_r2c1_GF0002",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "2\"-PP01-567-GF0002-B03F9",
-      "layer": "annotation",
-      "props": {
-        "size": "2\"",
-        "pipe_class": "B03F9"
-      }
-    },
-    {
-      "id": "annotation_line_r2c1_GF0031",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "16-PP01-361-GF0031-B03F9-PP",
-      "layer": "annotation",
-      "props": {
-        "size": "16\"",
-        "pipe_class": "B03F9"
-      }
-    },
-    {
-      "id": "annotation_line_r2c1_PK0076",
-      "type": "annotation",
-      "subtype": "line_tag",
-      "tag": "1\"-PP01-512-PK0076-B03F9-PP",
-      "layer": "annotation",
-      "props": {
-        "size": "1\"",
-        "pipe_class": "B03F9"
-      }
     }
   ],
   "edges": [
     {
-      "id": "e_OPR001_HV0094",
-      "from": "terminator_OPR-001",
+      "id": "e_DS1_HV0094",
+      "from": "term_DS1_FUEL_GAS",
       "to": "HV0094",
       "kind": "process",
       "line_tag": "16\"-PP01-361-GF0014-B03F9-PP",
@@ -1601,8 +1858,8 @@
       "layer": "process"
     },
     {
-      "id": "e_OPR002_HV0203",
-      "from": "terminator_OPR-002",
+      "id": "e_DS3_HV0203",
+      "from": "term_DS3_FUEL_GAS",
       "to": "HV0203",
       "kind": "process",
       "line_tag": "16\"-PP01-361-GF0031-B03F9-PP",
@@ -1613,9 +1870,9 @@
       "layer": "process"
     },
     {
-      "id": "e_HV0094_jred_r1c1_001",
+      "id": "e_HV0094_reducer_r1c1_001",
       "from": "HV0094",
-      "to": "junction_eccred_r1c1_001",
+      "to": "reducer_r1c1_001",
       "kind": "process",
       "pipe_class": "B03F9",
       "diameter": "16\"",
@@ -1624,9 +1881,31 @@
       "layer": "process"
     },
     {
-      "id": "e_jred_r1c1_001_HV0093",
-      "from": "junction_eccred_r1c1_001",
+      "id": "e_HV0203_reducer_r1c1_002",
+      "from": "HV0203",
+      "to": "reducer_r1c1_002",
+      "kind": "process",
+      "pipe_class": "B03F9",
+      "diameter": "16\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_reducer1_HV0093",
+      "from": "reducer_r1c1_001",
       "to": "HV0093",
+      "kind": "process",
+      "pipe_class": "B03F9",
+      "diameter": "12\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_reducer2_HV0095",
+      "from": "reducer_r1c1_002",
+      "to": "HV0095",
       "kind": "process",
       "pipe_class": "B03F9",
       "diameter": "12\"",
@@ -1639,37 +1918,6 @@
       "from": "HV0093",
       "to": "N4",
       "kind": "process",
-      "diameter": "12\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_N4_V001",
-      "from": "N4",
-      "to": "PP01-362-V001",
-      "kind": "process",
-      "diameter": "12\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0203_jred_r1c1_002",
-      "from": "HV0203",
-      "to": "junction_eccred_r1c1_002",
-      "kind": "process",
-      "pipe_class": "B03F9",
-      "diameter": "16\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_jred_r1c1_002_HV0095",
-      "from": "junction_eccred_r1c1_002",
-      "to": "HV0095",
-      "kind": "process",
       "pipe_class": "B03F9",
       "diameter": "12\"",
       "fluid_code": "GF",
@@ -1680,6 +1928,17 @@
       "id": "e_HV0095_N5",
       "from": "HV0095",
       "to": "N5",
+      "kind": "process",
+      "pipe_class": "B03F9",
+      "diameter": "12\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_N4_V001",
+      "from": "N4",
+      "to": "PP01-362-V001",
       "kind": "process",
       "diameter": "12\"",
       "fluid_code": "GF",
@@ -1706,16 +1965,444 @@
       "layer": "process"
     },
     {
-      "id": "e_UC_jred_r2c1_003",
-      "from": "terminator_UC",
-      "to": "junction_red_r2c1_003",
+      "id": "e_V001_PSV0001",
+      "from": "PP01-362-V001",
+      "to": "PSV-0001",
+      "kind": "process",
+      "diameter": "14\"x8\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_PSV0002",
+      "from": "PP01-362-V001",
+      "to": "PSV-0002",
+      "kind": "process",
+      "diameter": "14\"x8\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_PSV0001_HV0039",
+      "from": "PSV-0001",
+      "to": "HV0039",
+      "kind": "process",
+      "diameter": "16\"x10\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_PSV0002_flare",
+      "from": "PSV-0002",
+      "to": "term_HP_FLARE_002",
+      "kind": "process",
+      "diameter": "16\"x10\"",
+      "pipe_class": "B01B8",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0039_flare",
+      "from": "HV0039",
+      "to": "term_HP_FLARE_001",
+      "kind": "process",
+      "line_tag": "16\"-PP01-500-VK0066-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "16\"",
+      "fluid_code": "VK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0004_V001",
+      "from": "HV0004",
+      "to": "PP01-362-V001",
+      "kind": "process",
+      "line_tag": "14\"-PP01-362-GF0001-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "14\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_HV0006",
+      "from": "PP01-362-V001",
+      "to": "HV0006",
+      "kind": "process",
+      "line_tag": "14\"-PP01-362-GF0004-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "14\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_PZT0001A_HV0011",
+      "from": "PZT-0001A",
+      "to": "HV0011",
+      "kind": "impulse",
+      "diameter": "2\"",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_PZT0001B_HV0012",
+      "from": "PZT-0001B",
+      "to": "HV0012",
+      "kind": "impulse",
+      "diameter": "2\"",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_PZT0001C_HV0013",
+      "from": "PZT-0001C",
+      "to": "HV0013",
+      "kind": "impulse",
+      "diameter": "2\"",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_PZT0001A_sig_PIC0002",
+      "from": "PZT-0001A",
+      "to": "PIC-0002",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_PZT0001B_sig_PIC0002",
+      "from": "PZT-0001B",
+      "to": "PIC-0002",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_PZT0001C_sig_PIC0002",
+      "from": "PZT-0001C",
+      "to": "PIC-0002",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_V001_EZV0002",
+      "from": "PP01-362-V001",
+      "to": "EZV0002",
+      "kind": "process",
+      "line_tag": "6\"-PP01-362-GF0009-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "6\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_EZV0002_HV0015",
+      "from": "EZV0002",
+      "to": "HV0015",
+      "kind": "process",
+      "line_tag": "8\"-PP01-362-GF0003-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "8\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0015_BDZV0001",
+      "from": "HV0015",
+      "to": "BDZV-0001",
+      "kind": "process",
+      "diameter": "6\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_BDZV0001_HV0091",
+      "from": "BDZV-0001",
+      "to": "HV0091",
+      "kind": "process",
+      "diameter": "6\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_FO0002_BDZV0001",
+      "from": "FO0002",
+      "to": "BDZV-0001",
+      "kind": "process",
+      "diameter": "6\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0091_VK0010",
+      "from": "HV0091",
+      "to": "line_tag_VK0010",
+      "kind": "process",
+      "line_tag": "10\"-PP01-500-VK0010-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "6\"",
+      "fluid_code": "VK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0092_HP_FLARE_003",
+      "from": "HV0092",
+      "to": "term_HP_FLARE_003",
+      "kind": "process",
+      "line_tag": "8\"-PP01-500-VK0026-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "8\"",
+      "fluid_code": "VK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_VK0010_HV0092",
+      "from": "line_tag_VK0010",
+      "to": "HV0092",
+      "kind": "process",
+      "line_tag": "10\"-PP01-500-VK0010-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "8\"",
+      "fluid_code": "VK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0016_FO_8x10",
+      "from": "HV0016",
+      "to": "FO-8x10",
+      "kind": "process",
+      "diameter": "8\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_FO_8x10_HV0021",
+      "from": "FO-8x10",
+      "to": "HV0021",
+      "kind": "process",
+      "diameter": "8\"x10\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0021_FGTREAT",
+      "from": "HV0021",
+      "to": "term_FGTREAT",
+      "kind": "process",
+      "line_tag": "16\"-PP01-362-GF0002-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "16\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_junction_003_HV0018",
+      "from": "junction_r1c3_003",
+      "to": "HV0018",
+      "kind": "process",
+      "diameter": "4\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0018_HV0019",
+      "from": "HV0018",
+      "to": "HV0019",
+      "kind": "process",
+      "diameter": "4\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0019_FGTREAT",
+      "from": "HV0019",
+      "to": "term_FGTREAT",
+      "kind": "process",
+      "line_tag": "16\"-PP01-362-GF0002-B01E9-PP",
+      "pipe_class": "B01E9",
+      "diameter": "16\"",
+      "fluid_code": "GF",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_ZI0002_BDZV0001",
+      "from": "ZI-0002",
+      "to": "BDZV-0001",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_ZT0002_BDZV0001",
+      "from": "ZT0002",
+      "to": "BDZV-0001",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_LZT0002A_HV0040",
+      "from": "LZT-0002A",
+      "to": "HV0040",
+      "kind": "process",
+      "diameter": "2\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_LZT0002B_HV0042",
+      "from": "LZT-0002B",
+      "to": "HV0042",
+      "kind": "process",
+      "diameter": "2\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_LZT0002C_HV0044",
+      "from": "LZT-0002C",
+      "to": "HV0044",
+      "kind": "process",
+      "diameter": "2\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0040_HV0041",
+      "from": "HV0040",
+      "to": "HV0041",
+      "kind": "process",
+      "diameter": "1\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0042_HV0043",
+      "from": "HV0042",
+      "to": "HV0043",
+      "kind": "process",
+      "diameter": "1\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0044_HV0045",
+      "from": "HV0044",
+      "to": "HV0045",
+      "kind": "process",
+      "diameter": "1\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0041_I2003",
+      "from": "HV0041",
+      "to": "I-2003",
       "kind": "process",
       "flow_dir": "uni",
       "layer": "process"
     },
     {
-      "id": "e_jred_r2c1_003_HV0001",
-      "from": "junction_red_r2c1_003",
+      "id": "e_HV0043_I2003",
+      "from": "HV0043",
+      "to": "I-2003",
+      "kind": "process",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0045_I2003",
+      "from": "HV0045",
+      "to": "I-2003",
+      "kind": "process",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_LZT0002A_U0002A",
+      "from": "LZT-0002A",
+      "to": "U-0002A",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_LZT0002B_U0002B",
+      "from": "LZT-0002B",
+      "to": "U-0002B",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_LZT0002C_U0002C",
+      "from": "LZT-0002C",
+      "to": "U-0002C",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_CE0001_CIT0001",
+      "from": "CE-0001",
+      "to": "CIT-0001",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_CIT0001_CI0001",
+      "from": "CIT-0001",
+      "to": "CI-0001",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_HV0056_sb_condensate",
+      "from": "HV0056",
+      "to": "sb_B03F9_B01M8_condensate",
+      "kind": "process",
+      "line_tag": "1\"-PP01-512-PK0080-B03F9-PP",
+      "pipe_class": "B03F9",
+      "diameter": "1\"",
+      "fluid_code": "PK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0052_sb_condensate",
+      "from": "HV0052",
+      "to": "sb_B03F9_B01M8_condensate",
+      "kind": "process",
+      "line_tag": "1\"-PP01-512-PK0081-B03F9-PP",
+      "pipe_class": "B03F9",
+      "diameter": "1\"",
+      "fluid_code": "PK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_sb_condensate_CONDENSATE",
+      "from": "sb_B03F9_B01M8_condensate",
+      "to": "term_CONDENSATE",
+      "kind": "process",
+      "line_tag": "4\"-PP01-512-PK0006-B01M8-PP",
+      "pipe_class": "B01M8",
+      "diameter": "4\"",
+      "fluid_code": "PK",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_term_UC_reducer_r2c1_003",
+      "from": "term_UC",
+      "to": "reducer_r2c1_003",
+      "kind": "process",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_reducer_r2c1_003_HV0001",
+      "from": "reducer_r2c1_003",
       "to": "HV0001",
       "kind": "process",
       "line_tag": "2\"-PP01-567-GF0002-B03F9",
@@ -1738,20 +2425,8 @@
       "layer": "process"
     },
     {
-      "id": "e_HV0051_HV0002",
+      "id": "e_HV0051_SPHN0030",
       "from": "HV0051",
-      "to": "HV0002",
-      "kind": "process",
-      "line_tag": "2\"-PP01-567-GF0002-B03F9",
-      "pipe_class": "B03F9",
-      "diameter": "2\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0002_SPHN0030",
-      "from": "HV0002",
       "to": "SPHN-0030",
       "kind": "process",
       "line_tag": "2\"-PP01-567-GF0002-B03F9",
@@ -1762,8 +2437,17 @@
       "layer": "process"
     },
     {
-      "id": "e_SPHN0030_N9",
+      "id": "e_SPHN0030_HV0002",
       "from": "SPHN-0030",
+      "to": "HV0002",
+      "kind": "process",
+      "diameter": "2\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_HV0002_N9",
+      "from": "HV0002",
       "to": "N9",
       "kind": "process",
       "diameter": "2\"",
@@ -1800,7 +2484,7 @@
     {
       "id": "e_HV0024_LG0001",
       "from": "HV0024",
-      "to": "LG-0001",
+      "to": "LG0001",
       "kind": "process",
       "diameter": "2\"",
       "flow_dir": "uni",
@@ -1809,254 +2493,34 @@
     {
       "id": "e_HV0025_LG0001",
       "from": "HV0025",
-      "to": "LG-0001",
+      "to": "LG0001",
       "kind": "process",
       "diameter": "2\"",
       "flow_dir": "uni",
       "layer": "process"
     },
     {
-      "id": "e_HV0026_EDGE_R_r2c1",
-      "from": "HV0026",
-      "to": "N18A",
+      "id": "e_N18A_HV0026",
+      "from": "N18A",
+      "to": "HV0026",
       "kind": "process",
       "diameter": "1\"",
       "flow_dir": "uni",
       "layer": "process"
     },
     {
-      "id": "e_HV0027_N18B",
-      "from": "HV0027",
-      "to": "N18B",
+      "id": "e_N18B_HV0027",
+      "from": "N18B",
+      "to": "HV0027",
       "kind": "process",
       "diameter": "1\"",
       "flow_dir": "uni",
       "layer": "process"
-    },
-    {
-      "id": "e_jspecbreak_r2c1_001_CONDENSATE",
-      "from": "junction_specbreak_r2c1_001",
-      "to": "terminator_OPC-CONDENSATE",
-      "kind": "process",
-      "line_tag": "1\"-PP01-512-PK0076-B03F9-PP",
-      "pipe_class": "B01M8",
-      "diameter": "1\"",
-      "fluid_code": "PK",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_V001_PSV0001_in",
-      "from": "PP01-362-V001",
-      "to": "HV0038",
-      "kind": "process",
-      "diameter": "16\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0038_PSV0001",
-      "from": "HV0038",
-      "to": "PSV-0001",
-      "kind": "process",
-      "diameter": "10\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_PSV0001_HV0039",
-      "from": "PSV-0001",
-      "to": "HV0039",
-      "kind": "process",
-      "diameter": "8\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0039_VK0066",
-      "from": "HV0039",
-      "to": "terminator_OPC-HP-FLARE-VK0066",
-      "kind": "process",
-      "line_tag": "16\"-PP01-500-VK0066-B01B8",
-      "pipe_class": "B01B8",
-      "diameter": "16\"",
-      "fluid_code": "VK",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_V001_PSV0002_in",
-      "from": "PP01-362-V001",
-      "to": "PSV-0002",
-      "kind": "process",
-      "diameter": "10\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_PSV0002_VK0008",
-      "from": "PSV-0002",
-      "to": "terminator_OPC-HP-FLARE-VK0008",
-      "kind": "process",
-      "line_tag": "16\"-PP01-500-VK0008-B01B8",
-      "pipe_class": "B01B8",
-      "diameter": "16\"",
-      "fluid_code": "VK",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_V001_PIT0002_impulse",
-      "from": "PP01-362-V001",
-      "to": "HV0014",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_HV0014_PIT0002",
-      "from": "HV0014",
-      "to": "PIT-0002",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_PIT0002_PIC0002",
-      "from": "PIT-0002",
-      "to": "PIC-0002",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_PIC0002_362004",
-      "from": "PIC-0002",
-      "to": "362-004",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_PZT0001A_impulse",
-      "from": "PP01-362-V001",
-      "to": "HV0010",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_HV0010_PZT0001A",
-      "from": "HV0010",
-      "to": "PZT-0001A",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_PZT0001B_impulse",
-      "from": "PP01-362-V001",
-      "to": "HV0011",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_HV0011_PZT0001B",
-      "from": "HV0011",
-      "to": "PZT-0001B",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_PZT0001C_impulse",
-      "from": "PP01-362-V001",
-      "to": "HV0012",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_HV0012_PZT0001C",
-      "from": "HV0012",
-      "to": "PZT-0001C",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_PZT0001A_362004",
-      "from": "PZT-0001A",
-      "to": "362-004",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_PZT0001B_362004",
-      "from": "PZT-0001B",
-      "to": "362-004",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_PZT0001C_362004",
-      "from": "PZT-0001C",
-      "to": "362-004",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_LIT0001",
-      "from": "PP01-362-V001",
-      "to": "LIT-0001",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_LIT0003",
-      "from": "PP01-362-V001",
-      "to": "LIT-0003",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_LI0003",
-      "from": "PP01-362-V001",
-      "to": "LI-0003",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
     },
     {
       "id": "e_V001_LIC0001",
       "from": "PP01-362-V001",
       "to": "LIC-0001",
-      "kind": "impulse",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_LIC0001_LV0001",
-      "from": "LIC-0001",
-      "to": "LV-0001",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_V001_LV0001",
-      "from": "PP01-362-V001",
-      "to": "LV-0001",
       "kind": "process",
       "line_tag": "4\"-PP01-512-PK0005-C01N9-PP",
       "pipe_class": "C01N9",
@@ -2065,9 +2529,16 @@
       "layer": "process"
     },
     {
-      "id": "e_LV0001_HV0031",
+      "id": "e_LIC0001_LV0001",
+      "from": "LIC-0001",
+      "to": "LV-0001",
+      "kind": "signal",
+      "layer": "instrument"
+    },
+    {
+      "id": "e_LV0001_sb_C01N9_B01M8",
       "from": "LV-0001",
-      "to": "HV0031",
+      "to": "sb_C01N9_B01M8_LV0001",
       "kind": "process",
       "pipe_class": "C01N9",
       "diameter": "4\"",
@@ -2075,132 +2546,167 @@
       "layer": "process"
     },
     {
-      "id": "e_HV0031_EZV0001",
-      "from": "HV0031",
-      "to": "EZV-0001",
-      "kind": "process",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_EZV0001_jspecbreak_r2c3",
-      "from": "EZV-0001",
-      "to": "junction_specbreak_r2c3_001",
+      "id": "e_sb_C01N9_B01M8_CONDENSATE",
+      "from": "sb_C01N9_B01M8_LV0001",
+      "to": "term_CONDENSATE",
       "kind": "process",
       "line_tag": "4\"-PP01-512-PK0006-B01M8-PP",
       "pipe_class": "B01M8",
       "diameter": "4\"",
       "fluid_code": "PK",
       "flow_dir": "uni",
-      "layer": "process"
+      "layer": "process",
+      "props": {
+        "notes": [
+          "TWO PHASE NOTE-1"
+        ]
+      }
     },
     {
-      "id": "e_jspecbreak_r2c3_CONDENSATE",
-      "from": "junction_specbreak_r2c3_001",
-      "to": "terminator_OPC-CONDENSATE",
-      "kind": "process",
-      "line_tag": "4\"-PP01-512-PK0006-B01M8-PP",
-      "pipe_class": "B01M8",
-      "diameter": "4\"",
-      "fluid_code": "PK",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_V001_EZV0002",
+      "id": "e_V001_N1",
       "from": "PP01-362-V001",
-      "to": "HV0015",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
+      "to": "N1",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_HV0015_EZV0002",
-      "from": "HV0015",
-      "to": "EZV-0002",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_V001_362007",
+      "id": "e_V001_N2",
       "from": "PP01-362-V001",
-      "to": "362-007",
-      "kind": "process",
-      "diameter": "6\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
+      "to": "N2",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_V001_HV0016",
+      "id": "e_V001_N3",
       "from": "PP01-362-V001",
-      "to": "HV0016",
-      "kind": "process",
-      "diameter": "8\"",
-      "flow_dir": "uni",
+      "to": "N3",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_HV0016_FO8x10",
-      "from": "HV0016",
-      "to": "FO-8x10",
-      "kind": "process",
-      "diameter": "8\"",
-      "flow_dir": "uni",
+      "id": "e_V001_N6A",
+      "from": "PP01-362-V001",
+      "to": "N6A",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_FO8x10_HV0021",
-      "from": "FO-8x10",
-      "to": "HV0021",
-      "kind": "process",
-      "diameter": "8\"",
-      "flow_dir": "uni",
+      "id": "e_V001_N7A",
+      "from": "PP01-362-V001",
+      "to": "N7A",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_HV0021_OPC_FGTREATMENT",
-      "from": "HV0021",
-      "to": "terminator_OPC-FUEL-GAS-TREATMENT",
-      "kind": "process",
-      "line_tag": "16\"-PP01-362-GF0002-B01E9-PP",
-      "pipe_class": "B01E9",
-      "diameter": "16\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
+      "id": "e_V001_N7B",
+      "from": "PP01-362-V001",
+      "to": "N7B",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_HV0018_HV0019",
-      "from": "HV0018",
-      "to": "HV0019",
-      "kind": "process",
-      "diameter": "4\"",
-      "flow_dir": "uni",
+      "id": "e_V001_N8",
+      "from": "PP01-362-V001",
+      "to": "N8",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_HV0019_OPC_FGTREATMENT",
-      "from": "HV0019",
-      "to": "terminator_OPC-FUEL-GAS-TREATMENT",
-      "kind": "process",
-      "line_tag": "16\"-PP01-362-GF0002-B01E9-PP",
-      "pipe_class": "B01E9",
-      "diameter": "16\"",
-      "fluid_code": "GF",
-      "flow_dir": "uni",
+      "id": "e_V001_N10A",
+      "from": "PP01-362-V001",
+      "to": "N10A",
+      "kind": "containment",
       "layer": "process"
     },
     {
-      "id": "e_jtee_r1c3_003_HV0018",
-      "from": "junction_tee_r1c3_003",
-      "to": "HV0018",
-      "kind": "process",
-      "diameter": "4\"",
-      "flow_dir": "uni",
+      "id": "e_V001_N10B",
+      "from": "PP01-362-V001",
+      "to": "N10B",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N11A",
+      "from": "PP01-362-V001",
+      "to": "N11A",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N11B",
+      "from": "PP01-362-V001",
+      "to": "N11B",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N12A",
+      "from": "PP01-362-V001",
+      "to": "N12A",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N12B",
+      "from": "PP01-362-V001",
+      "to": "N12B",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N13",
+      "from": "PP01-362-V001",
+      "to": "N13",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N14",
+      "from": "PP01-362-V001",
+      "to": "N14",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N15",
+      "from": "PP01-362-V001",
+      "to": "N15",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N16",
+      "from": "PP01-362-V001",
+      "to": "N16",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N17",
+      "from": "PP01-362-V001",
+      "to": "N17",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N18A",
+      "from": "PP01-362-V001",
+      "to": "N18A",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N18B",
+      "from": "PP01-362-V001",
+      "to": "N18B",
+      "kind": "containment",
+      "layer": "process"
+    },
+    {
+      "id": "e_V001_N9",
+      "from": "PP01-362-V001",
+      "to": "N9",
+      "kind": "containment",
       "layer": "process"
     },
     {
@@ -2213,247 +2719,49 @@
       "layer": "process"
     },
     {
-      "id": "e_V001_BDZV0001_blowdown",
-      "from": "PP01-362-V001",
-      "to": "HV0091",
+      "id": "e_HV0020_VK0010",
+      "from": "HV0020",
+      "to": "line_tag_VK0010",
       "kind": "process",
-      "diameter": "8\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0091_jeccred_r1c3",
-      "from": "HV0091",
-      "to": "junction_eccred_r1c3_001",
-      "kind": "process",
-      "diameter": "6\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_jeccred_r1c3_BDZV0001",
-      "from": "junction_eccred_r1c3_001",
-      "to": "BDZV-0001",
-      "kind": "process",
-      "diameter": "6\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_FO0002_BDZV0001",
-      "from": "FO-0002",
-      "to": "BDZV-0001",
-      "kind": "process",
-      "diameter": "6\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_BDZV0001_VK0026",
-      "from": "BDZV-0001",
-      "to": "HV0092",
-      "kind": "process",
-      "line_tag": "8\"-PP01-500-VK0026-B01B8",
+      "line_tag": "10\"-PP01-500-VK0010-B01B8",
       "pipe_class": "B01B8",
       "diameter": "8\"",
+      "flow_dir": "uni",
+      "layer": "process"
+    },
+    {
+      "id": "e_VK0066_HP_FLARE_001",
+      "from": "line_tag_VK0066",
+      "to": "term_HP_FLARE_001",
+      "kind": "process",
+      "line_tag": "16\"-PP01-500-VK0066-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "16\"",
       "fluid_code": "VK",
       "flow_dir": "uni",
       "layer": "process"
     },
     {
-      "id": "e_HV0092_OPC_FLARE_VK0026",
-      "from": "HV0092",
-      "to": "terminator_OPC-HP-FLARE-VK0026",
+      "id": "e_VK0008_HP_FLARE_002",
+      "from": "line_tag_VK0008",
+      "to": "term_HP_FLARE_002",
       "kind": "process",
-      "line_tag": "8\"-PP01-500-VK0026-B01B8",
+      "line_tag": "16\"-PP01-500-VK0008-B01B8",
       "pipe_class": "B01B8",
-      "diameter": "8\"",
+      "diameter": "16\"",
       "fluid_code": "VK",
       "flow_dir": "uni",
       "layer": "process"
     },
     {
-      "id": "e_ZI0002_BDZV0001_sig",
-      "from": "ZI-0002",
-      "to": "BDZV-0001",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_ZT0002_BDZV0001_sig",
-      "from": "ZT-0002",
-      "to": "BDZV-0001",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_LZT0002A_jred_r2c3_003",
-      "from": "LZT-0002A",
-      "to": "junction_red_r2c3_003",
+      "id": "e_VK0026_HP_FLARE_003",
+      "from": "line_tag_VK0026",
+      "to": "term_HP_FLARE_003",
       "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_jred_r2c3_003_HV0040",
-      "from": "junction_red_r2c3_003",
-      "to": "HV0040",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0040_HV0041",
-      "from": "HV0040",
-      "to": "HV0041",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0041_I2003",
-      "from": "HV0041",
-      "to": "I-2003",
-      "kind": "process",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_LZT0002B_jred_r2c3_002",
-      "from": "LZT-0002B",
-      "to": "junction_red_r2c3_002",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_jred_r2c3_002_HV0042",
-      "from": "junction_red_r2c3_002",
-      "to": "HV0042",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0042_HV0043",
-      "from": "HV0042",
-      "to": "HV0043",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0043_I2003",
-      "from": "HV0043",
-      "to": "I-2003",
-      "kind": "process",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_LZT0002C_jred_r2c3_001",
-      "from": "LZT-0002C",
-      "to": "junction_red_r2c3_001",
-      "kind": "process",
-      "diameter": "2\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_jred_r2c3_001_HV0044",
-      "from": "junction_red_r2c3_001",
-      "to": "HV0044",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0044_HV0045",
-      "from": "HV0044",
-      "to": "HV0045",
-      "kind": "process",
-      "diameter": "1\"",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0045_I2003",
-      "from": "HV0045",
-      "to": "I-2003",
-      "kind": "process",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_LZT0002A_U0002A",
-      "from": "LZT-0002A",
-      "to": "U-0002A",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_LZT0002B_U0002B",
-      "from": "LZT-0002B",
-      "to": "U-0002B",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_LZT0002C_U0002C",
-      "from": "LZT-0002C",
-      "to": "U-0002C",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_CE0001_CIT0001",
-      "from": "CE-0001",
-      "to": "CIT-0001",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_CIT0001_CI0001",
-      "from": "CIT-0001",
-      "to": "CI-0001",
-      "kind": "signal",
-      "flow_dir": "uni",
-      "layer": "instrument"
-    },
-    {
-      "id": "e_HV0056_jspecbreak_r2c3",
-      "from": "HV0056",
-      "to": "junction_specbreak_r2c3_001",
-      "kind": "process",
-      "line_tag": "1\"-PP01-512-PK0080-B03F9-PP",
-      "pipe_class": "B03F9",
-      "diameter": "1\"",
-      "fluid_code": "PK",
-      "flow_dir": "uni",
-      "layer": "process"
-    },
-    {
-      "id": "e_HV0052_jspecbreak_r2c3",
-      "from": "HV0052",
-      "to": "junction_specbreak_r2c3_001",
-      "kind": "process",
-      "line_tag": "1\"-PP01-512-PK0081-B03F9-PP",
-      "pipe_class": "B03F9",
-      "diameter": "1\"",
-      "fluid_code": "PK",
+      "line_tag": "8\"-PP01-500-VK0026-B01B8",
+      "pipe_class": "B01B8",
+      "diameter": "8\"",
+      "fluid_code": "VK",
       "flow_dir": "uni",
       "layer": "process"
     }

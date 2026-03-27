@@ -137,6 +137,32 @@ Return JSON:
   "extraction_notes": "<what was found or confirmed missing>"
 }"""
 
+# Compact extraction prompt — used for sub-tile pieces when full prompt overflows.
+# Produces ~40% fewer tokens by using short IDs and a flat, minimal schema.
+PASS1_COMPACT_PROMPT = """Extract ALL components from this P&ID sub-tile. Be as CONCISE as possible.
+
+Use short 2-4 char IDs (e.g. V1, I2, J3). Omit any null/empty fields entirely.
+Abbreviate subtypes: VG=valve.gate, VB=valve.ball, VBU=valve.butterfly, VCK=valve.check,
+VCT=valve.control, VS=valve.spectacle, EQ=equipment, IP=instrument.pressure,
+IT=instrument.temperature, IF=instrument.flow, IL=instrument.level, IC=instrument.controller,
+IAN=instrument.analyzer, J=junction, T=terminator, A=annotation.
+
+Return ONLY valid JSON, no markdown:
+{
+  "tile": "<tile_name>",
+  "pass": 1,
+  "components": [
+    {"id":"V1","type":"valve","subtype":"VB","tag":"HV0001","pos":"LO"},
+    {"id":"I1","type":"instrument","subtype":"IP","tag":"PT001","loop":"100"},
+    {"id":"E1","type":"equipment","subtype":"EQ","tag":"362-V001","label":"KO DRUM","dp":"14 barg","dt":"-20~100C","op":"9-10.4 barg","ot":"30-60C"}
+  ],
+  "connections": [
+    {"id":"e1","from":"V1","to":"I1","line":"3\"-B01M8-362-001","spec":"B01M8","dia":"3"}
+  ],
+  "spec_breaks": [{"loc":"<loc>","from":"<spec>","to":"<spec>"}],
+  "notes": [{"ref":"10","text":"<text if visible>"}]
+}"""
+
 PASS3_PROMPT_TEMPLATE = """This is a SELF-VERIFICATION pass.
 
 Below is the combined extraction from passes 1 and 2 for this tile:
@@ -303,6 +329,83 @@ def _call_claude(
     raise last_exc  # unreachable but satisfies type checkers
 
 
+def _split_tile(tile_path: Path, raw_dir: Path, label: str, mode: str = "halves") -> list[Path]:
+    """Split a tile PNG into halves (left/right) or quarters (tl/tr/bl/br).
+    All pieces get 10% overlap on shared edges.
+    """
+    img = Image.open(tile_path)
+    W, H = img.size
+    ox = int(W * 0.10)
+    oy = int(H * 0.10)
+    mw, mh = W // 2, H // 2
+
+    if mode == "halves":
+        pieces = {
+            "left":  (0,          0, mw + ox, H),
+            "right": (mw - ox,    0, W,       H),
+        }
+    else:  # quarters
+        pieces = {
+            "tl": (0,       0,       mw + ox, mh + oy),
+            "tr": (mw - ox, 0,       W,       mh + oy),
+            "bl": (0,       mh - oy, mw + ox, H      ),
+            "br": (mw - ox, mh - oy, W,       H      ),
+        }
+
+    paths = []
+    for name, box in pieces.items():
+        p = raw_dir / f"{label}_sub_{name}.png"
+        img.crop(box).save(str(p), "PNG")
+        paths.append(p)
+    return paths
+
+
+def _merge_sub_tile_results(results: list[dict], tile_name: str) -> dict:
+    """Merge pass1 results from two sub-tiles into one combined pass1 dict.
+    De-duplicates components by normalized tag (fuzzy match on stripped tag).
+    """
+    import re
+
+    def _norm(tag: str) -> str:
+        return re.sub(r"[\s\-_]", "", (tag or "").upper())
+
+    seen_tags: set[str] = set()
+    merged_components: list[dict] = []
+    merged_connections: list[dict] = []
+    merged_off_page: list[dict] = []
+    merged_spec_breaks: list[dict] = []
+    merged_notes: list[dict] = []
+
+    labels = ["tl", "tr", "bl", "br", "l", "r", "a", "b", "c", "d"]
+    for i, r in enumerate(results):
+        prefix = f"sub{labels[i] if i < len(labels) else str(i)}_"
+        for c in r.get("components", []):
+            tag_norm = _norm(c.get("tag", ""))
+            # De-duplicate by tag (keep first occurrence from left half)
+            if tag_norm and tag_norm in seen_tags:
+                continue
+            if tag_norm:
+                seen_tags.add(tag_norm)
+            new_c = {**c, "id": prefix + c.get("id", f"c{len(merged_components)}")}
+            merged_components.append(new_c)
+        for conn in r.get("connections", []):
+            merged_connections.append({**conn, "id": prefix + conn.get("id", f"e{len(merged_connections)}")})
+        merged_off_page.extend(r.get("off_page_refs", []))
+        merged_spec_breaks.extend(r.get("spec_breaks", []))
+        merged_notes.extend(r.get("notes", []))
+
+    return {
+        "tile": tile_name,
+        "pass": 1,
+        "components":    merged_components,
+        "connections":   merged_connections,
+        "off_page_refs": merged_off_page,
+        "spec_breaks":   merged_spec_breaks,
+        "notes":         merged_notes,
+        "_sub_tiled":    True,
+    }
+
+
 def extract_tile(
     client: anthropic.Anthropic,
     tile_meta: dict,
@@ -376,6 +479,44 @@ def extract_tile(
             print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]  ⚠ parse_error after retry")
         else:
             print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]")
+
+    # Sub-tile fallback: if pass1 still has parse_error after the retry, split the
+    # tile into halves (left/right), and if halves still overflow, into quarters.
+    # Typically needed only for dense central tiles (r1c2, r2c2).
+    if p1.get("parse_error") and p1.get("_retry_attempted"):
+        sub_merged_path = raw_dir / f"{tile_name}_pass1_sub.json"
+        if sub_merged_path.exists() and not force:
+            print(f"[extract]   Pass 1 resume (sub-tiled): {sub_merged_path.name}")
+            p1 = json.loads(sub_merged_path.read_text())
+            save_json(p1_path, p1)
+        else:
+            # Try halves first, fall back to quarters if halves also overflow
+            for split_mode in ("halves", "quarters"):
+                print(f"[extract]   Pass 1 sub-tiling {tile_name} ({split_mode}) ...")
+                sub_paths = _split_tile(tile_path, raw_dir, tile_name, mode=split_mode)
+                sub_results = []
+                all_ok = True
+                for sub_path in sub_paths:
+                    sub_block = _tile_image_block(sub_path)
+                    sub_content = legend_blocks + [sub_block]
+                    # Use compact prompt for sub-tiles to reduce output tokens ~40%
+                    sub_p1, sub_u = _call_claude(client, sub_content, PASS1_COMPACT_PROMPT)
+                    _accum(sub_u)
+                    piece = sub_path.stem.split("_")[-1]
+                    if sub_p1.get("parse_error"):
+                        all_ok = False
+                        print(f"[extract]     sub-tile {piece}: {sub_u['output_tokens']:,} tokens  ⚠ parse_error")
+                    else:
+                        print(f"[extract]     sub-tile {piece}: {sub_u['output_tokens']:,} tokens  "
+                              f"({len(sub_p1.get('components',[]))} components)")
+                    sub_results.append(sub_p1)
+                if all_ok or split_mode == "quarters":
+                    p1 = _merge_sub_tile_results(sub_results, tile_name)
+                    save_json(sub_merged_path, p1)
+                    save_json(p1_path, p1)
+                    print(f"[extract]   Pass 1 sub-tiled {tile_name} ({split_mode}): "
+                          f"{len(p1.get('components',[]))} components from {len(sub_paths)} pieces")
+                    break
 
     # Pass 2
     if p2_path.exists() and not force:

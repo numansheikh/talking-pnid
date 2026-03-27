@@ -42,7 +42,10 @@ GRAPHS_DIR        = REPO_ROOT / "src" / "talking-pnids-py" / "data" / "graphs"
 #
 # v0.1.0 — baseline: 3-pass Opus 4.6 vision, 3×2 tiles, native res, legend context,
 #           Claude Sonnet schema conversion, Excel+OCR+completeness validation
-STRATEGY_VERSION = "v0.1.0"
+# v0.1.1 — adaptive sub-tiling: dense tiles (parse_error after retry) are split
+#           into left/right halves and extracted separately, results merged.
+#           tile.py now measures dark-pixel density per tile and flags dense tiles.
+STRATEGY_VERSION = "v0.1.1"
 
 # ── Models ───────────────────────────────────────────────────────────────────
 MODEL_VISION   = "claude-opus-4-6"      # tile extraction passes 1+2 (vision quality critical)

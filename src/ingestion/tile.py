@@ -6,6 +6,10 @@ Extracts the native embedded raster image (full resolution) rather than
 re-rendering through PyMuPDF, giving Claude Vision the highest quality input.
 Also attempts embedded text extraction from every page (0 chars is normal for pure rasters).
 
+Adaptive density analysis: after tiling, measures the dark-pixel density of each
+tile and flags tiles that are likely to exceed the 8192 output-token limit.
+The extract step uses this to route dense tiles through sub-tile splitting.
+
 All outputs are written to data/outputs/ingestion/<pid_id>/tiles/.
 Resume: skips if tile_metadata.json already exists.
 """
@@ -140,6 +144,16 @@ def tile_pdf(pdf_path: Path, pid_id: str, force: bool = False) -> dict:
             tile_path = tiles_dir / tile_name
             tile_img.save(str(tile_path), "PNG")
 
+            # Density analysis: fraction of pixels darker than threshold.
+            # P&IDs are mostly white — dense areas (instruments, piping) have
+            # high dark-pixel density. Above ~12% predicts output token overflow.
+            grey = tile_img.convert("L")
+            px = grey.load()
+            tw, th = tile_img.size
+            dark = sum(1 for y in range(th) for x in range(tw) if px[x, y] < 128)
+            density = round(dark / (tw * th), 4)
+            dense_flag = density > 0.12  # empirical threshold from observed token limits
+
             tiles_meta.append({
                 "name": tile_name,
                 "path": str(tile_path),
@@ -155,8 +169,11 @@ def tile_pdf(pdf_path: Path, pid_id: str, force: bool = False) -> dict:
                 "base_bounds": {
                     "x0": x0, "y0": y0, "x1": x1, "y1": y1,
                 },
+                "density": density,
+                "dense_flag": dense_flag,
             })
-            print(f"[tile]   Saved {tile_name} ({ox1-ox0}×{oy1-oy0}px)")
+            flag_str = " ⚠ DENSE" if dense_flag else ""
+            print(f"[tile]   Saved {tile_name} ({ox1-ox0}×{oy1-oy0}px, density={density:.3f}){flag_str}")
 
     doc.close()
 
