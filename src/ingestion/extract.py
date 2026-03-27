@@ -243,8 +243,9 @@ _RETRYABLE = (
     anthropic.APIConnectionError,
     anthropic.APITimeoutError,
     anthropic.InternalServerError,
+    anthropic.APIStatusError,   # catches 529 OverloadedError and other transient 5xx
 )
-_RETRY_DELAYS = [5, 20, 60]   # seconds between attempts 1→2, 2→3, 3→4
+_RETRY_DELAYS = [10, 30, 90]   # seconds — longer gaps for overloaded API
 
 
 def _call_claude(
