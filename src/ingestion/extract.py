@@ -11,11 +11,13 @@ Resume: skips any tile/pass where the output JSON already exists.
 """
 
 import base64
+import io
 import json
 import time
 from pathlib import Path
 
 import anthropic
+from PIL import Image
 
 from config import (
     MODEL_VISION, MAX_TOKENS_EXTRACT, calc_cost,
@@ -172,8 +174,18 @@ Return JSON:
 
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _compress_b64_png(b64_png: str, quality: int = 88) -> str:
+    """Re-encode a base64 PNG as a smaller base64 JPEG."""
+    raw = base64.b64decode(b64_png)
+    buf = io.BytesIO()
+    Image.open(io.BytesIO(raw)).convert("RGB").save(buf, format="JPEG", quality=quality, optimize=True)
+    return base64.b64encode(buf.getvalue()).decode()
+
+
 def _make_legend_blocks(legend: dict) -> list:
-    """Build Anthropic image content blocks from legend images."""
+    """Build Anthropic image content blocks from legend images.
+    Compresses each page to JPEG to stay under the 5MB API per-image limit.
+    """
     blocks = []
     for key, label in [("sheet1_images", "Legend Sheet 1 — Abbreviations"),
                         ("sheet2_images", "Legend Sheet 2 — Piping Symbols")]:
@@ -183,16 +195,24 @@ def _make_legend_blocks(legend: dict) -> list:
             for b64 in images:
                 blocks.append({
                     "type": "image",
-                    "source": {"type": "base64", "media_type": "image/png", "data": b64},
+                    "source": {"type": "base64", "media_type": "image/jpeg",
+                               "data": _compress_b64_png(b64)},
                 })
     return blocks
 
 
-def _tile_image_block(tile_path: Path) -> dict:
-    b64 = base64.b64encode(tile_path.read_bytes()).decode()
+def _tile_image_block(tile_path: Path, quality: int = 88) -> dict:
+    """Load tile PNG, compress to JPEG in memory, return API image block.
+    JPEG keeps file size well under the 5MB API limit while preserving detail.
+    """
+    buf = io.BytesIO()
+    img = Image.open(tile_path).convert("RGB")
+    img.save(buf, format="JPEG", quality=quality, optimize=True)
+    buf.seek(0)
+    b64 = base64.b64encode(buf.read()).decode()
     return {
         "type": "image",
-        "source": {"type": "base64", "media_type": "image/png", "data": b64},
+        "source": {"type": "base64", "media_type": "image/jpeg", "data": b64},
     }
 
 
