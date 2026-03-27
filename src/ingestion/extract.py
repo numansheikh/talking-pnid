@@ -175,10 +175,12 @@ Return JSON:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _compress_b64_png(b64_png: str, quality: int = 88) -> str:
-    """Re-encode a base64 PNG as a smaller base64 JPEG."""
+    """Re-encode a base64 PNG as a smaller grayscale JPEG.
+    P&ID legend sheets are B&W line drawings — grayscale cuts size ~3x vs RGB JPEG.
+    """
     raw = base64.b64decode(b64_png)
     buf = io.BytesIO()
-    Image.open(io.BytesIO(raw)).convert("RGB").save(buf, format="JPEG", quality=quality, optimize=True)
+    Image.open(io.BytesIO(raw)).convert("L").save(buf, format="JPEG", quality=quality, optimize=True)
     return base64.b64encode(buf.getvalue()).decode()
 
 
@@ -202,14 +204,13 @@ def _make_legend_blocks(legend: dict) -> list:
 
 
 def _tile_image_block(tile_path: Path, quality: int = 88) -> dict:
-    """Load tile PNG, compress to JPEG in memory, return API image block.
-    JPEG keeps file size well under the 5MB API limit while preserving detail.
+    """Load tile PNG, convert to grayscale JPEG in memory, return API image block.
+    P&ID tiles are B&W line drawings — grayscale JPEG is ~3x smaller than RGB JPEG
+    and well under the 5MB API per-image limit.
     """
     buf = io.BytesIO()
-    img = Image.open(tile_path).convert("RGB")
-    img.save(buf, format="JPEG", quality=quality, optimize=True)
-    buf.seek(0)
-    b64 = base64.b64encode(buf.read()).decode()
+    Image.open(tile_path).convert("L").save(buf, format="JPEG", quality=quality, optimize=True)
+    b64 = base64.b64encode(buf.getvalue()).decode()
     return {
         "type": "image",
         "source": {"type": "base64", "media_type": "image/jpeg", "data": b64},
