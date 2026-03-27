@@ -469,25 +469,53 @@ TOOL_DEFINITIONS = [
 ]
 
 
+import re as _re
+
+_AUTO_ID_PATTERN = _re.compile(
+    r"(_r\d+c\d+|_osbl|_anno_|_sub_|_tile_|^spec_break_|^anno_|^term_|^barred_tee_)",
+    _re.IGNORECASE,
+)
+
+
+def _sanitise(result: Any) -> Any:
+    """Strip auto-generated internal node IDs from tool results before sending to the agent.
+    Only IDs with no real P&ID tag equivalent are removed — real tags (HV-0027, EZV-0004)
+    are always kept as-is."""
+    if isinstance(result, list):
+        return [_sanitise(item) for item in result]
+    if isinstance(result, dict):
+        cleaned = {}
+        for k, v in result.items():
+            if k == "id":
+                # Keep the id only if it looks like a real tag (alphanumeric, hyphens, dots)
+                # Drop it if it's an auto-generated composite key
+                if isinstance(v, str) and _AUTO_ID_PATTERN.search(v):
+                    continue  # drop the field
+            cleaned[k] = _sanitise(v)
+        return cleaned
+    return result
+
+
 def execute_tool(pid_id: str, tool_name: str, tool_input: dict) -> Any:
     """Dispatch a tool call and return the result."""
     if tool_name == "get_node":
-        return get_node(pid_id, tool_input["tag"])
+        raw = get_node(pid_id, tool_input["tag"])
     elif tool_name == "list_nodes":
-        return list_nodes(pid_id, tool_input["node_type"], tool_input.get("subtype_filter"))
+        raw = list_nodes(pid_id, tool_input["node_type"], tool_input.get("subtype_filter"))
     elif tool_name == "find_path":
-        return find_path(pid_id, tool_input["from_tag"], tool_input["to_tag"])
+        raw = find_path(pid_id, tool_input["from_tag"], tool_input["to_tag"])
     elif tool_name == "impact_region":
-        return impact_region(
+        raw = impact_region(
             pid_id,
             tool_input["tag"],
             tool_input.get("direction", "both"),
             tool_input.get("depth", 3),
         )
     elif tool_name == "search_nodes":
-        return search_nodes(pid_id, tool_input["query"])
+        raw = search_nodes(pid_id, tool_input["query"])
     else:
         return {"error": f"Unknown tool: {tool_name}"}
+    return _sanitise(raw)
 
 
 # ── Graph agent loop ──────────────────────────────────────────────────────────
@@ -518,8 +546,9 @@ Do NOT answer the off-topic question or provide suggestions.
 ## RESPONSE STYLE — CRITICAL
 - Never mention internal identifiers, node IDs, array names, or anything that references how data is stored internally (e.g. never write "nodes[]", "spec_break_r2c1", "anno_line_20", "term_DS1", "knowledge graph", "graph node", or similar).
 - Speak as a process engineer reading the physical drawing — reference only real P&ID labels: equipment tags (HV-0027), line numbers (20"-PP-01-361-GF001), and note numbers.
-- If something is not shown on the diagram, say "this is not shown on this P&ID" or "this is referenced as an off-drawing connection only". Do not explain data storage, offer to add nodes, or suggest schema changes.
-- When a term like DS-1 or DS-3 appears as an off-drawing reference annotation (not a full system question), clarify that it is the upstream/downstream tie-in point label, not a tag on this diagram.
+- Do not narrate your lookup process. Never write "I checked", "I queried", "I found in the data", "the graph shows", "according to the diagram data", or any similar phrase. State facts directly as a process engineer who knows the drawing would.
+- When something is not shown on this diagram, first state what IS shown (the relevant equipment, lines, or connections that are present), then in a separate clearly-labelled note explain that the referenced item is an off-drawing connection or tie-in point. Do not explain data storage, offer to add nodes, or suggest schema changes.
+- When a term like DS-1 or DS-3 appears as an off-drawing reference annotation, clarify it is the upstream/downstream tie-in point label shown on the drawing boundary — not a tag on this diagram — and direct the user to the correct P&ID if applicable.
 
 ## TOOL USAGE
 - For a specific tag: call get_node() first.
