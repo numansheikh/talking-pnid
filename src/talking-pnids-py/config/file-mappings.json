@@ -1,6 +1,15 @@
 {
   "mappings": [
     {
+      "id": "supergraph",
+      "pdf": null,
+      "json": null,
+      "md": null,
+      "graph": "supergraph.json",
+      "name": "All P&IDs — Overview",
+      "description": "Query across PID-006, PID-007, and PID-008 simultaneously"
+    },
+    {
       "id": "pid-008",
       "pdf": "100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf",
       "json": "pid3-008.json",

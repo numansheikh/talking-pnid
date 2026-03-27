@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 55.7 44.26">
+  <defs>
+    <style>
+      /* Warm peach/orange palette — matches app theme */
+      .cls-1 {
+        stroke: #fed7aa;
+        stroke-width: 2.5px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        fill: #fbbf24;
+      }
+
+      .cls-4 {
+        fill: #ffffff;
+      }
+
+      .cls-5 {
+        fill: #f97316;
+      }
+
+      .cls-2 {
+        stroke: #ffedd5;
+        stroke-width: 2px;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <path class="cls-5" d="M2.04,7.22C11.2-1.94,45.74-2.86,53.89,7.22c4.07,5.04,0,25.92,0,25.92h-18.52l-11.11,11.11v-11.11H2.04S-2.55,11.81,2.04,7.22Z"/>
+  <line class="cls-1" x1="9.33" y1="10.93" x2="46.37" y2="10.93"/>
+  <polygon class="cls-3" points="24.15 5.37 29.7 10.93 24.15 16.48 18.59 10.93 24.15 5.37"/>
+  <path class="cls-2" d="M13.15,22.93c7.41,4.94,14.81,4.94,22.22,0"/>
+  <circle class="cls-4" cx="13.15" cy="16.63" r="1.11"/>
+  <circle class="cls-4" cx="35.37" cy="16.63" r="1.11"/>
+</svg>

@@ -41,6 +41,8 @@ async def process_query(request: QueryRequest):
         use_rag   = "rag" in sources
 
         graph = load_graph(pid_id) if (pid_id and use_graph) else None
+        # For supergraph queries, RAG should search all chunks (no pid filter)
+        rag_pid_filter = None if pid_id == "supergraph" else pid_id
 
         # ── Graph agent path (standard models only) ───────────────────────────
         is_reasoning = model_name.startswith(("o1", "o3", "gpt-5"))
@@ -50,7 +52,7 @@ async def process_query(request: QueryRequest):
             rag_context = ""
             rag_sources = []
             if use_rag and rag_retriever.is_available() and api_key:
-                chunks = rag_retriever.retrieve(request.query, pid_id, api_key, k=4)
+                chunks = rag_retriever.retrieve(request.query, rag_pid_filter, api_key, k=4)
                 rag_context = rag_retriever.format_for_prompt(chunks)
                 rag_sources = [c["source"] for c in chunks]
 
@@ -109,7 +111,7 @@ async def process_query(request: QueryRequest):
 
             rag_context = ""
             if use_rag and rag_retriever.is_available() and api_key:
-                chunks = rag_retriever.retrieve(request.query, pid_id, api_key, k=4)
+                chunks = rag_retriever.retrieve(request.query, rag_pid_filter, api_key, k=4)
                 if chunks:
                     rag_context = "ENGINEERING NOTES:\n" + rag_retriever.format_for_prompt(chunks) + "\n\n"
 

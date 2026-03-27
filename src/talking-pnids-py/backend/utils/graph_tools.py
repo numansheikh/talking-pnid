@@ -31,11 +31,87 @@ def _graphs_dir() -> Path:
 
 @lru_cache(maxsize=10)
 def load_graph(pid_id: str) -> dict | None:
-    """Load and cache a pid.graph.v0.1.1 JSON by pid_id. Returns None if not found."""
+    """Load and cache a pid.graph.v0.1.1 JSON by pid_id.
+    When pid_id == 'supergraph', merges all three P&ID graphs into one flat
+    nodes+edges structure so all existing tools work transparently.
+    Returns None if not found.
+    """
+    if pid_id == "supergraph":
+        return _load_merged_supergraph()
     path = _graphs_dir() / f"{pid_id}.graph.json"
     if not path.exists():
         return None
     return json.loads(path.read_text())
+
+
+def _load_merged_supergraph() -> dict | None:
+    """Flatten all individual P&ID graphs into one nodes+edges structure.
+    The supergraph.json is a summary file — actual nodes/edges live in the
+    individual pid-XXX.graph.json files. We load each of those and merge them.
+    Node/edge IDs are prefixed with pid_id: to avoid collisions.
+    inter_pid_edges use 'pid-007::node_id' format for cross-P&ID connections.
+    """
+    sg_path = _graphs_dir() / "supergraph.json"
+    if not sg_path.exists():
+        return None
+    sg = json.loads(sg_path.read_text())
+    pids_list = list(sg.get("pid_graphs", {}).keys())
+
+    merged_nodes: list[dict] = []
+    merged_edges: list[dict] = []
+    # Maps original node id → prefixed id, per pid
+    id_maps: dict[str, dict[str, str]] = {}
+
+    for pid in pids_list:
+        graph_path = _graphs_dir() / f"{pid}.graph.json"
+        if not graph_path.exists():
+            continue
+        subgraph = json.loads(graph_path.read_text())
+        prefix = pid + ":"
+        id_map: dict[str, str] = {}
+        for n in subgraph.get("nodes", []):
+            new_id = prefix + n["id"]
+            id_map[n["id"]] = new_id
+            merged_nodes.append({**n, "id": new_id, "_pid": pid})
+        id_maps[pid] = id_map
+        for e in subgraph.get("edges", []):
+            merged_edges.append({
+                **e,
+                "from": id_map.get(e.get("from", ""), prefix + e.get("from", "")),
+                "to":   id_map.get(e.get("to",   ""), prefix + e.get("to",   "")),
+                "_pid": pid,
+            })
+
+    # Add cross-P&ID edges — format: "pid-007::node_id"
+    for ie in sg.get("inter_pid_edges", []):
+        def _resolve(ref: str) -> str | None:
+            if "::" in ref:
+                pid, orig_id = ref.split("::", 1)
+                return id_maps.get(pid, {}).get(orig_id)
+            return None
+        src_id = _resolve(ie.get("from", ""))
+        dst_id = _resolve(ie.get("to",   ""))
+        if src_id and dst_id:
+            merged_edges.append({
+                "from":     src_id,
+                "to":       dst_id,
+                "kind":     ie.get("kind", "process"),
+                "line_tag": ie.get("props", {}).get("line_tag"),
+                "_inter_pid": True,
+            })
+
+    return {
+        "schema_version": "pid.graph.v0.1.1",
+        "metadata": {
+            "pid_id":      "supergraph",
+            "description": f"Merged supergraph: {', '.join(pids_list)}",
+        },
+        "nodes": merged_nodes,
+        "edges": merged_edges,
+        "_supergraph": True,
+        "_pids": pids_list,
+        "_stats": {"nodes": len(merged_nodes), "edges": len(merged_edges)},
+    }
 
 
 @lru_cache(maxsize=2)
@@ -51,6 +127,9 @@ def graph_summary(pid_id: str) -> str:
         return f"No graph available for {pid_id}."
     n = len(g.get("nodes", []))
     e = len(g.get("edges", []))
+    if pid_id == "supergraph":
+        pids = g.get("_pids", [])
+        return f"supergraph ({', '.join(pids)}): {n} nodes, {e} edges across all P&IDs"
     meta = g.get("metadata", {})
     area = meta.get("area") or meta.get("unit") or ""
     return f"{pid_id}: {n} nodes, {e} edges{f', {area}' if area else ''}"

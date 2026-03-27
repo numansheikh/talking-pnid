@@ -154,7 +154,10 @@ export default function AppPage() {
     <div className="app-container">
       {/* Top Nav */}
       <div className="top-nav">
-        <div className="nav-brand">Talking P&IDs</div>
+        <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <img src="/logo.svg" alt="Talking P&IDs" style={{ height: '28px', width: 'auto' }} />
+          Talking P&IDs
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#6b7280' }}>
           {selectedMapping && <span>{selectedMapping.name}</span>}
         </div>
@@ -176,7 +179,7 @@ export default function AppPage() {
                   onClick={() => setSelectedMapping(mapping)}
                   title={mapping.description}
                 >
-                  <span className="sidebar-icon">📐</span>
+                  <span className="sidebar-icon">{mapping.id === 'supergraph' ? '🔗' : '📐'}</span>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
                     <span>{mapping.name}</span>
                     <span style={{ fontSize: '11px', opacity: 0.55 }}>{mapping.description}</span>
@@ -194,7 +197,21 @@ export default function AppPage() {
           </div>
           <div className="center-panel-content">
             <div className="pdf-viewer-container">
-              {selectedMapping?.pdfExists ? (
+              {selectedMapping?.id === 'supergraph' ? (
+                <div className="empty-state" style={{ textAlign: 'left', padding: '24px', maxWidth: '480px', margin: '0 auto' }}>
+                  <p style={{ fontWeight: 600, fontSize: '15px', marginBottom: '8px' }}>All P&IDs — Overview</p>
+                  <p style={{ color: '#6b7280', fontSize: '13px', marginBottom: '16px' }}>
+                    Querying across the full supergraph: PID-006, PID-007, and PID-008 combined.
+                    Ask cross-diagram questions such as:
+                  </p>
+                  <ul style={{ color: '#374151', fontSize: '13px', lineHeight: '1.8', paddingLeft: '20px' }}>
+                    <li>How does the Scraper Launcher connect to the Fuel Gas KO Drum?</li>
+                    <li>List all pressure safety valves across all diagrams</li>
+                    <li>What are all the spec breaks between systems?</li>
+                    <li>Trace the fuel gas flow from DS-3 to PP01-362-V001</li>
+                  </ul>
+                </div>
+              ) : selectedMapping?.pdfExists ? (
                 <iframe
                   src={getPdfUrl(selectedMapping.pdf)}
                   className="pdf-viewer"
@@ -225,8 +242,8 @@ export default function AppPage() {
                     borderRadius: '12px',
                     border: '1px solid',
                     cursor: 'pointer',
-                    borderColor: sourceMode === mode ? '#2563eb' : '#d1d5db',
-                    background: sourceMode === mode ? '#2563eb' : 'transparent',
+                    borderColor: sourceMode === mode ? '#f97316' : '#d1d5db',
+                    background: sourceMode === mode ? '#f97316' : 'transparent',
                     color: sourceMode === mode ? '#fff' : '#6b7280',
                     fontWeight: sourceMode === mode ? 600 : 400,
                   }}
@@ -262,7 +279,7 @@ export default function AppPage() {
                                       className="pid-link"
                                       data-pid-link={id}
                                       onClick={handlePidClick(id)}
-                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#2563eb' }}
+                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#f97316' }}
                                     >
                                       {children}
                                     </span>
