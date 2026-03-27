@@ -5,12 +5,31 @@
       "pdf": "100478CP-N-PG-PP01-PR-PID-0008-001-C02.pdf",
       "json": "pid3-008.json",
       "md": "0008.md",
-      "name": "P&ID 008",
-      "description": "Piping & Instrumentation Diagram 008",
+      "graph": "pid-008.graph.json",
+      "name": "PID-008 — Fuel Gas KO Drum",
+      "description": "Fuel Gas Knockout Drum PP01-362-V001 (System 362)",
       "summary": {
-        "preview": "# Fuel Gas Knockout Drum – PP01-362-V-01 ## Integrated Technical & Line Designation Specification  This document is a **fully consolidated, non-redundant master specification** combining: - *P&ID 3 – Detailed Document Specification* - *P&ID 3 – Technical Specification & Line Designation Report*  No technical information has been omitted. Where discrepancies exist, they are explicitly noted.  ---  ## 1. Equipment Overview  **Equipment Tag:** PP01-362-V-01   **Service:** Fuel Gas Knockout Drum",
+        "preview": "Fuel Gas Knockout Drum PP01-362-V001, System 362. Separates liquid condensate from fuel gas streams from DS-1 and DS-3 scraper receivers.",
         "size": 4206
       }
+    },
+    {
+      "id": "pid-006",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0006-001-C02.pdf",
+      "json": null,
+      "md": "006.md",
+      "graph": "pid-006.graph.json",
+      "name": "PID-006 — Scraper Launcher DS-3",
+      "description": "Scraper Launcher DS-3 (System 361)"
+    },
+    {
+      "id": "pid-007",
+      "pdf": "100478CP-N-PG-PP01-PR-PID-0007-001-C02.pdf",
+      "json": null,
+      "md": "007.md",
+      "graph": "pid-007.graph.json",
+      "name": "PID-007 — Scraper Receiver DS-3",
+      "description": "Scraper Receiver DS-3 PP01-361-V004 (System 361)"
     }
   ]
 }
