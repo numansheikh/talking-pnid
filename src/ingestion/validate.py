@@ -453,17 +453,8 @@ def validate_graph(pid_id: str, graph: dict, force: bool = False) -> dict:
     all_issues   = []
     all_warnings = []
 
-    # ── 1. Excel ground truth (DISABLED — data not yet validated as correct) ───
-    # Plumbing kept for when a verified ground truth source is provided.
-    # Issues and warnings from Excel are NOT included in confidence scoring.
-    excel_summary = {"status": "disabled", "reason": "ground truth not yet validated"}
-    gt = _load_excel_ground_truth()
-    if gt:
-        _, _, excel_summary_raw = _validate_excel(nodes, edges, gt)
-        excel_summary = {**excel_summary_raw, "status": "disabled", "excluded_from_score": True}
-        print(f"[validate] Excel (info only, not scored): "
-              f"{excel_summary_raw['found_in_graph']}/{excel_summary_raw['total_reference_tags']} "
-              f"reference tags found ({excel_summary_raw['coverage_pct']}%)")
+    # ── 1. Excel ground truth (DISABLED — not yet validated as correct) ─────
+    # Functions kept for future use. Not run, not included in report.
 
     # ── 2. OCR cross-reference ────────────────────────────────────────────────
     o_issues, o_warnings, ocr_summary = _validate_ocr(nodes, pid_id)
@@ -507,7 +498,6 @@ def validate_graph(pid_id: str, graph: dict, force: bool = False) -> dict:
             "instruments": len(insts),
             "terminators": len([n for n in nodes if n.get("type") == "terminator"]),
         },
-        "excel_validation": excel_summary,
         "ocr_validation": ocr_summary,
         "confidence_score": round(confidence, 1),
         "high_issues":   high_issues,
