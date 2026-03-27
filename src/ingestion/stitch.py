@@ -254,10 +254,12 @@ def stitch(pid_id: str, tile_extractions: list[dict], force: bool = False) -> di
     for data in tile_data.values():
         # Prefix tile name to IDs to avoid collisions
         tile_prefix = data["tile"]
-        for comp in data["components"]:
+        for ci, comp in enumerate(data["components"]):
             comp = dict(comp)
-            if not comp.get("id", "").startswith(tile_prefix):
-                comp["id"] = f"{tile_prefix}__{comp['id']}"
+            cid = comp.get("id") or f"comp_{ci}"
+            if not cid.startswith(tile_prefix):
+                cid = f"{tile_prefix}__{cid}"
+            comp["id"] = cid
             comp["_source_tile"] = tile_prefix
             all_components.append(comp)
 
@@ -268,10 +270,12 @@ def stitch(pid_id: str, tile_extractions: list[dict], force: bool = False) -> di
     all_connections = []
     for data in tile_data.values():
         tile_prefix = data["tile"]
-        for conn in data["connections"]:
+        for ci, conn in enumerate(data["connections"]):
             conn = dict(conn)
-            if not conn.get("id", "").startswith(tile_prefix):
-                conn["id"] = f"{tile_prefix}__{conn['id']}"
+            cid = conn.get("id") or f"conn_{ci}"
+            if not cid.startswith(tile_prefix):
+                cid = f"{tile_prefix}__{cid}"
+            conn["id"] = cid
             conn["_source_tile"] = tile_prefix
             all_connections.append(conn)
 
