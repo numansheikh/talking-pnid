@@ -1,402 +1,185 @@
-import { useState, useEffect, useCallback } from 'react'
-// import { useAuth } from '../contexts/AuthContext'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { fetchFiles, startSession, sendQuery, getPdfUrl, type FileMapping } from '../utils/api'
+import { fetchFiles, startSession, sendQuery, getPdfUrl, type FileMapping, type QuerySources } from '../utils/api'
+
+type SourceMode = 'graph' | 'rag' | 'both'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
+  sources?: QuerySources
 }
 
 export default function AppPage() {
-  // Login disabled for now
-  // const { user, logout } = useAuth()
-  const user = { email: 'user@example.com', name: 'User' }
-  const logout = () => {}
   const [query, setQuery] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(false)
   const [sessionStarted, setSessionStarted] = useState(false)
-  const [startingSession, setStartingSession] = useState(false)
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [mappings, setMappings] = useState<FileMapping[]>([])
   const [selectedMapping, setSelectedMapping] = useState<FileMapping | null>(null)
-  const [loadingFiles, setLoadingFiles] = useState(true)
+  const [sourceMode, setSourceMode] = useState<SourceMode>('both')
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
+  // Load files and auto-start session on mount
   useEffect(() => {
-    loadFiles()
+    const init = async () => {
+      try {
+        const data = await fetchFiles()
+        const loadedMappings = data.mappings || []
+        setMappings(loadedMappings)
+        if (loadedMappings.length > 0) setSelectedMapping(loadedMappings[0])
+      } catch (error: any) {
+        setMessages([{
+          role: 'assistant',
+          content: `**Backend not reachable.** Make sure the server is running on port 8050.\n\nError: ${error.message}`
+        }])
+        return
+      }
+
+      try {
+        const session = await startSession()
+        if (session.success) {
+          setSessionStarted(true)
+          setSessionId(session.sessionId || null)
+          setMessages([{ role: 'assistant', content: session.message || 'Ready. Select a diagram and ask a question.' }])
+        }
+      } catch (error: any) {
+        setMessages([{ role: 'assistant', content: `Session error: ${error.message}` }])
+      }
+    }
+    init()
   }, [])
 
-  // Global click handler to intercept PID links before navigation
+  // Auto-scroll to latest message
   useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      
-      // Check if clicked element or its parent has data-pid-link attribute (for HTML spans)
-      const pidLink = target.closest('[data-pid-link]') as HTMLElement
-      if (pidLink) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-        
-        const mappingId = pidLink.getAttribute('data-pid-link')
-        if (mappingId) {
-          const mapping = mappings.find(m => m.id === mappingId)
-          if (mapping) {
-            setSelectedMapping(mapping)
-            requestAnimationFrame(() => {
-              const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
-              if (sidebarItem) {
-                sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-              }
-            })
-          } else {
-            console.error('Global handler: Mapping not found for ID:', mappingId, 'Available IDs:', mappings.map(m => m.id))
-          }
-        }
-        return false
-      }
-      
-      // Also check for any link with href starting with pid: or #pid- (for markdown links)
-      const link = target.closest('a[href^="pid:"], a[href^="#pid-"]') as HTMLAnchorElement
-      if (link) {
-        e.preventDefault()
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-        
-        const href = link.getAttribute('href')
-        if (href) {
-          const mappingId = href.replace(/^(pid:?\/?\/?|#pid-)/, '')
-          const mapping = mappings.find(m => m.id === mappingId)
-          if (mapping) {
-            setSelectedMapping(mapping)
-            requestAnimationFrame(() => {
-              const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
-              if (sidebarItem) {
-                sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-              }
-            })
-          }
-        }
-        return false
-      }
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
 
-    // Use capture phase to catch events early
-    document.addEventListener('click', handleGlobalClick, true)
-    
-    return () => {
-      document.removeEventListener('click', handleGlobalClick, true)
+  // Intercept PID links in chat (global capture)
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const pidLink = (e.target as HTMLElement).closest('[data-pid-link]') as HTMLElement
+      if (pidLink) {
+        e.preventDefault(); e.stopPropagation()
+        const id = pidLink.getAttribute('data-pid-link')
+        const mapping = mappings.find(m => m.id === id)
+        if (mapping) setSelectedMapping(mapping)
+        return
+      }
+      const link = (e.target as HTMLElement).closest('a[href^="#pid-"]') as HTMLAnchorElement
+      if (link) {
+        e.preventDefault(); e.stopPropagation()
+        const id = link.getAttribute('href')?.replace('#pid-', '')
+        const mapping = mappings.find(m => m.id === id)
+        if (mapping) setSelectedMapping(mapping)
+      }
     }
+    document.addEventListener('click', handleClick, true)
+    return () => document.removeEventListener('click', handleClick, true)
   }, [mappings])
 
-  const loadFiles = async () => {
-    try {
-      const data = await fetchFiles()
-      setMappings(data.mappings || [])
-    } catch (error: any) {
-      console.error('Failed to load files:', error)
-      // Show error message to user
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: `⚠️ **Backend API Not Available**\n\nUnable to connect to the backend API. Please ensure:\n\n1. The backend server is running (usually on http://localhost:8000)\n2. The \`VITE_API_BASE_URL\` environment variable is set correctly\n3. Check the browser console (F12) for detailed error messages\n\nError: ${error.message || 'Failed to load files'}`
-      }
-      setMessages([errorMessage])
-    } finally {
-      setLoadingFiles(false)
-    }
-  }
+  const extractPidNumber = (str: string) => str.match(/PID-(\d{3,4})/)?.[1] ?? null
 
-  const handleFileSelect = (mapping: FileMapping) => {
-    setSelectedMapping(mapping)
-    if (!sessionStarted) {
-      console.warn('File selected but session not started - this should not happen')
-    }
-  }
-
-  // Extract PID number from doc_id (e.g., "PID-0008" from "100478CP-N-PG-PP01-PR-PID-0008-001")
-  const extractPidFromDocId = (docId: string): string | null => {
-    const match = docId.match(/PID-(\d{4})/)
-    return match ? `PID-${match[1]}` : null
-  }
-
-  // Extract PID number from a string (returns the 4-digit number part)
-  const extractPidNumber = (str: string): string | null => {
-    const match = str.match(/PID-(\d{4})/)
-    return match ? match[1] : null // Returns "0008", "0006", etc.
-  }
-
-  // Find mapping by doc_id
-  const findMappingByDocId = (docId: string): FileMapping | null => {
-    const pidNumber = extractPidNumber(docId.trim())
-    if (!pidNumber) return null
-    
-    // Find mapping where PDF filename contains the same PID number
-    return mappings.find(m => {
-      const pdfPidNumber = extractPidNumber(m.pdf)
-      return pdfPidNumber === pidNumber
-    }) || null
-  }
-
-  // Process message content to replace doc_id references with clickable links
   const processMessageContent = (content: string): string => {
-    const processedIds = new Set<string>()
-    let processed = content
-    
-    // Pattern 1: [doc_id:100478CP-N-PG-PP01-PR-PID-0006-001] (preferred format from LLM)
-    processed = processed.replace(/\[doc_id:([^\]]+)\]/gi, (match, docId) => {
-      const mapping = findMappingByDocId(docId.trim())
-      if (mapping && !processedIds.has(docId)) {
-        const pid = extractPidFromDocId(docId.trim()) || docId.trim()
-        processedIds.add(docId)
-        return `[${pid}](#pid-${mapping.id})`
-      }
+    const seen = new Set<string>()
+    let out = content
+
+    out = out.replace(/\[doc_id:([^\]]+)\]/gi, (match, docId) => {
+      const pid = docId.match(/PID-(\d{4})/)?.[1]
+      if (!pid) return match
+      const mapping = mappings.find(m => extractPidNumber(m.pdf) === pid)
+      if (mapping && !seen.has(pid)) { seen.add(pid); return `[PID-${pid}](#pid-${mapping.id})` }
       return match
     })
-    
-    // Pattern 2: [PID-0006] or [PID-006] (shorthand format)
-    processed = processed.replace(/\[PID-(\d{3,4})\]/gi, (match, pidNum) => {
-      // Pad with leading zeros if needed (e.g., "6" -> "0006", "006" -> "0006")
-      const paddedPidNum = pidNum.padStart(4, '0')
-      const pid = `PID-${paddedPidNum}`
-      
-      // Find mapping by PID number
-      const mapping = mappings.find(m => {
-        const pdfPidNumber = extractPidNumber(m.pdf)
-        return pdfPidNumber === paddedPidNum
-      })
-      
-      if (mapping && !processedIds.has(paddedPidNum)) {
-        processedIds.add(paddedPidNum)
-        return `[${pid}](#pid-${mapping.id})`
-      }
+
+    out = out.replace(/\[PID-(\d{3,4})\]/gi, (match, num) => {
+      const padded = num.padStart(4, '0')
+      const mapping = mappings.find(m => extractPidNumber(m.pdf) === padded)
+      if (mapping && !seen.has(padded)) { seen.add(padded); return `[PID-${padded}](#pid-${mapping.id})` }
       return match
     })
-    
-    // Pattern 3: Legacy patterns (fallback for older responses)
-    // Schema "100478CP-N-PG-PP01-PR-PID-0006-001": 
-    processed = processed.replace(/Schema\s+"(100478CP-N-PG-PP01-PR-PID-\d{4}-\d{3})":/gi, (match, docId) => {
-      if (processedIds.has(docId)) return match
-      const mapping = findMappingByDocId(docId.trim())
-      if (mapping) {
-        const pid = extractPidFromDocId(docId.trim()) || docId.trim()
-        processedIds.add(docId)
-        return `Schema [${pid}](pid:${mapping.id}):`
-      }
+
+    out = out.replace(/\bPID-(\d{3,4})\b/gi, (match, num) => {
+      if (seen.has(`p${num}`)) return match
+      const padded = num.padStart(4, '0')
+      const mapping = mappings.find(m => extractPidNumber(m.pdf) === padded)
+      if (mapping) { seen.add(`p${num}`); return `[PID-${padded}](#pid-${mapping.id})` }
       return match
     })
-    
-    // Pattern 4: (doc_id: ...) format
-    processed = processed.replace(/\(doc_id:\s*(100478CP-N-PG-PP01-PR-PID-\d{4}-\d{3})\)/gi, (match, docId) => {
-      if (processedIds.has(docId)) return match
-      const mapping = findMappingByDocId(docId.trim())
-      if (mapping) {
-        const pid = extractPidFromDocId(docId.trim()) || docId.trim()
-        processedIds.add(docId)
-        return `[${pid}](#pid-${mapping.id})`
-      }
-      return match
-    })
-    
-    // Pattern 5: Quoted doc IDs (fallback)
-    processed = processed.replace(/"(\b100478CP-N-PG-PP01-PR-PID-\d{4}-\d{3}\b)"/gi, (match, docId) => {
-      if (processedIds.has(docId)) return match
-      const mapping = findMappingByDocId(docId.trim())
-      if (mapping) {
-        const pid = extractPidFromDocId(docId.trim()) || docId.trim()
-        processedIds.add(docId)
-        return `[${pid}](#pid-${mapping.id})`
-      }
-      return match
-    })
-    
-    // Pattern 6: Plain PID-XXXX text (without brackets) - must be at word boundaries
-    // Use markdown link format but with code formatting to prevent autolinking
-    processed = processed.replace(/\bPID-(\d{3,4})\b/gi, (match, pidNum) => {
-      // Skip if already processed or if it's part of a markdown link
-      if (processedIds.has(`plain-${pidNum}`)) return match
-      if (match.includes('](') || match.includes('[') || match.includes('`')) return match
-      
-      // Pad with leading zeros if needed
-      const paddedPidNum = pidNum.padStart(4, '0')
-      const pid = `PID-${paddedPidNum}`
-      
-      // Find mapping by PID number
-      const mapping = mappings.find(m => {
-        const pdfPidNumber = extractPidNumber(m.pdf)
-        return pdfPidNumber === paddedPidNum
-      })
-      
-      if (mapping) {
-        processedIds.add(`plain-${pidNum}`)
-        // Use hash-based format that ReactMarkdown will parse as a link
-        // Our handler will intercept it
-        return `[${pid}](#pid-${mapping.id})`
-      }
-      return match
-    })
-    
-    return processed
+
+    return out
   }
 
-  // Handle click on PID links - wrapped in useCallback for stability
-  const handlePidLinkClick = useCallback((mappingId: string) => {
-    return (e: React.MouseEvent) => {
-      // Prevent ALL default behaviors and propagation
-      e.preventDefault()
-      e.stopPropagation()
-      if (e.nativeEvent) {
-        e.nativeEvent.preventDefault()
-        e.nativeEvent.stopPropagation()
-        if (e.nativeEvent.stopImmediatePropagation) {
-          e.nativeEvent.stopImmediatePropagation()
-        }
-      }
-      
-      if (mappings.length === 0) {
-        console.error('No mappings loaded!')
-        return
-      }
-      
-      const mapping = mappings.find(m => m.id === mappingId)
-      
-      if (!mapping) {
-        console.error('Mapping not found!', {
-          requestedId: mappingId,
-          availableIds: mappings.map(m => m.id)
-        })
-        return
-      }
-      
-      // Set the selected mapping
-      setSelectedMapping(mapping)
-      
-      // Scroll the mapping into view in the sidebar
-      requestAnimationFrame(() => {
-        const sidebarItem = document.querySelector(`[data-mapping-id="${mapping.id}"]`)
-        if (sidebarItem) {
-          sidebarItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }
-      })
-    }
-  }, [mappings, setSelectedMapping])
-
-  const handleStartSession = async () => {
-    setStartingSession(true)
-    setMessages([]) // Clear any previous messages
-    try {
-      const data = await startSession()
-
-      if (data.success) {
-        setSessionStarted(true)
-        setSessionId(data.sessionId || null)
-        const initMessage: Message = {
-          role: 'assistant',
-          content: data.message || 'Session started. Ready to assist with plant operations and P&ID analysis.',
-        }
-        setMessages([initMessage])
-      } else {
-        throw new Error('Failed to start session')
-      }
-    } catch (error: any) {
-      console.error('Session start error:', error)
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: `Error: ${error.message || 'Failed to start session. Please check the console for details and try again.'}`,
-      }
-      setMessages([errorMessage])
-      setSessionStarted(false) // Ensure session state is reset on error
-    } finally {
-      setStartingSession(false)
-    }
-  }
+  const handlePidClick = useCallback((id: string) => (e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation()
+    const mapping = mappings.find(m => m.id === id)
+    if (mapping) setSelectedMapping(mapping)
+  }, [mappings])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!query.trim() || loading || !sessionStarted) return
 
-    const userMessage: Message = { role: 'user', content: query }
-    setMessages((prev) => [...prev, userMessage])
+    const userMsg: Message = { role: 'user', content: query }
+    setMessages(prev => [...prev, userMsg])
     setQuery('')
     setLoading(true)
 
     try {
+      const sourcesParam = sourceMode === 'graph' ? ['graph'] : sourceMode === 'rag' ? ['rag'] : ['graph', 'rag']
       const data = await sendQuery({
         query,
         sessionStarted,
-        selectedMapping: selectedMapping ? {
-          id: selectedMapping.id,
-          pdf: selectedMapping.pdf,
-          md: selectedMapping.md
-        } : null,
-        sessionId: sessionId
+        selectedMapping: selectedMapping ? { id: selectedMapping.id, pdf: selectedMapping.pdf, md: selectedMapping.md } : null,
+        sessionId,
+        sources: sourcesParam,
       })
-      
-      const assistantMessage: Message = {
+      setMessages(prev => [...prev, {
         role: 'assistant',
-        content: data.answer || data.error || 'Error: No answer received',
-      }
-      setMessages((prev) => [...prev, assistantMessage])
+        content: data.answer || data.error || 'No answer received',
+        sources: data.sources,
+      }])
     } catch (error: any) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: `Error: ${error.message || 'Failed to process query'}`,
-      }
-      setMessages((prev) => [...prev, errorMessage])
-      console.error('Query error:', error)
+      setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${error.message}` }])
     } finally {
       setLoading(false)
     }
   }
 
+  const sourceModeLabel = (mode: SourceMode) => ({ graph: 'Diagram Analysis', rag: 'Engineering Notes', both: 'Full Picture' }[mode])
+
   return (
     <div className="app-container">
-      {/* Top Navigation */}
+      {/* Top Nav */}
       <div className="top-nav">
         <div className="nav-brand">Talking P&IDs</div>
-        {user && (
-          <div className="nav-user">
-            <span className="user-email">{user.email}</span>
-            <button onClick={() => logout()} className="logout-button">
-              Logout
-            </button>
-          </div>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#6b7280' }}>
+          {selectedMapping && <span>{selectedMapping.name}</span>}
+        </div>
       </div>
 
       <div className="panels-container">
-        {/* Left Sidebar - 20% */}
+        {/* Left Sidebar — P&ID list */}
         <div className="left-sidebar">
-          <div className="sidebar-header">Files</div>
+          <div className="sidebar-header">Diagrams</div>
           <div className="sidebar-content">
-            {loadingFiles ? (
-              <div className="empty-state">Loading files...</div>
-            ) : mappings.length === 0 ? (
-              <div className="empty-state">
-                <p>No files found</p>
-                <p style={{ fontSize: '12px', marginTop: '8px', opacity: 0.7 }}>
-                  {import.meta.env.VITE_API_BASE_URL 
-                    ? `API: ${import.meta.env.VITE_API_BASE_URL}`
-                    : 'Using relative /api (backend not configured)'}
-                </p>
-              </div>
+            {mappings.length === 0 ? (
+              <div className="empty-state">Loading…</div>
             ) : (
-                  mappings.map((mapping) => (
-                    <div
-                      key={mapping.id}
-                      data-mapping-id={mapping.id}
-                      className={`sidebar-item ${selectedMapping?.id === mapping.id ? 'active' : ''}`}
-                      onClick={() => handleFileSelect(mapping)}
-                      title={mapping.description}
-                    >
-                  <span className="sidebar-icon">📄</span>
+              mappings.map(mapping => (
+                <div
+                  key={mapping.id}
+                  data-mapping-id={mapping.id}
+                  className={`sidebar-item ${selectedMapping?.id === mapping.id ? 'active' : ''}`}
+                  onClick={() => setSelectedMapping(mapping)}
+                  title={mapping.description}
+                >
+                  <span className="sidebar-icon">📐</span>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
                     <span>{mapping.name}</span>
-                    <span style={{ fontSize: '11px', opacity: 0.6 }}>
-                      {!mapping.pdfExists || !mapping.mdExists ? '⚠ ' : ''}
-                      PDF + MD
-                    </span>
+                    <span style={{ fontSize: '11px', opacity: 0.55 }}>{mapping.description}</span>
                   </div>
                 </div>
               ))
@@ -404,181 +187,125 @@ export default function AppPage() {
           </div>
         </div>
 
-        {/* Center Context Panel - 50% */}
+        {/* Center — PDF Viewer */}
         <div className="center-panel">
           <div className="main-header">
-            <div className="main-title">Context</div>
+            <div className="main-title">{selectedMapping?.name ?? 'Select a diagram'}</div>
           </div>
           <div className="center-panel-content">
-            {/* PDF Viewer - 80% height */}
             <div className="pdf-viewer-container">
-              {selectedMapping ? (
-                selectedMapping.pdfExists ? (
-                  <iframe
-                    src={getPdfUrl(selectedMapping.pdf)}
-                    className="pdf-viewer"
-                    title={`PDF: ${selectedMapping.pdf}`}
-                  />
-                ) : (
-                  <div className="empty-state">
-                    <p>PDF file not found: {selectedMapping.pdf}</p>
-                  </div>
-                )
+              {selectedMapping?.pdfExists ? (
+                <iframe
+                  src={getPdfUrl(selectedMapping.pdf)}
+                  className="pdf-viewer"
+                  title={selectedMapping.pdf}
+                />
               ) : (
                 <div className="empty-state">
-                  <p>Select a file from the left panel to view PDF</p>
+                  <p>{selectedMapping ? `PDF not found: ${selectedMapping.pdf}` : 'Select a diagram to view'}</p>
                 </div>
               )}
-            </div>
-
-            {/* Details Panel - 20% height max */}
-            <div className="details-panel-container">
-              <div className="sidebar-header">Details</div>
-              <div className="details-panel-content">
-                {selectedMapping ? (
-                  <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div>
-                      <strong style={{ color: '#1a1a1a', fontSize: '14px' }}>{selectedMapping.name}</strong>
-                      <div style={{ marginTop: '4px', fontSize: '12px', color: '#6b7280' }}>
-                        {selectedMapping.description}
-                      </div>
-                    </div>
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>📄</span>
-                        <span style={{ color: '#374151' }}>{selectedMapping.pdf}</span>
-                        {!selectedMapping.pdfExists && (
-                          <span style={{ fontSize: '11px', color: '#dc2626' }}>(Missing)</span>
-                        )}
-                      </div>
-                      
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span>📋</span>
-                        <span style={{ color: '#374151' }}>{selectedMapping.md}</span>
-                        {!selectedMapping.mdExists && (
-                          <span style={{ fontSize: '11px', color: '#dc2626' }}>(Missing)</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    Select a file to view details
-                  </div>
-                )}
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Right Chat Panel - 30% */}
+        {/* Right — Chat */}
         <div className="right-sidebar">
-          <div className="main-header">
+          <div className="main-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div className="main-title">Chat</div>
+            {/* Source selector */}
+            <div style={{ display: 'flex', gap: '4px' }}>
+              {(['graph', 'rag', 'both'] as SourceMode[]).map(mode => (
+                <button
+                  key={mode}
+                  onClick={() => setSourceMode(mode)}
+                  style={{
+                    fontSize: '11px',
+                    padding: '3px 8px',
+                    borderRadius: '12px',
+                    border: '1px solid',
+                    cursor: 'pointer',
+                    borderColor: sourceMode === mode ? '#2563eb' : '#d1d5db',
+                    background: sourceMode === mode ? '#2563eb' : 'transparent',
+                    color: sourceMode === mode ? '#fff' : '#6b7280',
+                    fontWeight: sourceMode === mode ? 600 : 400,
+                  }}
+                >
+                  {mode === 'graph' ? 'Diagram' : mode === 'rag' ? 'Notes' : 'Both'}
+                </button>
+              ))}
+            </div>
           </div>
+
           <div className="main-content">
-            <div 
-              className="chat-messages"
-              onClick={(e) => {
-                // Prevent any link navigation in chat messages
-                const target = e.target as HTMLElement
-                if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('pid:')) {
-                  e.preventDefault()
-                  e.stopPropagation()
-                }
-              }}
-            >
+            <div className="chat-messages">
               {messages.length === 0 ? (
                 <div className="empty-state">
-                  <p>{sessionStarted ? 'Start a conversation about plant operations and P&IDs...' : 'Click "Start Session" to begin analyzing plant data and P&IDs'}</p>
+                  <p>Select a diagram and ask a question.</p>
                 </div>
               ) : (
                 messages.map((message, index) => (
                   <div key={index} className={`message ${message.role}`}>
                     <div className="message-content">
                       {message.role === 'assistant' ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          rehypePlugins={[]}
-                          components={{
-                            // Handle HTML spans with data-pid-link
-                            span: ({ node, className, ...props }: any) => {
-                              if (className === 'pid-link' && props['data-pid-link']) {
-                                const mappingId = props['data-pid-link']
-                                const clickHandler = handlePidLinkClick(mappingId)
-                                return (
-                                  <span
-                                    {...props}
-                                    className="pid-link"
-                                    onClick={clickHandler}
-                                    onMouseDown={(e) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                    }}
-                                    style={{
-                                      cursor: 'pointer',
-                                      userSelect: 'none',
-                                      display: 'inline-flex',
-                                    }}
-                                  />
-                                )
-                              }
-                              return <span {...props} />
-                            },
-                            a: ({ node, href, children, ...props }) => {
-                              // Handle PID links - check for both pid: and #pid- formats
-                              if (href && (href.startsWith('pid:') || href.startsWith('pid://') || href.startsWith('#pid-'))) {
-                                const mappingId = href.replace(/^(pid:?\/?\/?|#pid-)/, '')
-                                const clickHandler = handlePidLinkClick(mappingId)
-                                
-                                // Return span instead of anchor to prevent any URL resolution
-                                return (
-                                  <span
-                                    role="button"
-                                    tabIndex={0}
-                                    onClick={clickHandler}
-                                    onMouseDown={(e) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                    }}
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        clickHandler(e as any)
-                                      }
-                                    }}
-                                    className="pid-link"
-                                    style={{
-                                      cursor: 'pointer',
-                                      userSelect: 'none',
-                                      display: 'inline-flex',
-                                      textDecoration: 'none',
-                                    }}
-                                    data-pid-link={mappingId}
-                                    data-href={href}
-                                  >
-                                    {children}
-                                  </span>
-                                )
-                              }
-                              // For regular links, ensure they open in new tab
-                              return (
-                                <a href={href} {...props} target="_blank" rel="noopener noreferrer" onClick={(e) => {
-                                  // Only prevent default if it's a relative link that might cause navigation
-                                  if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('#')) {
-                                    e.preventDefault()
-                                  }
-                                }}>
-                                  {children}
-                                </a>
-                              )
-                            },
-                          }}
-                        >
-                          {processMessageContent(message.content)}
-                        </ReactMarkdown>
+                        <>
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              a: ({ href, children, ...props }) => {
+                                if (href?.startsWith('#pid-')) {
+                                  const id = href.replace('#pid-', '')
+                                  return (
+                                    <span
+                                      role="button"
+                                      tabIndex={0}
+                                      className="pid-link"
+                                      data-pid-link={id}
+                                      onClick={handlePidClick(id)}
+                                      style={{ cursor: 'pointer', textDecoration: 'underline', color: '#2563eb' }}
+                                    >
+                                      {children}
+                                    </span>
+                                  )
+                                }
+                                return <a href={href} {...props} target="_blank" rel="noopener noreferrer">{children}</a>
+                              },
+                            }}
+                          >
+                            {processMessageContent(message.content)}
+                          </ReactMarkdown>
+
+                          {/* Source callout */}
+                          {message.sources && (
+                            <div style={{
+                              marginTop: '8px',
+                              padding: '6px 10px',
+                              borderRadius: '6px',
+                              background: '#f3f4f6',
+                              fontSize: '11px',
+                              color: '#6b7280',
+                              display: 'flex',
+                              flexWrap: 'wrap',
+                              gap: '6px',
+                              alignItems: 'center',
+                            }}>
+                              <span style={{ fontWeight: 600, color: '#374151' }}>
+                                {message.sources.mode === 'graph' ? '📐 Diagram Analysis' :
+                                 message.sources.mode === 'reasoning+graph' ? '📐 Diagram Analysis' :
+                                 '📄 Markdown'}
+                              </span>
+                              {message.sources.tools_called && message.sources.tools_called.length > 0 && (
+                                <span>· tools: {message.sources.tools_called.join(', ')}</span>
+                              )}
+                              {message.sources.graph_nodes && message.sources.graph_nodes.length > 0 && (
+                                <span>· nodes: {message.sources.graph_nodes.slice(0, 5).join(', ')}{message.sources.graph_nodes.length > 5 ? ` +${message.sources.graph_nodes.length - 5}` : ''}</span>
+                              )}
+                              {message.sources.rag_chunks && message.sources.rag_chunks.length > 0 && (
+                                <span>· 📝 {message.sources.rag_chunks.map(c => c.replace('.docx', '')).join(', ')}</span>
+                              )}
+                            </div>
+                          )}
+                        </>
                       ) : (
                         message.content
                       )}
@@ -588,46 +315,32 @@ export default function AppPage() {
               )}
               {loading && (
                 <div className="message assistant">
-                  <div className="message-content">Processing...</div>
+                  <div className="message-content" style={{ color: '#9ca3af', fontStyle: 'italic' }}>Thinking…</div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
+
             <div className="chat-input-container">
-              {!sessionStarted ? (
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
-                  <button
-                    onClick={handleStartSession}
-                    className="start-session-button"
-                    disabled={startingSession}
-                  >
-                    {startingSession ? 'Starting Session...' : 'Start Session'}
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="chat-input-form">
-                  <textarea
-                    className="chat-input"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Ask about plant operations, P&IDs, troubleshooting..."
-                    rows={1}
-                    disabled={loading}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleSubmit(e)
-                      }
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    className="send-button"
-                    disabled={loading || !query.trim()}
-                  >
-                    Send
-                  </button>
-                </form>
-              )}
+              <form onSubmit={handleSubmit} className="chat-input-form">
+                <textarea
+                  className="chat-input"
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  placeholder={sessionStarted ? `Ask about ${selectedMapping?.name ?? 'this diagram'}…` : 'Initialising…'}
+                  rows={1}
+                  disabled={loading || !sessionStarted}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(e) }
+                  }}
+                />
+                <button type="submit" className="send-button" disabled={loading || !query.trim() || !sessionStarted}>
+                  {loading ? '…' : '→'}
+                </button>
+              </form>
+              <div style={{ textAlign: 'right', fontSize: '10px', color: '#9ca3af', padding: '2px 4px 0' }}>
+                {sourceModeLabel(sourceMode)}
+              </div>
             </div>
           </div>
         </div>

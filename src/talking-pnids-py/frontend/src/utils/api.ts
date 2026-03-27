@@ -1,10 +1,6 @@
-// Get API base URL from environment variable, default to relative path for local dev
-// If a full URL is provided, ensure it ends with /api
 let apiBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api'
 if (apiBaseUrl.startsWith('http')) {
-  // Remove trailing slash if present
   apiBaseUrl = apiBaseUrl.replace(/\/$/, '')
-  // Add /api if not already present
   if (!apiBaseUrl.endsWith('/api')) {
     apiBaseUrl = `${apiBaseUrl}/api`
   }
@@ -16,6 +12,7 @@ export interface FileMapping {
   pdf: string
   json?: string
   md: string
+  graph?: string
   name: string
   description: string
   pdfExists: boolean
@@ -37,27 +34,30 @@ export interface SessionResponse {
   sessionId: string
 }
 
+export interface QuerySources {
+  mode: 'graph' | 'reasoning+graph' | 'markdown'
+  graph_nodes?: string[]
+  tools_called?: string[]
+  rag_chunks?: string[]
+}
+
 export interface QueryRequest {
   query: string
   sessionStarted: boolean
-  selectedMapping: {
-    id: string
-    pdf: string
-    md: string
-  } | null
+  selectedMapping: { id: string; pdf: string; md: string } | null
   sessionId?: string | null
+  sources?: string[]
 }
 
 export interface QueryResponse {
   answer: string
+  sources?: QuerySources
   error?: string
 }
 
 export async function fetchFiles(): Promise<FilesResponse> {
   const response = await fetch(`${API_BASE_URL}/files`)
-  if (!response.ok) {
-    throw new Error('Failed to load files')
-  }
+  if (!response.ok) throw new Error('Failed to load files')
   return response.json()
 }
 
