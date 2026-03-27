@@ -1,0 +1,21 @@
+you can find 4 documents
+
+1. PDF for a P&ID
+2. A schema for representing P&ID
+3 & 4. two documents narrating the process shown in the P&ID. 
+
+Your task is to read the narrative documents and produce a json which is faithful to the schema provided. You can use PDF where you have an ambiguity.
+
+
+-------
+
+
+Discard the previous documents i uploaded except for the schema.json 
+you can find 2 documents attached
+
+1. PDF for a P&ID
+2. a documents narrating the process shown in the P&ID. 
+
+I have already uploaded the schema for representing P&ID.
+
+Your task is to read the narrative documents and produce a json which is faithful to the schema provided. You can use PDF where you have an ambiguity.

@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/pid.graph.v0.1.1.schema.json",
+  "title": "Minimal P&ID Graph JSON (v0.1.1)",
+  "description": "Graph-first P&ID representation with optional plant/unit metadata and line/equipment semantics.",
+  "type": "object",
+  "required": ["schema_version", "nodes", "edges"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "pid.graph.v0.1.1"
+    },
+
+    "metadata": {
+      "type": "object",
+      "description": "Per-sheet / per-P&ID metadata.",
+      "properties": {
+        "doc_id":        { "type": "string" },
+        "rev":           { "type": "string" },
+        "rev_date":      { "type": "string", "format": "date" },
+        "plant":         { "type": "string" },
+        "unit":          { "type": "string" },
+        "area":          { "type": "string" },
+        "sheet_no":      { "type": "string" },
+        "status": {
+          "type": "string",
+          "description": "Drawing status in lifecycle.",
+          "enum": ["existing", "new", "removed", "future", "temporary"]
+        },
+        "units": {
+          "type": "object",
+          "description": "Engineering unit conventions for this document.",
+          "properties": {
+            "pressure":    { "type": "string" },
+            "temperature": { "type": "string" },
+            "flow":        { "type": "string" },
+            "length":      { "type": "string" },
+            "diameter":    { "type": "string" },
+            "density":     { "type": "string" }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Internal unique identifier for the node."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "equipment",
+              "valve",
+              "instrument",
+              "junction",
+              "terminator",
+              "nozzle",
+              "annotation"
+            ]
+          },
+          "subtype": {
+            "type": "string",
+            "description": "Fine-grained classification, e.g. pump.centrifugal, valve.gate."
+          },
+          "tag": {
+            "type": "string",
+            "description": "Engineering tag, e.g. P-101A, PI-101."
+          },
+          "class": {
+            "type": "string",
+            "description": "Standards class hook, e.g. DEXPI:Pump.Centrifugal."
+          },
+
+          "layer": {
+            "type": "string",
+            "description": "Logical drawing/discipline layer.",
+            "enum": [
+              "process",
+              "instrument",
+              "electrical",
+              "mechanical",
+              "utility",
+              "annotation",
+              "other"
+            ]
+          },
+
+          "status": {
+            "type": "string",
+            "description": "Lifecycle status of the object.",
+            "enum": ["existing", "new", "removed", "future", "temporary"]
+          },
+
+          "service": {
+            "type": "string",
+            "description": "Service description, e.g. Feed to Heater."
+          },
+
+          "loop_id": {
+            "type": "string",
+            "description": "Instrument/control loop identifier (for instruments)."
+          },
+
+          "signal_type": {
+            "type": "string",
+            "description": "Signal type for instruments or signal edges, e.g. pneumatic, analog_4_20mA, digital."
+          },
+
+          "off_page_ref": {
+            "type": "string",
+            "description": "For terminators: logical off-page reference identifier used to match across P&IDs."
+          },
+
+          "off_page_doc_id": {
+            "type": "string",
+            "description": "Optional target document ID for off-page connection."
+          },
+
+          "ports": {
+            "type": "array",
+            "description": "Connection points on multi-connection nodes (e.g. equipment nozzles).",
+            "items": {
+              "type": "object",
+              "required": ["id"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Port identifier, often nozzle ID, e.g. N1, N2."
+                },
+                "dir": {
+                  "type": "string",
+                  "enum": ["in", "out", "bi"],
+                  "default": "bi"
+                },
+                "props": { "type": "object" }
+              },
+              "additionalProperties": false
+            }
+          },
+
+          "pos": {
+            "type": "object",
+            "description": "Optional layout coordinates for symbol placement.",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" }
+            },
+            "additionalProperties": false
+          },
+
+          "props": {
+            "type": "object",
+            "description": "Free-form extended properties bag. Use for equipment data, name, vendor info, etc."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "from", "to", "kind"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Internal unique identifier for the edge."
+          },
+
+          "from": {
+            "type": "string",
+            "pattern": "^[^:]+(:[^:]+)?$",
+            "description": "Source endpoint: nodeId or nodeId:portId. Interpreted as nominal direction if flow_dir is 'uni'."
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^[^:]+(:[^:]+)?$",
+            "description": "Target endpoint: nodeId or nodeId:portId."
+          },
+
+          "kind": {
+            "type": "string",
+            "enum": ["process", "signal", "impulse", "association", "containment"],
+            "description": "Connection type: process flow, signal, impulse tubing, association, or containment (e.g. nozzle attached to vessel)."
+          },
+
+          "line_tag": {
+            "type": "string",
+            "description": "Line identifier for process edges, e.g. L-0101."
+          },
+          "pipe_class": {
+            "type": "string",
+            "description": "Pipe specification/class, e.g. CS150."
+          },
+          "diameter": {
+            "type": "string",
+            "description": "Nominal diameter, e.g. 10in, DN250."
+          },
+          "fluid_code": {
+            "type": "string",
+            "description": "Fluid/service code or description."
+          },
+
+          "flow_dir": {
+            "type": "string",
+            "description": "Explicit flow direction semantics.",
+            "enum": ["uni", "bi"],
+            "default": "uni"
+          },
+
+          "layer": {
+            "type": "string",
+            "description": "Logical drawing/discipline layer for this connection.",
+            "enum": [
+              "process",
+              "instrument",
+              "electrical",
+              "mechanical",
+              "utility",
+              "annotation",
+              "other"
+            ]
+          },
+
+          "status": {
+            "type": "string",
+            "description": "Lifecycle status of the connection.",
+            "enum": ["existing", "new", "removed", "future", "temporary"]
+          },
+
+          "waypoints": {
+            "type": "array",
+            "description": "Optional polyline waypoints for layout.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "x": { "type": "number" },
+                "y": { "type": "number" }
+              },
+              "required": ["x", "y"],
+              "additionalProperties": false
+            }
+          },
+
+          "props": {
+            "type": "object",
+            "description": "Free-form extended properties bag (insulation, tracing, operating/design conditions, etc.)."
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

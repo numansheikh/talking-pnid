@@ -13,8 +13,9 @@ import fitz  # PyMuPDF
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 DATA_DIR          = REPO_ROOT / "data"
-PDFS_DIR          = DATA_DIR / "pdfs"
-LEGENDS_DIR       = DATA_DIR / "Legends" / "Format Specific"
+DATASET_DIR       = DATA_DIR / "datasets" / "rumaila-pp01"   # canonical dataset
+PDFS_DIR          = DATASET_DIR / "pdfs"                      # A3 originals with title block
+LEGENDS_DIR       = DATASET_DIR / "legends" / "format-specific"
 OCR_DIR           = DATA_DIR / "outputs" / "ocr"
 INGESTION_OUT_DIR = DATA_DIR / "outputs" / "ingestion"
 GRAPHS_DIR        = REPO_ROOT / "src" / "talking-pnids-py" / "data" / "graphs"
@@ -51,8 +52,8 @@ LEGEND_FILE_1 = "100478CP-N-PG-PP01-PR-PID-0001-001-C01 (1).pdf"   # abbreviatio
 LEGEND_FILE_2 = "100478CP-N-PG-PP01-PR-PID-0001-002-C01 (2).pdf"   # piping symbols
 
 # ── Ground truth reference data ───────────────────────────────────────────────
-POC_ARCHIVE_DIR   = DATA_DIR / "archive" / "POC"
-PID_DATA_XLSX     = POC_ARCHIVE_DIR / "PID Data.xlsx"   # structured ground truth for PID-008
+PID_DATA_XLSX     = DATASET_DIR / "reference" / "PID Data.xlsx"   # structured ground truth for PID-008
+NARRATIVES_DIR    = DATASET_DIR / "narratives"
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

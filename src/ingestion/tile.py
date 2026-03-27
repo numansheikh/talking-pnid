@@ -40,15 +40,36 @@ def tile_pdf(pdf_path: Path, pid_id: str, force: bool = False) -> dict:
     print(f"[tile] Processing {pdf_path.name} → {tiles_dir}")
     doc = fitz.open(str(pdf_path))
 
-    # ── Extract embedded text from all pages (0 chars = pure raster, normal) ─
-    all_text = []
+    # ── Extract text from all pages ────────────────────────────────────────────
+    # Canonical PDFs (A3 originals): page 1 = raster P&ID, page 2 = title block
+    # Title block (page 2) contains: drawing title, system name, revision, doc number
+    page_texts = {}
+    title_block = {}
     for i in range(doc.page_count):
         t = doc[i].get_text("text").strip()
         if t:
-            all_text.append(t)
-    embedded_text = "\n".join(all_text)
-    save_json(tiles_dir / "embedded_text.json", {"text": embedded_text, "pages": doc.page_count})
-    print(f"[tile] Embedded text: {len(embedded_text)} chars across {doc.page_count} pages")
+            page_texts[f"page_{i+1}"] = t
+            if i == 1:  # page 2 = title block in canonical A3 originals
+                lines = [l.strip() for l in t.splitlines() if l.strip()]
+                title_block = {
+                    "raw": t,
+                    "lines": lines,
+                    # Best-effort field extraction
+                    "drawing_title": lines[0] if len(lines) > 0 else "",
+                    "system_name":   lines[1] if len(lines) > 1 else "",
+                }
+
+    all_text = "\n".join(page_texts.values())
+    save_json(tiles_dir / "embedded_text.json", {
+        "pages": doc.page_count,
+        "text": all_text,
+        "page_texts": page_texts,
+        "title_block": title_block,
+    })
+    if title_block:
+        print(f"[tile] Title block: '{title_block.get('drawing_title')}' / '{title_block.get('system_name')}'")
+    else:
+        print(f"[tile] Embedded text: {len(all_text)} chars (no title block found)")
 
     # ── Extract the native raster image (highest quality, no re-rendering) ───
     # Find the page with an embedded image and extract it at native resolution.
