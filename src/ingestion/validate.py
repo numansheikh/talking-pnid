@@ -453,18 +453,17 @@ def validate_graph(pid_id: str, graph: dict, force: bool = False) -> dict:
     all_issues   = []
     all_warnings = []
 
-    # ── 1. Excel ground truth ─────────────────────────────────────────────────
-    excel_summary = {}
+    # ── 1. Excel ground truth (DISABLED — data not yet validated as correct) ───
+    # Plumbing kept for when a verified ground truth source is provided.
+    # Issues and warnings from Excel are NOT included in confidence scoring.
+    excel_summary = {"status": "disabled", "reason": "ground truth not yet validated"}
     gt = _load_excel_ground_truth()
     if gt:
-        print(f"[validate] Loaded Excel ground truth from PID Data.xlsx")
-        e_issues, e_warnings, excel_summary = _validate_excel(nodes, edges, gt)
-        all_issues   += e_issues
-        all_warnings += e_warnings
-        print(f"[validate] Excel: {excel_summary['found_in_graph']}/{excel_summary['total_reference_tags']} "
-              f"reference tags found ({excel_summary['coverage_pct']}%)")
-    else:
-        print(f"[validate] WARNING: PID Data.xlsx not found, skipping Excel validation")
+        _, _, excel_summary_raw = _validate_excel(nodes, edges, gt)
+        excel_summary = {**excel_summary_raw, "status": "disabled", "excluded_from_score": True}
+        print(f"[validate] Excel (info only, not scored): "
+              f"{excel_summary_raw['found_in_graph']}/{excel_summary_raw['total_reference_tags']} "
+              f"reference tags found ({excel_summary_raw['coverage_pct']}%)")
 
     # ── 2. OCR cross-reference ────────────────────────────────────────────────
     o_issues, o_warnings, ocr_summary = _validate_ocr(nodes, pid_id)
@@ -517,7 +516,6 @@ def validate_graph(pid_id: str, graph: dict, force: bool = False) -> dict:
         "summary": (
             f"Confidence: {confidence:.0f}%. "
             f"{len(nodes)} nodes, {len(edges)} edges. "
-            f"Excel coverage: {excel_summary.get('coverage_pct', 'N/A')}%. "
             f"OCR coverage: {ocr_summary.get('coverage_pct', 'N/A')}%. "
             f"{len(high_issues)} high-severity issues."
         ),

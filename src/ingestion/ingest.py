@@ -172,7 +172,6 @@ def run_pipeline(pdf_path: Path, step: str | None = None, force: bool = False) -
         _step_done("validate", time.time() - t)
         step_results["validate"] = {
             "confidence": report.get("confidence_score"),
-            "excel_coverage": report.get("excel_validation", {}).get("coverage_pct"),
             "ocr_coverage": report.get("ocr_validation", {}).get("coverage_pct"),
             "high_issues": len(report.get("high_issues", [])),
         }
@@ -193,7 +192,7 @@ def run_pipeline(pdf_path: Path, step: str | None = None, force: bool = False) -
     if "validate" in step_results:
         r = step_results["validate"]
         print(f"  Validate: confidence {r['confidence']}%  |  "
-              f"Excel {r['excel_coverage']}%  |  OCR {r['ocr_coverage']}%  |  "
+              f"OCR {r['ocr_coverage']}%  |  "
               f"{r['high_issues']} high issues")
 
     # ── Cost summary (load token reports from disk) ────────────────────────
