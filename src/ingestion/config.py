@@ -19,6 +19,14 @@ OCR_DIR           = DATA_DIR / "outputs" / "ocr"
 INGESTION_OUT_DIR = DATA_DIR / "outputs" / "ingestion"
 GRAPHS_DIR        = REPO_ROOT / "src" / "talking-pnids-py" / "data" / "graphs"
 
+# ── Strategy version ─────────────────────────────────────────────────────────
+# Bump this whenever extraction prompts, models, tiling, or passes change.
+# Embedded in every graph JSON and validation report so test runs are traceable.
+#
+# v0.1.0 — baseline: 3-pass Opus 4.6 vision, 3×2 tiles, native res, legend context,
+#           Claude Sonnet schema conversion, Excel+OCR+completeness validation
+STRATEGY_VERSION = "v0.1.0"
+
 # ── Models ───────────────────────────────────────────────────────────────────
 MODEL_VISION   = "claude-opus-4-6"      # tile extraction (vision quality critical)
 MODEL_SCHEMA   = "claude-sonnet-4-6"    # schema conversion + self-verify + supergraph

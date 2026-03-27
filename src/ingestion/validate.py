@@ -15,7 +15,7 @@ import json
 import re
 from pathlib import Path
 
-from config import pid_work_dir, save_json, load_json, load_ocr_tags, PID_DATA_XLSX
+from config import pid_work_dir, save_json, load_json, load_ocr_tags, PID_DATA_XLSX, STRATEGY_VERSION
 
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -499,6 +499,7 @@ def validate_graph(pid_id: str, graph: dict, force: bool = False) -> dict:
     report = {
         "pid_id": pid_id,
         "schema_version": "pid.graph.v0.1.1",
+        "strategy_version": STRATEGY_VERSION,
         "stats": {
             "nodes": len(nodes),
             "edges": len(edges),

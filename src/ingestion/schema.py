@@ -14,7 +14,7 @@ from pathlib import Path
 import anthropic
 
 from config import (
-    MODEL_SCHEMA, MAX_TOKENS_SCHEMA,
+    MODEL_SCHEMA, MAX_TOKENS_SCHEMA, STRATEGY_VERSION,
     pid_work_dir, graphs_dir, save_json, load_json,
 )
 
@@ -115,7 +115,7 @@ INSTRUCTIONS:
 6. For off_page_refs: create terminator nodes with off_page_ref = the reference label.
 7. For spec_breaks: create a junction node at the boundary with props.spec_change = true,
    props.from_spec and props.to_spec set.
-8. Set metadata.doc_id = "{pid_id}", metadata.units.pressure = "barg", metadata.units.temperature = "degC".
+8. Set metadata.doc_id = "{pid_id}", metadata.units.pressure = "barg", metadata.units.temperature = "degC", metadata.strategy_version = "{strategy_version}".
 9. Keep all tag numbers exactly as extracted — do not normalise or invent tags.
 10. Remove duplicate nodes (same tag). Remove cross_tile bridge connections that have no real from/to.
 
@@ -170,6 +170,7 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
         pid_id=pid_id,
         schema=SCHEMA_DEF,
         extraction=extraction_json,
+        strategy_version=STRATEGY_VERSION,
     )
 
     print(f"[schema] Calling {MODEL_SCHEMA} for schema conversion...")
