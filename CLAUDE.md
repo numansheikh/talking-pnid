@@ -32,8 +32,9 @@ talking-pnid/
 
 | Component | Location | Status | Purpose |
 |-----------|----------|--------|---------|
-| Web App (backend) | `src/talking-pnids-py/backend/` | Live on Koyeb | FastAPI, LLM Q&A, PDF serving |
+| Web App (backend) | `src/talking-pnids-py/backend/` | Live on Koyeb | FastAPI, graph agent Q&A, PDF serving |
 | Web App (frontend) | `src/talking-pnids-py/frontend/` | Live on Vercel | React UI, chat, PDF viewer |
+| Ingestion Pipeline | `src/ingestion/` | Done (pid-008), partial (006/007) | PDF → tiles → Claude Vision → graph JSON |
 | OCR Extractor | `src/extractor/` | Working | Extract tags from scanned P&IDs |
 | YOLO Trainer | `src/model-pretrain/` | Steps 1-6 done | Train symbol detector |
 | Graph Analyzer | `src/pnid-analyze/` | Working | Build topology graph from extractions |
@@ -77,15 +78,26 @@ Backend runs on port 8000, frontend on port 3000.
 
 ---
 
+## Benchmark
+
+10 engineering questions against PID-008, judged by GPT-4o. See `src/talking-pnids-py/tests/BENCHMARK.md` for full details.
+
+| Date | Strategy | Avg | P/P/F | Notes |
+|------|----------|-----|-------|-------|
+| 2026-03-27 | v0.1.0 | 74 | 2/5/3 | Initial graph query layer |
+| 2026-03-28 | v0.1.1+pass2 | **79** | **5/4/1** | Pass2 re-run + agent prompt fixes |
+
+Run: `python tests/run_benchmark.py` from `src/talking-pnids-py/` (backend must be up on port 8050).
+
+---
+
 ## Open Work (High Level)
 
-See `TODO.md` for prioritized task list. Quick summary:
-
-1. **YOLO Training (Step 7)** — pipeline ready, training not yet run
-2. **Extractor improvements** — DPI 400, split tag handling, better line number extraction
-3. **Integrate OCR outputs into web app** — link tag JSON data to chat responses
-4. **Session persistence** — currently in-memory only
-5. **Auth system** — currently mocked/disabled
+1. **Fix Q8 spectacle blinds** — HV0027/HV0050 in pid-008 graph need correct subtype
+2. **Re-run pass2 for pid-006 and pid-007** — currently empty (0 components)
+3. **YOLO Training (Step 7)** — pipeline ready, ~95.8k samples, needs RTX 3090
+4. **Extractor improvements** — DPI 400, split tag handling
+5. **Session persistence** — currently in-memory only
 
 ---
 
@@ -97,3 +109,4 @@ See `TODO.md` for prioritized task list. Quick summary:
 - **Config priority** — env vars override config.json, which overrides defaults (safe for cloud deploy)
 - **Session history** — in-memory dict keyed by sessionId; one instance only
 - **Currently loaded in web app** — only PID-008 (006 and 007 disabled in file-mappings.json)
+- **Auth** — hardcoded login gate: username `pnid`, password `pakistan` (sessionStorage, frontend only)
