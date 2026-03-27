@@ -49,3 +49,6 @@ src/model-pretrain/.claude/
 src/pnid-analyze/.claude/
 src/talking-pnids-py/.claude/
 src/extractor/.claude/
+
+# Cleanup staging area
+data/old--can-be-deleted/
