@@ -59,38 +59,22 @@ async def start_session():
         # Create session ID
         session_id = str(int(time.time() * 1000))
         
-        # Initialize session with context
-        print("Sending initialization message...")
-        init_message = f"{markdowns_context}\n\n{session_init_prompt}"
-        
-        model_name = config.get("openai", {}).get("model", "gpt-4")
-        reasoning_effort = config.get("settings", {}).get("reasoningEffort", "medium")
-        
-        # Check if using reasoning model (o1/o3 or gpt-5.1/gpt-5.2)
-        if model_name.startswith("o1") or model_name.startswith("o3") or model_name.startswith("gpt-5"):
-            print(f"Using {model_name} with reasoning API...")
-            client = get_openai_client(config)
-            # Create messages in the format expected by the API
-            input_messages = [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": init_message}
-            ]
-            assistant_response_text = invoke_with_reasoning(client, model_name, input_messages, reasoning_effort)
-        else:
-            # Use LangChain for other models
-            print("Initializing LangChain model...")
-            llm = get_chat_model(config)
-            # Create messages with system prompt
-            messages = create_messages_with_history(system_prompt, init_message, session_id)
-            # Invoke the model
-            response = llm.invoke(messages)
-            # Extract content from response
-            assistant_response_text = response.content if hasattr(response, 'content') else str(response)
-        
-        # Add to history
-        add_to_history(session_id, init_message, assistant_response_text)
-        
-        assistant_response = assistant_response_text or "Session initialized. Ready to assist."
+        # Fixed welcome message — do not generate from markdown (avoids over-promising
+        # capabilities or listing system names the graph agent can't back up).
+        assistant_response = (
+            "Ready. I have **3 P&IDs loaded** for the Rumaila early power plant:\n\n"
+            "| Diagram | System |\n"
+            "|---------|--------|\n"
+            "| [PID-0006] | DS-1 Scraper Receiver (PP01-361) |\n"
+            "| [PID-0007] | DS-3 Scraper Receiver (PP01-361) |\n"
+            "| [PID-0008] | Fuel Gas KO Drum (PP01-362-V001) |\n\n"
+            "Select a diagram from the sidebar or ask across all three. "
+            "I can answer questions about equipment, valves, instruments, line numbers, "
+            "operating conditions, isolation procedures, and process flows."
+        )
+
+        # Store the welcome as the first assistant turn so follow-up queries have context
+        add_to_history(session_id, session_init_prompt, assistant_response)
         print("Session initialized successfully")
         
         return {
