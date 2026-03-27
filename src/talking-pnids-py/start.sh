@@ -72,8 +72,8 @@ echo -e "${GREEN}Frontend started (PID: $FRONTEND_PID)${NC}\n"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${GREEN}Both servers are running!${NC}"
-echo -e "${BLUE}Backend:${NC}  http://localhost:8000"
-echo -e "${BLUE}Frontend:${NC} http://localhost:3000"
+echo -e "${BLUE}Backend:${NC}  http://localhost:8050"
+echo -e "${BLUE}Frontend:${NC} http://localhost:3050"
 echo -e "${BLUE}========================================${NC}"
 echo -e "${YELLOW}Press Ctrl+C to stop both servers${NC}\n"
 

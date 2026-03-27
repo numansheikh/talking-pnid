@@ -19,7 +19,7 @@ if frontend_url:
     allowed_origins = [origin.strip() for origin in frontend_url.split(",")]
 else:
     # Local development - allow common localhost ports
-    allowed_origins = ["http://localhost:3000", "http://localhost:5173"]
+    allowed_origins = ["http://localhost:3050", "http://localhost:5173"]
 
 # Always include Vercel frontend URL if not already present
 vercel_frontend = "https://talking-pnid.vercel.app"
@@ -107,5 +107,5 @@ async def debug_paths():
 if __name__ == "__main__":
     import uvicorn
     # Read port from environment variable (Koyeb sets PORT)
-    port = int(os.getenv("PORT", 8000))
+    port = int(os.getenv("PORT", 8050))
     uvicorn.run(app, host="0.0.0.0", port=port)
