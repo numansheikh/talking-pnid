@@ -195,6 +195,28 @@ def run_pipeline(pdf_path: Path, step: str | None = None, force: bool = False) -
         print(f"  Validate: confidence {r['confidence']}%  |  "
               f"Excel {r['excel_coverage']}%  |  OCR {r['ocr_coverage']}%  |  "
               f"{r['high_issues']} high issues")
+
+    # ── Cost summary (load token reports from disk) ────────────────────────
+    work_dir = pid_work_dir(pid_id)
+    ext_tok = load_json(work_dir / "extract_token_report.json") \
+        if (work_dir / "extract_token_report.json").exists() else None
+    sch_tok = load_json(work_dir / "schema_token_report.json") \
+        if (work_dir / "schema_token_report.json").exists() else None
+
+    if ext_tok or sch_tok:
+        print()
+        if ext_tok:
+            print(f"  Extract:  {ext_tok['api_calls']} calls  |  "
+                  f"{ext_tok['input_tokens']:,} in / {ext_tok['output_tokens']:,} out  |  "
+                  f"${ext_tok['cost_usd']:.3f}  ({ext_tok['elapsed_s']/60:.1f} min)  [{ext_tok['model']}]")
+        if sch_tok:
+            print(f"  Schema:   {sch_tok['api_calls']} call   |  "
+                  f"{sch_tok['input_tokens']:,} in / {sch_tok['output_tokens']:,} out  |  "
+                  f"${sch_tok['cost_usd']:.3f}  ({sch_tok['elapsed_s']:.0f}s)  [{sch_tok['model']}]")
+        total_cost = (ext_tok["cost_usd"] if ext_tok else 0) + (sch_tok["cost_usd"] if sch_tok else 0)
+        print(f"  ─────────────────────────────────────────")
+        print(f"  Total cost:  ${total_cost:.3f}")
+
     if report:
         print(f"\n  → {graphs_dir() / f'{pid_id}.graph.json'}")
         print(f"  → {pid_work_dir(pid_id) / 'validation_report.json'}")

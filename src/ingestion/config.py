@@ -50,6 +50,18 @@ MODEL_SCHEMA   = "claude-sonnet-4-6"    # schema conversion + self-verify + supe
 MAX_TOKENS_EXTRACT = 8192
 MAX_TOKENS_SCHEMA  = 16384
 
+# ── Pricing (USD per million tokens) ─────────────────────────────────────────
+# Source: anthropic.com/pricing — update when rates change
+MODEL_COSTS = {
+    "claude-opus-4-6":   {"input": 15.00, "output": 75.00},
+    "claude-sonnet-4-6": {"input":  3.00, "output": 15.00},
+}
+
+def calc_cost(model: str, input_tokens: int, output_tokens: int) -> float:
+    """Return USD cost for a single API call."""
+    rates = MODEL_COSTS.get(model, {"input": 0.0, "output": 0.0})
+    return (input_tokens * rates["input"] + output_tokens * rates["output"]) / 1_000_000
+
 # ── Tiling ───────────────────────────────────────────────────────────────────
 TILE_ROWS    = 2
 TILE_COLS    = 3

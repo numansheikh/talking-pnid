@@ -9,12 +9,13 @@ Resume: skips if pid_graph.json already exists.
 
 import json
 import os
+import time
 from pathlib import Path
 
 import anthropic
 
 from config import (
-    MODEL_SCHEMA, MAX_TOKENS_SCHEMA, STRATEGY_VERSION,
+    MODEL_SCHEMA, MAX_TOKENS_SCHEMA, STRATEGY_VERSION, calc_cost,
     pid_work_dir, graphs_dir, save_json, load_json,
 )
 
@@ -174,12 +175,20 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
     )
 
     print(f"[schema] Calling {MODEL_SCHEMA} for schema conversion...")
+    t0 = time.time()
     msg = client.messages.create(
         model=MODEL_SCHEMA,
         max_tokens=MAX_TOKENS_SCHEMA,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
     )
+    elapsed = time.time() - t0
+
+    schema_in  = msg.usage.input_tokens
+    schema_out = msg.usage.output_tokens
+    schema_cost = calc_cost(MODEL_SCHEMA, schema_in, schema_out)
+    print(f"[schema] Tokens: {schema_in:,} in / {schema_out:,} out  |  "
+          f"${schema_cost:.3f}  |  {elapsed:.0f}s")
 
     raw = msg.content[0].text.strip()
     if raw.startswith("```"):
@@ -194,6 +203,18 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
     node_count = len(graph["nodes"])
     edge_count = len(graph["edges"])
     print(f"[schema] Graph: {node_count} nodes, {edge_count} edges")
+
+    # Save token report
+    token_report = {
+        "step": "schema",
+        "model": MODEL_SCHEMA,
+        "api_calls": 1,
+        "input_tokens":  schema_in,
+        "output_tokens": schema_out,
+        "cost_usd": round(schema_cost, 4),
+        "elapsed_s": round(elapsed, 1),
+    }
+    save_json(work_dir / "schema_token_report.json", token_report)
 
     save_json(out_work,  graph)
     save_json(out_graph, graph)

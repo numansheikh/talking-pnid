@@ -18,7 +18,7 @@ from pathlib import Path
 import anthropic
 
 from config import (
-    MODEL_VISION, MAX_TOKENS_EXTRACT,
+    MODEL_VISION, MAX_TOKENS_EXTRACT, calc_cost,
     load_legend_context, pid_work_dir, save_json, load_json,
 )
 
@@ -196,8 +196,10 @@ def _tile_image_block(tile_path: Path) -> dict:
     }
 
 
-def _call_claude(client: anthropic.Anthropic, content: list, prompt: str) -> dict:
-    """Call Claude with vision content + text prompt, return parsed JSON."""
+def _call_claude(client: anthropic.Anthropic, content: list, prompt: str) -> tuple[dict, dict]:
+    """Call Claude with vision content + text prompt.
+    Returns (parsed_json, usage) where usage = {"input_tokens": N, "output_tokens": N}.
+    """
     msg = client.messages.create(
         model=MODEL_VISION,
         max_tokens=MAX_TOKENS_EXTRACT,
@@ -207,15 +209,18 @@ def _call_claude(client: anthropic.Anthropic, content: list, prompt: str) -> dic
             "content": content + [{"type": "text", "text": prompt}],
         }],
     )
+    usage = {
+        "input_tokens":  msg.usage.input_tokens,
+        "output_tokens": msg.usage.output_tokens,
+    }
     raw = msg.content[0].text.strip()
     # Strip markdown code fences if present
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
     try:
-        return json.loads(raw)
+        return json.loads(raw), usage
     except json.JSONDecodeError:
-        # Return raw text wrapped so the pipeline can continue
-        return {"raw_text": raw, "parse_error": True}
+        return {"raw_text": raw, "parse_error": True}, usage
 
 
 def extract_tile(
@@ -240,42 +245,64 @@ def extract_tile(
     legend_blocks = _make_legend_blocks(legend)
     tile_block = _tile_image_block(tile_path)
 
+    tile_tokens = {"input_tokens": 0, "output_tokens": 0, "calls": 0}
+
+    def _fmt_usage(u: dict) -> str:
+        cost = calc_cost(MODEL_VISION, u["input_tokens"], u["output_tokens"])
+        return f"{u['input_tokens']:,} in / {u['output_tokens']:,} out / ${cost:.3f}"
+
+    def _accum(u: dict):
+        tile_tokens["input_tokens"]  += u["input_tokens"]
+        tile_tokens["output_tokens"] += u["output_tokens"]
+        tile_tokens["calls"] += 1
+
     # Pass 1
     if p1_path.exists() and not force:
         print(f"[extract]   Pass 1 resume: {p1_path.name}")
         p1 = json.loads(p1_path.read_text())
     else:
-        print(f"[extract]   Pass 1 → {tile_name}")
+        t0 = time.time()
         content = legend_blocks + [tile_block]
-        p1 = _call_claude(client, content, PASS1_PROMPT)
+        p1, u1 = _call_claude(client, content, PASS1_PROMPT)
+        _accum(u1)
         p1.setdefault("tile", tile_name)
         save_json(p1_path, p1)
+        print(f"[extract]   Pass 1 → {tile_name}  [{_fmt_usage(u1)}  {time.time()-t0:.0f}s]")
 
     # Pass 2
     if p2_path.exists() and not force:
         print(f"[extract]   Pass 2 resume: {p2_path.name}")
         p2 = json.loads(p2_path.read_text())
     else:
-        print(f"[extract]   Pass 2 → {tile_name}")
+        t0 = time.time()
         content = legend_blocks + [tile_block]
-        p2 = _call_claude(client, content, PASS2_PROMPT)
+        p2, u2 = _call_claude(client, content, PASS2_PROMPT)
+        _accum(u2)
         p2.setdefault("tile", tile_name)
         save_json(p2_path, p2)
+        print(f"[extract]   Pass 2 → {tile_name}  [{_fmt_usage(u2)}  {time.time()-t0:.0f}s]")
 
     # Pass 3
     if p3_path.exists() and not force:
         print(f"[extract]   Pass 3 resume: {p3_path.name}")
         p3 = json.loads(p3_path.read_text())
     else:
-        print(f"[extract]   Pass 3 → {tile_name}")
+        t0 = time.time()
         prev_combined = json.dumps({"pass1": p1, "pass2": p2}, indent=2)
         prompt3 = PASS3_PROMPT_TEMPLATE.format(prev_json=prev_combined[:6000])
         content = legend_blocks + [tile_block]
-        p3 = _call_claude(client, content, prompt3)
+        p3, u3 = _call_claude(client, content, prompt3)
+        _accum(u3)
         p3.setdefault("tile", tile_name)
         save_json(p3_path, p3)
+        print(f"[extract]   Pass 3 → {tile_name}  [{_fmt_usage(u3)}  {time.time()-t0:.0f}s]")
 
-    return {"tile": tile_name, "pass1": p1, "pass2": p2, "pass3": p3}
+    if tile_tokens["calls"] > 0:
+        tile_cost = calc_cost(MODEL_VISION, tile_tokens["input_tokens"], tile_tokens["output_tokens"])
+        print(f"[extract]   Tile subtotal ({tile_tokens['calls']} new calls): "
+              f"{tile_tokens['input_tokens']:,} in / {tile_tokens['output_tokens']:,} out / ${tile_cost:.3f}")
+
+    return {"tile": tile_name, "pass1": p1, "pass2": p2, "pass3": p3, "tokens": tile_tokens}
 
 
 def extract_all_tiles(
@@ -301,17 +328,48 @@ def extract_all_tiles(
     print(f"[extract] {pid_id}: extracting {len(tiles)} tiles (3 passes each)")
 
     results = []
+    total_in = total_out = total_calls = 0
+    t_extract_start = time.time()
+
     for i, tile_meta in enumerate(tiles):
         print(f"[extract] Tile {i+1}/{len(tiles)}: {tile_meta['name']}")
         result = extract_tile(client, tile_meta, legend, raw_dir, force=force)
         results.append(result)
-        # Brief pause between tiles to avoid rate limits
+
+        tok = result.get("tokens", {})
+        total_in    += tok.get("input_tokens",  0)
+        total_out   += tok.get("output_tokens", 0)
+        total_calls += tok.get("calls", 0)
+
+        running_cost = calc_cost(MODEL_VISION, total_in, total_out)
+        print(f"[extract] Running total after tile {i+1}: "
+              f"{total_in:,} in / {total_out:,} out / ${running_cost:.3f}")
+
         if i < len(tiles) - 1:
             time.sleep(1)
 
     # Save combined extraction results
     combined_path = work_dir / "all_tile_extractions.json"
     save_json(combined_path, results)
+
+    # Token report
+    elapsed = time.time() - t_extract_start
+    total_cost = calc_cost(MODEL_VISION, total_in, total_out)
+    token_report = {
+        "step": "extract",
+        "model": MODEL_VISION,
+        "tiles": len(tiles),
+        "api_calls": total_calls,
+        "input_tokens":  total_in,
+        "output_tokens": total_out,
+        "cost_usd": round(total_cost, 4),
+        "elapsed_s": round(elapsed, 1),
+    }
+    save_json(work_dir / "extract_token_report.json", token_report)
+
+    print(f"[extract] ── TOTAL: {total_calls} API calls  |  "
+          f"{total_in:,} in / {total_out:,} out  |  "
+          f"${total_cost:.3f}  |  {elapsed/60:.1f} min")
     print(f"[extract] Done: all tile extractions → {combined_path}")
     return results
 
