@@ -42,6 +42,10 @@ POC_PIDS = {
 LEGEND_FILE_1 = "100478CP-N-PG-PP01-PR-PID-0001-001-C01 (1).pdf"   # abbreviations
 LEGEND_FILE_2 = "100478CP-N-PG-PP01-PR-PID-0001-002-C01 (2).pdf"   # piping symbols
 
+# ── Ground truth reference data ───────────────────────────────────────────────
+POC_ARCHIVE_DIR   = DATA_DIR / "archive" / "POC"
+PID_DATA_XLSX     = POC_ARCHIVE_DIR / "PID Data.xlsx"   # structured ground truth for PID-008
+
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
