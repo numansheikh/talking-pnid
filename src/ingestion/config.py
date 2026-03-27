@@ -49,7 +49,7 @@ MODEL_VISION   = "claude-opus-4-6"      # tile extraction passes 1+2 (vision qua
 MODEL_VERIFY   = "claude-sonnet-4-6"    # tile extraction pass 3 (review/reasoning, same vision quality)
 MODEL_SCHEMA   = "claude-sonnet-4-6"    # schema conversion + self-verify + supergraph
 MAX_TOKENS_EXTRACT = 8192
-MAX_TOKENS_SCHEMA  = 16384
+MAX_TOKENS_SCHEMA  = 32768   # Sonnet 4.6 supports up to 64K; 32K covers 200+ node graphs
 
 # ── Pricing (USD per million tokens) ─────────────────────────────────────────
 # Source: anthropic.com/pricing — update when rates change

@@ -18,6 +18,7 @@ from config import (
     MODEL_SCHEMA, MAX_TOKENS_SCHEMA, STRATEGY_VERSION, calc_cost,
     pid_work_dir, graphs_dir, save_json, load_json,
 )
+import re
 
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -187,14 +188,25 @@ def convert_to_graph(pid_id: str, unified: dict, force: bool = False) -> dict:
     schema_in  = msg.usage.input_tokens
     schema_out = msg.usage.output_tokens
     schema_cost = calc_cost(MODEL_SCHEMA, schema_in, schema_out)
+    stop_reason = msg.stop_reason
     print(f"[schema] Tokens: {schema_in:,} in / {schema_out:,} out  |  "
-          f"${schema_cost:.3f}  |  {elapsed:.0f}s")
+          f"${schema_cost:.3f}  |  {elapsed:.0f}s  |  stop={stop_reason}")
+
+    if stop_reason == "max_tokens":
+        raise RuntimeError(
+            f"[schema] Output truncated at {schema_out} tokens — "
+            f"increase MAX_TOKENS_SCHEMA (currently {MAX_TOKENS_SCHEMA}) or split the graph."
+        )
 
     raw = msg.content[0].text.strip()
     if raw.startswith("```"):
         raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
 
-    graph = json.loads(raw)
+    try:
+        graph = json.loads(raw)
+    except json.JSONDecodeError:
+        cleaned = re.sub(r",\s*([}\]])", r"\1", raw)
+        graph = json.loads(cleaned)
 
     # Validate required fields
     assert graph.get("schema_version") == "pid.graph.v0.1.1", "Wrong schema_version"
