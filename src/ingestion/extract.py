@@ -397,7 +397,7 @@ def extract_tile(
             prev_slim["connections"] = connections[:40]
             prev_slim["_connections_truncated"] = True
         prev_json = json.dumps(prev_slim, indent=2)
-        prompt3 = PASS3_PROMPT_TEMPLATE.format(prev_json=prev_json)
+        prompt3 = PASS3_PROMPT_TEMPLATE.replace("{prev_json}", prev_json)
         content = legend_blocks + [tile_block]
         p3, u3 = _call_claude(client, content, prompt3, model=MODEL_VERIFY)
         _accum(u3)
