@@ -45,7 +45,8 @@ GRAPHS_DIR        = REPO_ROOT / "src" / "talking-pnids-py" / "data" / "graphs"
 STRATEGY_VERSION = "v0.1.0"
 
 # ── Models ───────────────────────────────────────────────────────────────────
-MODEL_VISION   = "claude-opus-4-6"      # tile extraction (vision quality critical)
+MODEL_VISION   = "claude-opus-4-6"      # tile extraction passes 1+2 (vision quality critical)
+MODEL_VERIFY   = "claude-sonnet-4-6"    # tile extraction pass 3 (review/reasoning, same vision quality)
 MODEL_SCHEMA   = "claude-sonnet-4-6"    # schema conversion + self-verify + supergraph
 MAX_TOKENS_EXTRACT = 8192
 MAX_TOKENS_SCHEMA  = 16384
