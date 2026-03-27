@@ -1,18 +1,24 @@
+import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-// import { useAuth } from './contexts/AuthContext'
-// import LoginPage from './pages/LoginPage'
-// import SignupPage from './pages/SignupPage'
 import AppPage from './pages/AppPage'
+import LoginPage from './pages/LoginPage'
 
-// Login disabled - all routes are public for now
+function useAuth() {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('auth') === '1')
+  return { authed, login: () => setAuthed(true) }
+}
+
 export default function App() {
+  const { authed, login } = useAuth()
+
+  if (!authed) {
+    return <LoginPage onLogin={login} />
+  }
+
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/app" replace />} />
       <Route path="/app" element={<AppPage />} />
-      {/* Login routes disabled for now */}
-      {/* <Route path="/login" element={<LoginPage />} /> */}
-      {/* <Route path="/signup" element={<SignupPage />} /> */}
     </Routes>
   )
 }
