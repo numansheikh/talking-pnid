@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 124">
+  <defs>
+    <style>
+      .m  { fill: none; stroke: #0d9488; stroke-width: 3px; }
+      .mt { fill: none; stroke: #0d9488; stroke-width: 1.5px; opacity: .4; }
+      .md { fill: #0d9488; }
+    </style>
+  </defs>
+  <path class="m"  d="M32,22h60l-60,80h60"/>
+  <line class="mt" x1="62" y1="22" x2="62" y2="2"/>
+  <line class="mt" x1="32" y1="62" x2="2"  y2="62"/>
+  <line class="mt" x1="92" y1="62" x2="122" y2="122"/>
+  <line class="mt" x1="62" y1="102" x2="62" y2="122"/>
+  <circle class="md" cx="62" cy="2"   r="2"/>
+  <circle class="md" cx="2"  cy="62"  r="2"/>
+  <circle class="md" cx="122" cy="62" r="2"/>
+  <circle class="md" cx="62" cy="122" r="2"/>
+  <text font-family="Helvetica-Bold,Helvetica" font-size="36" font-weight="700" transform="translate(142 76)">
+    <tspan fill="#0d9488">Zeerak </tspan><tspan fill="#1e293b">Labs</tspan>
+  </text>
+</svg>

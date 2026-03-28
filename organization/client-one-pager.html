@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talking P&IDs — Trial Access</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', Helvetica, sans-serif;
+    background: #fff;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 48px 40px;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid #0d9488;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+
+  .header-left h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0d9488;
+    letter-spacing: -0.5px;
+  }
+
+  .header-left .tagline {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+
+  .logo-area {
+    text-align: right;
+  }
+
+  .logo-area img {
+    height: 40px;
+  }
+
+  .logo-area .by {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 4px;
+  }
+
+  /* Hero statement */
+  .hero {
+    background: #f0fdfa;
+    border-left: 4px solid #0d9488;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: #134e4a;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+
+  /* Two column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+
+  .card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 18px;
+  }
+
+  .card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #0d9488;
+    margin-bottom: 12px;
+  }
+
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card ul li {
+    font-size: 13px;
+    color: #475569;
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #0d9488;
+    font-size: 11px;
+    top: 5px;
+  }
+
+  /* Questions section */
+  .questions {
+    margin-bottom: 28px;
+  }
+
+  .questions h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #0d9488;
+    margin-bottom: 14px;
+  }
+
+  .q-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .q-item {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: #334155;
+    font-style: italic;
+  }
+
+  .q-item::before {
+    content: '"';
+    color: #0d9488;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .q-item::after {
+    content: '"';
+    color: #0d9488;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* Trial access box */
+  .trial-box {
+    background: #0d9488;
+    color: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .trial-box h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .trial-box p {
+    font-size: 12.5px;
+    opacity: 0.88;
+    line-height: 1.5;
+  }
+
+  .trial-creds {
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 12px 18px;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .trial-creds .url {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    word-break: break-all;
+  }
+
+  .trial-creds .cred-row {
+    font-size: 12px;
+    opacity: 0.9;
+    margin: 3px 0;
+  }
+
+  .trial-creds .cred-label {
+    opacity: 0.7;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* How it works */
+  .how {
+    margin-bottom: 24px;
+  }
+
+  .how h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #0d9488;
+    margin-bottom: 14px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .step {
+    text-align: center;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: #f0fdfa;
+    border: 2px solid #0d9488;
+    color: #0d9488;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+  }
+
+  .step p {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.4;
+  }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer .contact {
+    font-size: 12px;
+    color: #64748b;
+  }
+
+  .footer .contact strong {
+    color: #0d9488;
+  }
+
+  .footer .disclaimer {
+    font-size: 11px;
+    color: #94a3b8;
+    max-width: 300px;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  @media print {
+    body { font-size: 12px; }
+    .page { padding: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>Talking P&amp;IDs</h1>
+      <div class="tagline">AI-powered Q&amp;A for industrial diagrams &nbsp;·&nbsp; 48-Hour Trial Access</div>
+    </div>
+    <div class="logo-area">
+      <img src="assets/zeeraklabs-logo.svg" alt="ZeerakLabs">
+      <div class="by">by ZeerakLabs</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <p>Your P&amp;IDs hold the critical knowledge your engineers need every day — isolation valve lineups, vessel conditions, instrument setpoints, spec breaks. Today that knowledge is locked inside complex drawings. <strong>Talking P&amp;IDs makes it instantly accessible to every engineer on your team, in plain English.</strong></p>
+  </div>
+
+  <!-- Two columns -->
+  <div class="two-col">
+    <div class="card">
+      <h3>What you can ask</h3>
+      <ul>
+        <li>Isolation valve lists for any vessel or equipment</li>
+        <li>Design and operating conditions</li>
+        <li>What happens if a valve closes or fails</li>
+        <li>All locked-open or locked-closed valves</li>
+        <li>Instrument alarm levels (HH/H/L/LL)</li>
+        <li>Spec breaks with boundary equipment</li>
+        <li>Note references and applicable line numbers</li>
+        <li>How systems interconnect across drawings</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>How it works</h3>
+      <ul>
+        <li>Works on scanned raster PDFs — no CAD required</li>
+        <li>Reads your legend sheets to learn your standards</li>
+        <li>Understands topology, not just text</li>
+        <li>Traces process flow across multiple P&amp;IDs</li>
+        <li>Conversational — follow-up questions work naturally</li>
+        <li>No special syntax, no drawing format changes</li>
+        <li>Web-based — works on tablet or laptop in the field</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sample questions -->
+  <div class="questions">
+    <h3>Try these during your trial</h3>
+    <div class="q-grid">
+      <div class="q-item">What are all the isolation valves for vessel 362-V001?</div>
+      <div class="q-item">What are the design pressure and temperature for 362-V001?</div>
+      <div class="q-item">EZV-0002 closes unexpectedly — what are the upstream effects?</div>
+      <div class="q-item">List all locked-open and locked-closed valves</div>
+      <div class="q-item">What instruments have high-high or low-low alarm functions?</div>
+      <div class="q-item">What are all the spec breaks on this P&amp;ID?</div>
+    </div>
+  </div>
+
+  <!-- Trial access -->
+  <div class="trial-box">
+    <div>
+      <h3>Your 48-Hour Trial</h3>
+      <p>Three interconnected P&amp;IDs from a real production oil field are loaded and ready to query. Ask anything about the fuel gas knockout drum, scraper receivers, and their connections. No setup required — open the link and start asking.</p>
+    </div>
+    <div class="trial-creds">
+      <div class="url">talkingpnid.zeeraklabs.online</div>
+      <div class="cred-label">Username</div>
+      <div class="cred-row"><strong>pnid</strong></div>
+      <div class="cred-label" style="margin-top:6px">Password</div>
+      <div class="cred-row"><strong>pakistan</strong></div>
+    </div>
+  </div>
+
+  <!-- How it works steps -->
+  <div class="how">
+    <h3>From your drawings to answers — the process</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong>Send us your P&amp;IDs</strong><br>Scanned PDFs in any format</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong>We process them</strong><br>AI extracts the full diagram structure</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong>You get access</strong><br>Private instance with your drawings</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong>Your team queries</strong><br>Any engineer, any question, instantly</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="contact">
+      Questions? Contact us at <strong>hello@zeeraklabs.com</strong><br>
+      <strong>zeeraklabs.com</strong> &nbsp;·&nbsp; ZeerakLabs AI Solutions
+    </div>
+    <div class="disclaimer">
+      Trial data is from a real operating oil field and is provided for demonstration purposes. Your own P&amp;IDs are processed in a secure, isolated environment.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
